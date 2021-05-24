@@ -1,2 +1,2 @@
-# omt-editor
-Editor for creating OMT schema.
+# uml-editor
+Editor for creating UML schema.
