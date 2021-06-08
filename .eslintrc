@@ -1,0 +1,90 @@
+{
+  "env": {
+    "browser": true,
+    "es6": true
+  },
+  "globals": {
+    "Atomics": "readonly",
+    "SharedArrayBuffer": "readonly"
+  },
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": ["./tsconfig.json"],
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": 2018,
+    "sourceType": "module"
+  },
+  "plugins": ["react", "@typescript-eslint"],
+  "extends": [
+    "plugin:react-hooks/recommended",
+    "plugin:react/recommended",
+    "airbnb",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "rules": {
+    "react/jsx-indent-props": ["error", 4],
+    "react/jsx-indent": ["error", 4],
+    "indent": ["error", 4],
+    "react/prop-types": [0],
+    "jsx-a11y/anchor-is-valid": [0],
+    "react/require-default-props": [0],
+    "import/prefer-default-export": [0],
+    "react/destructuring-assignment": [1],
+    "jsx-a11y/click-events-have-key-events": [1],
+    "no-underscore-dangle": [0],
+    "arrow-body-style": [1],
+    "prefer-promise-reject-errors": [1],
+    "react/jsx-props-no-spreading": [0],
+    "no-unused-expressions": [1],
+    "max-len": ["warn", {
+      "ignoreStrings": true,
+      "ignoreRegExpLiterals": true,
+      "ignoreTemplateLiterals": true,
+      "code": 120
+    }],
+    "no-plusplus": [2, { "allowForLoopAfterthoughts": true }],
+    "import/extensions": [
+      "error",
+      "ignorePackages",
+      {
+        "js": "never",
+        "jsx": "never",
+        "ts": "never",
+        "tsx": "never"
+      }
+    ],
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "@typescript-eslint/no-unused-vars": "off",
+    "react/jsx-filename-extension": [
+      1,
+      { "extensions": [".js", ".jsx", ".ts", ".tsx"] }
+    ],
+    "semi": "off" ,
+    "@typescript-eslint/semi": ["warn"],
+    "no-use-before-define": "off",
+    "@typescript-eslint/no-use-before-define": ["warn"],
+    "jsx-a11y/label-has-associated-control": "off",
+    "jsx-a11y/label-has-for":"off",
+    "react/no-array-index-key": "warn",
+    "unicode-bom": "off",
+    "camelcase": "off",
+    "no-shadow": "off",
+    "react/react-in-jsx-scope": "off",
+    "@typescript-eslint/no-shadow": ["error"],
+    "func-names": ["error", "never"],
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "no-trailing-spaces": "warn",
+    "function-paren-newline": "warn",
+    "spaced-comment": "warn"
+  },
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "extensions": [".js", ".jsx", ".ts", ".d.ts", ".tsx"]
+      }
+    }
+  }
+}
