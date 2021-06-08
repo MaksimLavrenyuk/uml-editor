@@ -1,6 +1,6 @@
 import React from 'react';
 import { Trans } from '@lingui/macro';
-import logo from './logo.svg';
+import logo from '../assets/logo.svg';
 import './App.css';
 
 function App() {
