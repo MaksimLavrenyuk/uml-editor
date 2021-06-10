@@ -12,7 +12,3 @@ msgstr ""
 "Last-Translator: \n"
 "Language-Team: \n"
 "Plural-Forms: \n"
-
-#: src/App.tsx:9
-msgid "EXAMPLE"
-msgstr "example"

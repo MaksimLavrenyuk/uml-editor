@@ -3,13 +3,10 @@ import ReactDOM from 'react-dom';
 import './styles/index.css';
 import App from './app/App';
 import reportWebVitals from './reportWebVitals';
-import I18nApp from './locales/Provider';
 
 ReactDOM.render(
     <React.StrictMode>
-        <I18nApp>
-            <App />
-        </I18nApp>
+        <App />
     </React.StrictMode>,
     document.getElementById('root'),
 );

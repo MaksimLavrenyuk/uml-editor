@@ -4,7 +4,6 @@ export const locales = {
     en: 'English',
     ru: 'Russian',
 };
-export const defaultLocale = 'ru';
 
 export async function dynamicActivate(locale: string) {
     const { messages } = await import(`./${locale}/messages`);
