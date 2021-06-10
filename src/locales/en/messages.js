@@ -1,1 +1,1 @@
-/*eslint-disable*/module.exports={messages:{"CHANGE_LANG":"Change language","EXAMPLE":"example"}};
+/*eslint-disable*/module.exports={messages:{"EXAMPLE":"EXAMPLE"}};

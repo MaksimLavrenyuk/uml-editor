@@ -5,7 +5,7 @@ import { AppLocales } from '../locales/types';
 class AppStore implements AppType {
     @observable
     private env: { locale: AppLocales } = {
-        locale: 'en',
+        locale: 'ru',
     };
 
     constructor() {

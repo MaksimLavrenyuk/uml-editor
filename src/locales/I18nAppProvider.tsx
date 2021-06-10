@@ -2,24 +2,23 @@ import React, { useEffect } from 'react';
 import { I18nProvider } from '@lingui/react';
 import { i18n } from '@lingui/core';
 import { dynamicActivate } from './i18n';
-import { AppLocales } from './types';
-
-type I18nAppProviderProps = {
-    children: React.ReactNode
-    locale: AppLocales
-};
+import { I18nAppProviderProps } from './types';
 
 const I18nAppProvider = (props: I18nAppProviderProps) => {
     const { children, locale } = props;
 
     useEffect(() => {
-        dynamicActivate(locale);
+        (async function () {
+            await dynamicActivate(locale);
+        }());
     }, [locale]);
 
     return (
-        <I18nProvider i18n={i18n}>
-            {children}
-        </I18nProvider>
+        <>
+            <I18nProvider i18n={i18n}>
+                {children}
+            </I18nProvider>
+        </>
     );
 };
 
