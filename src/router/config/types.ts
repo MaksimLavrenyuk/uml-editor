@@ -1,7 +1,8 @@
 type RouteType = {
+    id: string
     path: string
     name: string,
-    component: string
+    loadComponent(): Promise<{readonly default: () => JSX.Element}>,
     routes?: RouteType[]
 };
 
