@@ -3,7 +3,7 @@ import { RouteType } from './types';
 const ROUTES: RouteType[] = [
     {
         id: 'main-page',
-        path: '/main',
+        path: '/',
         name: 'ROUTER_NAME_MAIN',
         loadComponent: () => import('../../pages/main'),
     },

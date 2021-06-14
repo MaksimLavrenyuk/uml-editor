@@ -1,6 +1,6 @@
 import { Route } from 'react-router-dom';
 import { RouteType } from '../config/types';
-import LoadableComponent from '../../components/loadable-component';
+import LoadablePage from './loadable-page';
 
 function RouteItem(route: RouteType) {
     const { loadComponent, path, id } = route;
@@ -9,7 +9,7 @@ function RouteItem(route: RouteType) {
         <Route
             key={`${id}-route`}
             path={path}
-            component={LoadableComponent(loadComponent)}
+            component={LoadablePage(loadComponent)}
         />
     );
 }
