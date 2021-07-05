@@ -5,6 +5,9 @@ import AppStore from './AppStore';
 import I18nAppProvider from '../locales/I18nAppProvider';
 import RouteProvider from '../router/route-provider';
 
+/**
+ * The main component of the application. Initializes the main stores in itself.
+ */
 function App() {
     const app = useMemo(() => new AppStore(), []);
 

@@ -4,9 +4,9 @@ import pMinDelay from 'p-min-delay';
 import Loading from './Loading';
 
 /**
- * Lazy loading component for load page
- * @constructor
- * @param loadFn
+ * Lazy loading component for load page.
+ *
+ * @param loadFn - Function for load Page component.
  */
 function LoadablePage(loadFn: () => Promise<{readonly default: () => JSX.Element}>) {
     return (
