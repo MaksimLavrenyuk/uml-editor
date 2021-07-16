@@ -1,9 +1,18 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import App from '../App';
+import AppStore from '../AppStore';
 
-test('renders learn react link', () => {
+jest.mock('../AppStore');
+
+const AppStoreMock = AppStore as jest.MockedClass<typeof AppStore>;
+
+beforeEach(() => {
+    AppStoreMock.mockClear();
+});
+
+test('Init store in app.', () => {
     render(<App />);
-    const linkElement = screen.getByText(/learn react/i);
-    expect(linkElement).toBeInTheDocument();
+
+    expect(AppStoreMock).toHaveBeenCalledTimes(1);
 });

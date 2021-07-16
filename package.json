@@ -25,7 +25,6 @@
     "mobx": "^6.3.2",
     "mobx-react": "^7.2.0",
     "node-sass": "6.0.1",
-    "p-min-delay": "^4.0.0",
     "pathfinding": "^0.4.18",
     "paths-js": "^0.4.11",
     "react": "^17.0.2",
@@ -34,13 +33,12 @@
     "react-scripts": "4.0.3",
     "react-transition-group": "^4.4.2",
     "resize-observer-polyfill": "^1.5.1",
-    "typescript": "^4.3.5",
-    "web-vitals": "^2.1.0"
+    "typescript": "^4.3.5"
   },
   "scripts": {
     "start": "yarn install --check-files && react-scripts start ",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "CI=true react-scripts test --colors --coverage",
     "extract-locale": "lingui extract --clean",
     "compile-locale": "lingui compile"
   },

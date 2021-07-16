@@ -1,16 +1,16 @@
 import loadable from '@loadable/component';
 import React from 'react';
-import pMinDelay from 'p-min-delay';
 import Loading from './Loading';
+import { LoadFn } from '../types';
 
 /**
  * Lazy loading component for load page.
  *
  * @param loadFn - Function for load Page component.
  */
-function LoadablePage(loadFn: () => Promise<{readonly default: () => JSX.Element}>) {
+function LoadablePage(loadFn: LoadFn) {
     return (
-        loadable(() => pMinDelay(loadFn(), 300), {
+        loadable(loadFn, {
             fallback: <Loading />,
         })
     );

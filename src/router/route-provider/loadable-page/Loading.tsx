@@ -6,7 +6,7 @@ import style from './styles/loading.module.scss';
  */
 function Loading() {
     return (
-        <div className={style.container}>
+        <div data-testid="loading-page-fallback" className={style.container}>
             <CircularProgress />
         </div>
     );
