@@ -7,7 +7,12 @@ type I18nAppProviderProps = {
     locale: AppLocales
 };
 
+type Constant = {
+    [key: string]: string
+};
+
 export type {
     AppLocales,
     I18nAppProviderProps,
+    Constant,
 };

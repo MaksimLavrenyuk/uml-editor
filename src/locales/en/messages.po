@@ -13,6 +13,6 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: src/pages/main/index.tsx:6
-msgid "EXAMPLE"
-msgstr "Example"
+#: src/components/uml-editor/NodesCreator/NodeClass.tsx:8
+msgid "NODE_TYPE_CLASS"
+msgstr "Class"

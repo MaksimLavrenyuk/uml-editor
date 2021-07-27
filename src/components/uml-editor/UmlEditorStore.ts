@@ -4,8 +4,9 @@ import createEngine, {
     DiagramEngine,
     DiagramModel,
 } from '@projectstorm/react-diagrams';
+import { UmlEditor } from './types';
 
-class UmlEditorStore {
+class UmlEditorStore implements UmlEditor {
     private readonly engine: DiagramEngine;
 
     public getEngine() {

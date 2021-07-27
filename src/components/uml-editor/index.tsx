@@ -1,27 +1,23 @@
-import createEngine, {
-    DefaultLinkModel,
-    DefaultNodeModel,
-    DiagramModel,
-} from '@projectstorm/react-diagrams';
-
-import {
-    CanvasWidget,
-} from '@projectstorm/react-canvas-core';
 import { useMemo } from 'react';
-import { UmlEditorProps } from './types';
 import UmlEditorStore from './UmlEditorStore';
 import style from './styles/UmlEditor.module.scss';
+import NodesCreator from './NodesCreator';
+import Widget from './Widget';
+import { WidgetStore } from './Widget/WidgetStore';
 
 /**
  * Component for rendering an uml diagram.
- *
- * @param props - React props.
  */
-function UmlEditor(props: UmlEditorProps) {
-    const store = useMemo(() => new UmlEditorStore(), []);
+function UmlEditor() {
+    const widgetStore = useMemo(() => new WidgetStore(), []);
 
     return (
-        <CanvasWidget className={style.widget} engine={store.getEngine()} />
+        <>
+            <div className={style.body}>
+                <NodesCreator />
+                <Widget diagramEngine={widgetStore.getDiagramEngine()} />
+            </div>
+        </>
     );
 }
 
