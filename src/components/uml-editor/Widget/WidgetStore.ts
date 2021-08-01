@@ -18,14 +18,25 @@ export class WidgetStore {
 
     constructor() {
         this.diagramEngine = createEngine();
-        // register some other factories as well
+
+        this.registerFactories();
+        this.newModel();
+    }
+
+    /**
+     * Register some other factories as well.
+     *
+     * @private
+     */
+    private registerFactories() {
         this.diagramEngine
             .getPortFactories()
-            .registerFactory(new SimplePortFactory('diamond', (config) => new DiamondPortModel(PortModelAlignment.LEFT)));
+            .registerFactory(new SimplePortFactory(
+                'diamond', () => new DiamondPortModel(PortModelAlignment.LEFT),
+            ));
         this.diagramEngine
             .getNodeFactories()
             .registerFactory(new DiamondNodeFactory());
-        this.newModel();
     }
 
     public newModel() {
@@ -41,7 +52,7 @@ export class WidgetStore {
         const port2 = node2.addInPort('In');
         node2.setPosition(400, 100);
 
-        const node3 = new DiamondNodeModel();
+        const node3 = new DiamondNodeModel('class');
         node3.setPosition(250, 108);
 
         // link the ports

@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { DiagramEngine, PortModelAlignment, PortWidget } from '@projectstorm/react-diagrams';
+import ContentEditable from 'react-contenteditable';
 import { DiamondNodeModel } from './DiamondNodeModel';
 import style from './styles/widget.module.scss';
 
@@ -23,40 +24,13 @@ function DiamondNodeWidget(props: DiamondNodeWidgetProps) {
 
     return (
         <div
-            className="diamond-node"
             style={{
                 position: 'relative',
                 width: size,
                 height: size,
             }}
         >
-            <svg
-                width={size}
-                height={size}
-                dangerouslySetInnerHTML={{
-                    __html: `
-          <g id="Layer_1">
-          </g>
-          <g id="Layer_2">
-            <polygon fill="mediumpurple" stroke="${
-        node.isSelected() ? 'white' : '#000000'
-        }" stroke-width="3" stroke-miterlimit="10" points="10,${
-            size / 2
-        } ${
-            size / 2
-        },10 ${
-            size - 10
-        },${
-            size / 2
-        } ${
-            size / 2
-        },${
-            size - 10
-        } "/>
-          </g>
-        `,
-                }}
-            />
+            <ContentEditable html={node.name} onChange={() => console.log('vfv')} />
             {portLeft && (
                 <PortWidget
                     style={{

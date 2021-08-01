@@ -2,12 +2,9 @@ import List from '@material-ui/core/List';
 import { AppBar } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import InboxIcon from '@material-ui/icons/Inbox';
-import { DragEvent, DragEventHandler, useCallback } from 'react';
-import { withI18n } from '@lingui/react';
 import style from './styles/NodesCreator.module.scss';
 import Item from './Item';
 import { ItemsCreatorProps } from './types';
-import { NODE_CREATOR_EVENT_FORMAT } from './constants';
 
 const useStyles = makeStyles((theme) => ({
     root: {
