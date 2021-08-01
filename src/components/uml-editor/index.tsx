@@ -1,24 +1,37 @@
 import { useMemo } from 'react';
-import UmlEditorStore from './UmlEditorStore';
+import { withI18n } from '@lingui/react';
 import style from './styles/UmlEditor.module.scss';
-import NodesCreator from './NodesCreator';
+import ItemsCreator from './ItemsCreator';
 import Widget from './Widget';
 import { WidgetStore } from './Widget/WidgetStore';
+import ItemFactory from './items/ItemFactory';
+import { UmlEditorProps } from './types';
+import { ItemStruct } from './items/types';
+import ItemClass from './items/ItemClass';
+import ItemInterface from './items/ItemInterface';
 
 /**
  * Component for rendering an uml diagram.
+ *
+ * @param props - React props.
  */
-function UmlEditor() {
+function UmlEditor(props: UmlEditorProps) {
+    const { i18n } = props;
     const widgetStore = useMemo(() => new WidgetStore(), []);
+    const itemsFactory = useMemo(() => new ItemFactory({ i18n }), [i18n]);
+    const items: ItemStruct[] = useMemo(() => [
+        new ItemClass({ i18n }),
+        new ItemInterface({ i18n }),
+    ], [i18n]);
 
     return (
         <>
             <div className={style.body}>
-                <NodesCreator />
-                <Widget diagramEngine={widgetStore.getDiagramEngine()} />
+                <ItemsCreator items={items} factory={itemsFactory} />
+                <Widget widget={widgetStore} />
             </div>
         </>
     );
 }
 
-export default UmlEditor;
+export default withI18n()(UmlEditor);

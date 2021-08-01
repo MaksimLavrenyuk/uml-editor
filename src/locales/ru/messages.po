@@ -13,6 +13,10 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: src/components/uml-editor/NodesCreator/NodeClass.tsx:8
+#: src/components/uml-editor/items/ItemClass.ts:11
 msgid "NODE_TYPE_CLASS"
 msgstr "Класс"
+
+#: src/components/uml-editor/items/ItemInterface.ts:11
+msgid "NODE_TYPE_INTERFACE"
+msgstr "Интерфейс"

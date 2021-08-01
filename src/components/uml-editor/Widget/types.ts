@@ -1,5 +1,5 @@
-import { DiagramEngine } from '@projectstorm/react-diagrams';
+import { WidgetStore } from './WidgetStore';
 
 export type WidgetProps = {
-    diagramEngine: DiagramEngine
+    widget: WidgetStore
 };

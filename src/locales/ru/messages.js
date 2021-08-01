@@ -1,1 +1,1 @@
-/*eslint-disable*/module.exports={messages:{"NODE_TYPE_CLASS":"Класс"}};
+/*eslint-disable*/module.exports={messages:{"NODE_TYPE_CLASS":"Класс","NODE_TYPE_INTERFACE":"Интерфейс"}};

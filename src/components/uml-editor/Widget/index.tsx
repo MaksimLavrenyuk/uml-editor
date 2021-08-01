@@ -1,11 +1,11 @@
 import React, { DragEvent } from 'react';
 import { CanvasWidget } from '@projectstorm/react-canvas-core';
 import { observer } from 'mobx-react';
-import { DefaultNodeModel, DiagramEngine } from '@projectstorm/react-diagrams';
 import { WidgetProps } from './types';
 import style from './styles/Widget.module.scss';
-import { NODE_CREATOR_EVENT_FORMAT } from '../NodesCreator/constants';
-import { ItemStruct } from '../NodesCreator/types';
+import { NODE_CREATOR_EVENT_FORMAT } from '../ItemsCreator/constants';
+import { ItemStruct } from '../items/types';
+import { WidgetStore } from './WidgetStore';
 
 /**
  * Component for rendering an widget diagram.
@@ -18,38 +18,24 @@ class Widget extends React.Component<WidgetProps> {
         event.preventDefault();
     }
 
-    private diagramEngine: DiagramEngine;
+    private widget: WidgetStore;
 
     constructor(props: WidgetProps) {
         super(props);
-        this.diagramEngine = props.diagramEngine;
+        this.widget = props.widget;
     }
 
     dropHandler = (event: DragEvent) => {
-        const { diagramEngine } = this;
-        const data: ItemStruct = JSON.parse(event.dataTransfer.getData(NODE_CREATOR_EVENT_FORMAT));
-        const nodesCount = diagramEngine.getModel().getNodes().length;
+        const { widget } = this;
+        const diagramEngine = widget.getDiagramEngine();
+        const element: ItemStruct = JSON.parse(event.dataTransfer.getData(NODE_CREATOR_EVENT_FORMAT));
 
-        let node: DefaultNodeModel | null = null;
-
-        if (data.type === 'class') {
-            node = new DefaultNodeModel(`Node ${nodesCount + 1}`, 'rgb(192,255,0)');
-            node.addInPort('In');
-        }
-
-        const point = diagramEngine.getRelativeMousePoint(event);
-
-        if (node) {
-            node.setPosition(point);
-            diagramEngine.getModel().addNode(node);
-        }
-
-        this.forceUpdate();
+        widget.newNode(element, diagramEngine.getRelativeMousePoint(event));
     };
 
     render() {
         const {
-            diagramEngine,
+            widget,
             dropHandler,
         } = this;
 
@@ -59,7 +45,7 @@ class Widget extends React.Component<WidgetProps> {
                 onDrop={dropHandler}
                 onDragOver={Widget.dragOverHandler}
             >
-                <CanvasWidget engine={diagramEngine} />
+                <CanvasWidget engine={widget.getDiagramEngine()} />
             </div>
         );
     }
