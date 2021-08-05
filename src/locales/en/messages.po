@@ -13,6 +13,14 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
+#: src/components/uml-editor/Widget/diagram/nodes/class/ClassNodeWidget.tsx:55
+msgid "ADD_METHOD"
+msgstr "Add method"
+
+#: src/components/uml-editor/Widget/diagram/nodes/class/ClassNodeWidget.tsx:56
+msgid "ADD_PROPERTY"
+msgstr "add property"
+
 #: src/components/uml-editor/items/ItemClass.ts:11
 msgid "NODE_TYPE_CLASS"
 msgstr "Class"

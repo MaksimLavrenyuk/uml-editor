@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { DiagramEngine, PortModelAlignment, PortWidget } from '@projectstorm/react-diagrams';
-import ContentEditable from 'react-contenteditable';
-import { DiamondNodeModel } from './DiamondNodeModel';
-import style from './styles/widget.module.scss';
+import ContentEditable, { ContentEditableEvent } from 'react-contenteditable';
+import { InterfaceNodeModel } from './InterfaceNodeModel';
+import style from '../../styles/widget.module.scss';
 
 export interface DiamondNodeWidgetProps {
-    node: DiamondNodeModel;
+    node: InterfaceNodeModel;
     engine: DiagramEngine;
     size?: number;
 }
@@ -15,12 +15,16 @@ export interface DiamondNodeWidgetProps {
  *
  * @param props - React node.
  */
-function DiamondNodeWidget(props: DiamondNodeWidgetProps) {
+function InterfaceNodeWidget(props: DiamondNodeWidgetProps) {
     const { size = 0, node, engine } = props;
     const portLeft = node.getPort(PortModelAlignment.LEFT);
     const portRight = node.getPort(PortModelAlignment.RIGHT);
     const portTop = node.getPort(PortModelAlignment.TOP);
     const portBottom = node.getPort(PortModelAlignment.BOTTOM);
+
+    const changeNameHandler = (event: ContentEditableEvent) => {
+        node.changeName(event.target.value);
+    };
 
     return (
         <div
@@ -30,7 +34,7 @@ function DiamondNodeWidget(props: DiamondNodeWidgetProps) {
                 height: size,
             }}
         >
-            <ContentEditable html={node.name} onChange={() => console.log('vfv')} />
+            <ContentEditable html={node.name} onChange={changeNameHandler} />
             {portLeft && (
                 <PortWidget
                     style={{
@@ -87,4 +91,4 @@ function DiamondNodeWidget(props: DiamondNodeWidgetProps) {
     );
 }
 
-export default DiamondNodeWidget;
+export default InterfaceNodeWidget;

@@ -26,6 +26,7 @@ function ItemsCreator(props: ItemsCreatorProps) {
             <List className={classes.root} component="nav" aria-label="main mailbox folders">
                 {items.map((item) => (
                     <Item
+                        key={item.type}
                         factory={factory}
                         type={item.type}
                         name={item.name}

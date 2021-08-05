@@ -12,5 +12,9 @@ export type ItemProps = {
 };
 
 export interface ItemsFactoryI {
-    createClass(): ItemStruct<'class'>
+    create: Creators
 }
+
+export type Creators = {
+    [key in ItemType]: () => ItemStruct<key>;
+};

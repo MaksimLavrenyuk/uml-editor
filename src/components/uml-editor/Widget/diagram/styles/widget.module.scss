@@ -1,9 +1,31 @@
+$size: 200px;
+
+.node {
+  position: relative;
+  width: 100%;
+  min-width: $size;
+  max-width: $size * 2;
+}
+
 .port {
-  width: 16px;
-  height: 16px;
+  position: absolute;
+  width: 100%;
+  height: 10px;
+
+  &.top {
+    top: -8px;
+  }
+
+  &.bottom {
+    bottom: - 8px;
+  }
+}
+
+.dot {
+  width: 100%;
+  height: 100%;
   z-index: 10;
   background: rgba(0, 0, 0, 0.5);
-  border-radius: 8px;
   cursor: pointer;
   &:hover {
     background: rgba(0, 0, 0, 1);
