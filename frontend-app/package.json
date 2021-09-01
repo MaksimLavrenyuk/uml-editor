@@ -1,5 +1,5 @@
 {
-  "name": "uml-editor",
+  "name": "uml-frontend-app",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
