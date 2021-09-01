@@ -3,7 +3,7 @@ import { AbstractReactFactory } from '@projectstorm/react-canvas-core';
 import { DiagramEngine } from '@projectstorm/react-diagrams-core';
 import { InterfaceNodeModel } from './InterfaceNodeModel';
 import InterfaceNodeWidget from './InterfaceNodeWidget';
-import { NODE_TYPES } from '../constants';
+import { NODE_TYPES } from '../../constants';
 
 export class InterfaceNodeFactory extends AbstractReactFactory<InterfaceNodeModel, DiagramEngine> {
     constructor() {

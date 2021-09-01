@@ -13,13 +13,21 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: src/components/uml-editor/Widget/diagram/nodes/class/ClassNodeWidget.tsx:55
+#: src/components/uml-editor/Widget/diagram/nodes/class/ClassNodeWidget.tsx:56
 msgid "ADD_METHOD"
 msgstr "Add method"
 
-#: src/components/uml-editor/Widget/diagram/nodes/class/ClassNodeWidget.tsx:56
+#: src/components/uml-editor/Widget/diagram/nodes/class/ClassNodeWidget.tsx:57
 msgid "ADD_PROPERTY"
 msgstr "add property"
+
+#: src/components/uml-editor/Widget/diagram/methods/MethodModel.ts:13
+msgid "NEW_METHOD"
+msgstr "New method"
+
+#: src/components/uml-editor/Widget/diagram/properties/PropertyModel.ts:13
+msgid "NEW_PROPERTY"
+msgstr "New property"
 
 #: src/components/uml-editor/items/ItemClass.ts:11
 msgid "NODE_TYPE_CLASS"

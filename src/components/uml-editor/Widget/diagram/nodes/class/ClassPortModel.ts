@@ -1,7 +1,7 @@
 import {
     LinkModel, PortModel, DefaultLinkModel, PortModelAlignment,
 } from '@projectstorm/react-diagrams';
-import { NODE_TYPES } from '../constants';
+import { NODE_TYPES } from '../../constants';
 
 export class ClassPortModel extends PortModel {
     constructor(alignment: PortModelAlignment) {

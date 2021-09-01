@@ -8,6 +8,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Trans } from '@lingui/macro';
 import { ClassNodeModel } from './ClassNodeModel';
 import style from '../../styles/widget.module.scss';
+import { PORT_TYPES } from '../../constants';
 
 export interface ClassNodeWidgetProps {
     node: ClassNodeModel;
@@ -30,13 +31,15 @@ function ClassNodeWidget(props: ClassNodeWidgetProps) {
     const classes = useStyles();
     const portTop = node.getPort(PortModelAlignment.TOP);
     const portBottom = node.getPort(PortModelAlignment.BOTTOM);
+    const portMethod = node.getPort(PORT_TYPES.method);
+    const portProperty = node.getPort(PORT_TYPES.property);
 
     const changeNameHandler = (event: ContentEditableEvent) => {
         node.changeName(event.target.value);
     };
 
     return (
-        <Card className={`${classes.root} ${style.node}`}>
+        <div className={style.node}>
             {portTop && (
                 <PortWidget
                     className={`${style.port} ${style.top}`}
@@ -46,15 +49,17 @@ function ClassNodeWidget(props: ClassNodeWidgetProps) {
                     <div className={style.dot} />
                 </PortWidget>
             )}
-            <CardContent>
-                <Typography variant="h5" component="h2">
-                    <ContentEditable html={node.name} onChange={changeNameHandler} />
-                </Typography>
-            </CardContent>
-            <CardActions>
-                <Button variant="outlined" size="small" color="primary"><Trans>ADD_METHOD</Trans></Button>
-                <Button variant="outlined" size="small" color="primary"><Trans>ADD_PROPERTY</Trans></Button>
-            </CardActions>
+            <Card className={classes.root}>
+                <CardContent>
+                    <Typography variant="h5" component="h2">
+                        <ContentEditable html={node.name} onChange={changeNameHandler} />
+                    </Typography>
+                </CardContent>
+                <CardActions>
+                    <Button variant="outlined" size="small" color="primary"><Trans>ADD_METHOD</Trans></Button>
+                    <Button variant="outlined" size="small" color="primary"><Trans>ADD_PROPERTY</Trans></Button>
+                </CardActions>
+            </Card>
             {portBottom && (
                 <PortWidget
                     className={`${style.port} ${style.bottom}`}
@@ -64,7 +69,7 @@ function ClassNodeWidget(props: ClassNodeWidgetProps) {
                     <div className={style.dot} />
                 </PortWidget>
             )}
-        </Card>
+        </div>
     );
 }
 

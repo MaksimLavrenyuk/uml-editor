@@ -1,13 +1,13 @@
 import {
     LinkModel, PortModel, DefaultLinkModel, PortModelAlignment,
 } from '@projectstorm/react-diagrams';
-import { NODE_TYPES } from '../../constants';
+import { PORT_TYPES } from '../constants';
 
-export class InterfacePortModel extends PortModel {
-    constructor(alignment: PortModelAlignment) {
+export class PropertyPortModel extends PortModel {
+    constructor(key: string, alignment: PortModelAlignment) {
         super({
-            type: NODE_TYPES.interface,
-            name: alignment,
+            type: PORT_TYPES.property,
+            name: key,
             alignment,
         });
     }
@@ -16,3 +16,5 @@ export class InterfacePortModel extends PortModel {
         return new DefaultLinkModel();
     }
 }
+
+export default PropertyPortModel;

@@ -17,7 +17,7 @@ import ItemInterface from './items/ItemInterface';
  */
 function UmlEditor(props: UmlEditorProps) {
     const { i18n } = props;
-    const widgetStore = useMemo(() => new WidgetStore(), []);
+    const widgetStore = useMemo(() => new WidgetStore({ i18n }), [i18n]);
     const itemsFactory = useMemo(() => new ItemFactory({ i18n }), [i18n]);
     const items: ItemStruct[] = useMemo(() => [
         new ItemClass({ i18n }),

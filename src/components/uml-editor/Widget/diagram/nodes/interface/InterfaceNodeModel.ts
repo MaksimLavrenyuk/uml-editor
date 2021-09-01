@@ -1,6 +1,6 @@
 import { NodeModel, NodeModelGenerics, PortModelAlignment } from '@projectstorm/react-diagrams';
 import { InterfacePortModel } from './InterfacePortModel';
-import { NODE_TYPES } from '../constants';
+import { NODE_TYPES } from '../../constants';
 
 export interface DiamondNodeModelGenerics {
     PORT: InterfacePortModel;
