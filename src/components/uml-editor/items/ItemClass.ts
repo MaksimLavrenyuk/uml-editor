@@ -1,5 +1,5 @@
 import { t } from '@lingui/macro';
-import { ItemProps, ItemStruct } from './types';
+import { ItemStruct, ItemProps } from './types';
 
 class ItemClass implements ItemStruct {
     public type: 'class';

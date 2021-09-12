@@ -1,8 +1,7 @@
 import { observable, makeObservable, action } from 'mobx';
-import { AppType } from './types';
-import { AppLocales } from '../locales/types';
+import { AppLocales } from '../locales/i18n';
 
-class AppStore implements AppType {
+class AppStore {
     @observable
     private env: { locale: AppLocales } = {
         locale: 'ru',

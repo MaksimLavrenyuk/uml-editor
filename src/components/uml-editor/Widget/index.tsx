@@ -1,11 +1,14 @@
 import React, { DragEvent } from 'react';
 import { CanvasWidget } from '@projectstorm/react-canvas-core';
 import { observer } from 'mobx-react';
-import { WidgetProps } from './types';
 import style from './styles/Widget.module.scss';
 import { NODE_CREATOR_EVENT_FORMAT } from '../ItemsCreator/constants';
 import { ItemStruct } from '../items/types';
 import { WidgetStore } from './WidgetStore';
+
+export type WidgetProps = {
+    widget: WidgetStore
+};
 
 /**
  * Component for rendering an widget diagram.

@@ -1,7 +1,8 @@
 import loadable from '@loadable/component';
 import React from 'react';
 import Loading from './Loading';
-import { LoadFn } from '../types';
+
+type LoadFn = () => Promise<{readonly default: () => JSX.Element}>;
 
 /**
  * Lazy loading component for load page.

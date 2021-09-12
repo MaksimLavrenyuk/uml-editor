@@ -1,9 +1,16 @@
-import { DragEvent, useCallback } from 'react';
+import { DragEvent, ReactNode, useCallback } from 'react';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import { ListItemText } from '@material-ui/core';
-import { ItemProps } from './types';
 import { NODE_CREATOR_EVENT_FORMAT } from './constants';
+import { ItemsFactoryI, ItemType } from '../items/types';
+
+export type ItemProps = {
+    name: string
+    type: ItemType
+    icon: ReactNode
+    factory: ItemsFactoryI
+};
 
 /**
  * Block to create a diagram node.

@@ -4,7 +4,12 @@ import { makeStyles } from '@material-ui/core/styles';
 import InboxIcon from '@material-ui/icons/Inbox';
 import style from './styles/NodesCreator.module.scss';
 import Item from './Item';
-import { ItemsCreatorProps } from './types';
+import { ItemsFactoryI, ItemStruct } from '../items/types';
+
+export type ItemsCreatorProps = {
+    factory: ItemsFactoryI
+    items: ItemStruct[]
+};
 
 const useStyles = makeStyles((theme) => ({
     root: {

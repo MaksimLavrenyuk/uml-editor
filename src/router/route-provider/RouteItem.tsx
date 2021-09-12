@@ -1,5 +1,5 @@
 import { Route } from 'react-router-dom';
-import { RouteType } from '../config/types';
+import { RouteType } from '../config';
 import LoadablePage from './loadable-page';
 
 /**

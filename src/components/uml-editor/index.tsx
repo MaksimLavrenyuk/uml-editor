@@ -1,14 +1,18 @@
 import { useMemo } from 'react';
 import { withI18n } from '@lingui/react';
+import { I18n } from '@lingui/core';
 import style from './styles/UmlEditor.module.scss';
 import ItemsCreator from './ItemsCreator';
 import Widget from './Widget';
 import { WidgetStore } from './Widget/WidgetStore';
 import ItemFactory from './items/ItemFactory';
-import { UmlEditorProps } from './types';
 import { ItemStruct } from './items/types';
 import ItemClass from './items/ItemClass';
 import ItemInterface from './items/ItemInterface';
+
+type UmlEditorProps = {
+    i18n: I18n
+};
 
 /**
  * Component for rendering an uml diagram.
