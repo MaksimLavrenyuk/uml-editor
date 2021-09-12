@@ -1,3 +1,3 @@
-import { say } from './hello';
-say('hello');
+"use strict";
+console.log('fv');
 //# sourceMappingURL=index.js.map

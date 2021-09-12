@@ -1,7 +1,6 @@
 import { AbstractElement } from '../types/AbstractElement';
 import { ElementType } from '../types/ElementType';
 
-
 export class Parameter extends AbstractElement {
     public readonly type = ElementType.parameter;
 
@@ -9,6 +8,5 @@ export class Parameter extends AbstractElement {
 
     public isOptional = false;
 
-    public parameterType: string = 'any';
-
+    public parameterType = 'any';
 }

@@ -7,10 +7,10 @@ export interface Element {
 
 export abstract class AbstractElement implements Element {
     public readonly abstract type: ElementType;
+
     public readonly name: string;
 
     protected constructor(name: string) {
-        this.name = name
+        this.name = name;
     }
-
 }

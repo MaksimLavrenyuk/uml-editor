@@ -1,0 +1,116 @@
+{
+  "env": {
+    "browser": true,
+    "es6": true
+  },
+  "globals": {
+    "Atomics": "readonly",
+    "SharedArrayBuffer": "readonly"
+  },
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": ["./tsconfig.json"],
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": 2018,
+    "sourceType": "module"
+  },
+  "plugins": ["@typescript-eslint", "jsdoc"],
+  "extends": [
+    "airbnb",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "rules": {
+    "indent": ["error", 4],
+    "import/prefer-default-export": [0],
+    "no-underscore-dangle": [1],
+    "arrow-body-style": [1],
+    "prefer-promise-reject-errors": [1],
+    "no-unused-expressions": [1],
+    "max-len": ["warn", {
+      "ignoreStrings": true,
+      "ignoreRegExpLiterals": true,
+      "ignoreTemplateLiterals": true,
+      "code": 120
+    }],
+    "no-plusplus": [2, { "allowForLoopAfterthoughts": true }],
+    "import/extensions": [
+      "error",
+      "ignorePackages",
+      {
+        "js": "never",
+        "ts": "never"
+      }
+    ],
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "@typescript-eslint/no-unused-vars": "warn",
+    "semi": "off" ,
+    "@typescript-eslint/semi": ["warn"],
+    "no-use-before-define": "warn",
+    "@typescript-eslint/no-use-before-define": ["warn"],
+    "camelcase": "warn",
+    "no-shadow": "off",
+    "@typescript-eslint/no-shadow": ["error"],
+    "func-names": ["error", "never"],
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "no-trailing-spaces": "warn",
+    "function-paren-newline": "warn",
+    "spaced-comment": "warn",
+    "jsdoc/check-access": 1,
+    "jsdoc/check-alignment": 1,
+    "jsdoc/check-examples": 1,
+    "jsdoc/check-indentation": 1,
+    "jsdoc/check-line-alignment": 1,
+    "jsdoc/check-param-names": 1,
+    "jsdoc/check-property-names": 1,
+    "jsdoc/check-syntax": 1,
+    "jsdoc/check-tag-names": 1,
+    "jsdoc/check-types": 1,
+    "jsdoc/check-values": 1,
+    "jsdoc/empty-tags": 1,
+    "jsdoc/implements-on-classes": 1,
+    "jsdoc/match-description": 1,
+    "jsdoc/multiline-blocks": 1,
+    "jsdoc/newline-after-description": 1,
+    "jsdoc/no-bad-blocks": 1,
+    "jsdoc/no-defaults": 1,
+    "jsdoc/no-missing-syntax": 0,
+    "jsdoc/no-multi-asterisks": 1,
+    "jsdoc/no-restricted-syntax": 0,
+    "jsdoc/no-types": 1,
+    "jsdoc/no-undefined-types": 1,
+    "jsdoc/require-asterisk-prefix": 1,
+    "jsdoc/require-description": 1,
+    "jsdoc/require-description-complete-sentence": 1,
+    "jsdoc/require-example": 0,
+    "jsdoc/require-file-overview": 0,
+    "jsdoc/require-hyphen-before-param-description": 1,
+    "jsdoc/require-jsdoc": 1,
+    "jsdoc/require-param": 1,
+    "jsdoc/require-param-description": 1,
+    "jsdoc/require-param-name": 1,
+    "jsdoc/require-param-type": 0,
+    "jsdoc/require-property": 1,
+    "jsdoc/require-property-description": 1,
+    "jsdoc/require-property-name": 1,
+    "jsdoc/require-property-type": 1,
+    "jsdoc/require-returns": 0,
+    "jsdoc/require-returns-check": 1,
+    "jsdoc/require-returns-description": 1,
+    "jsdoc/require-returns-type": 1,
+    "jsdoc/require-throws": 1,
+    "jsdoc/require-yields": 1,
+    "jsdoc/require-yields-check": 1,
+    "jsdoc/tag-lines": 1,
+    "jsdoc/valid-types": 1
+  },
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "extensions": [".js", ".ts", ".d.ts"]
+      }
+    }
+  }
+}

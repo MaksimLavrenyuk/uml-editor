@@ -7,7 +7,7 @@ export class Property extends AbstractElement {
 
     public modifier: Modifier = 'public';
 
-    public returnType: string = 'any';
+    public returnType = 'any';
 
     public isAbstract = false;
 

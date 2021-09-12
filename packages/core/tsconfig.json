@@ -8,8 +8,7 @@
     "sourceMap": true,
     "outDir": "./dist",
     "typeRoots": [
-      "node_modules/@types",
-      "src/types.d.ts"
+      "../../node_modules/@types"
     ],
     "esModuleInterop": true,
     "experimentalDecorators": true,
@@ -24,6 +23,6 @@
     "isolatedModules": true,
   },
   "include": [
-    "src/**/*.ts"
+    "src/**/*.ts",
   ]
 }

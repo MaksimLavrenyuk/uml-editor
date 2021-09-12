@@ -7,7 +7,7 @@ export class Method extends AbstractElement {
 
     public parameters: Element[] = [];
 
-    public returnType: string = 'any';
+    public returnType = 'any';
 
     public modifier: Modifier = 'public';
 
