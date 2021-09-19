@@ -13,15 +13,33 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: src/components/uml-editor/Widget/diagram/nodes/class/ClassNodeWidget.tsx:56
+#: src/components/DiagramEditor/Diagram/widgets/ClassNodeWidget/index.tsx:58
+#: src/components/uml-editor/Widget/diagram/nodes/class/ClassNodeWidget.tsx:59
 msgid "ADD_METHOD"
 msgstr "Add method"
 
-#: src/components/uml-editor/Widget/diagram/nodes/class/ClassNodeWidget.tsx:57
+#: src/components/DiagramEditor/Diagram/widgets/ClassNodeWidget/index.tsx:59
+#: src/components/uml-editor/Widget/diagram/nodes/class/ClassNodeWidget.tsx:60
 msgid "ADD_PROPERTY"
 msgstr "add property"
 
-#: src/components/uml-editor/Widget/diagram/methods/MethodModel.ts:13
+#: src/locales/lang-constants.ts:4
+msgid "COMPONENTS_NAMES_CLASS"
+msgstr "Class"
+
+#: src/locales/lang-constants.ts:5
+msgid "COMPONENTS_NAMES_ENUM"
+msgstr "Enum"
+
+#: src/locales/lang-constants.ts:6
+msgid "COMPONENTS_NAMES_INTERFACE"
+msgstr "Interface"
+
+#: src/locales/lang-constants.ts:7
+msgid "COMPONENTS_NAMES_NAMESPACE"
+msgstr "Namespace"
+
+#: src/components/uml-editor/Widget/diagram/methods/MethodModel.ts:16
 msgid "NEW_METHOD"
 msgstr "New method"
 
@@ -29,10 +47,10 @@ msgstr "New method"
 msgid "NEW_PROPERTY"
 msgstr "New property"
 
-#: src/components/uml-editor/items/ItemClass.ts:11
+#: src/components/uml-editor/items/ItemClass.ts:17
 msgid "NODE_TYPE_CLASS"
 msgstr "Class"
 
-#: src/components/uml-editor/items/ItemInterface.ts:11
+#: src/components/uml-editor/items/ItemInterface.ts:17
 msgid "NODE_TYPE_INTERFACE"
 msgstr "Interface"
