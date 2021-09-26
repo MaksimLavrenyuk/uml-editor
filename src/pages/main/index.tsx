@@ -1,13 +1,11 @@
-import { Trans } from '@lingui/macro';
+import DiagramEditor from '../../components/DiagramEditor';
 
 /**
  * Component serving the main page of the application.
  */
 function PageMain() {
     return (
-        <div>
-            <Trans>EXAMPLE</Trans>
-        </div>
+        <DiagramEditor />
     );
 }
 

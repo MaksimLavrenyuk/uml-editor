@@ -1,4 +1,10 @@
-import { RouteType } from './types';
+export type RouteType = {
+    id: string
+    path: string
+    name: string,
+    loadComponent(): Promise<{readonly default: () => JSX.Element}>,
+    routes?: RouteType[]
+};
 
 const ROUTES: RouteType[] = [
     {

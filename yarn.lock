@@ -1710,6 +1710,13 @@
     react-is "^16.8.0 || ^17.0.0"
     react-transition-group "^4.4.0"
 
+"@material-ui/icons@^4.11.2":
+  version "4.11.2"
+  resolved "https://registry.yarnpkg.com/@material-ui/icons/-/icons-4.11.2.tgz#b3a7353266519cd743b6461ae9fdfcb1b25eb4c5"
+  integrity sha512-fQNsKX2TxBmqIGJCSi3tGTO/gZ+eJgWmMJkgDiOfyNaunNaxcklJQFaFogYcFl0qFuaEz1qaXYXboa/bUXVSOQ==
+  dependencies:
+    "@babel/runtime" "^7.4.4"
+
 "@material-ui/styles@^4.11.4":
   version "4.11.4"
   resolved "https://registry.yarnpkg.com/@material-ui/styles/-/styles-4.11.4.tgz#eb9dfccfcc2d208243d986457dff025497afa00d"
@@ -1797,50 +1804,50 @@
     schema-utils "^2.6.5"
     source-map "^0.7.3"
 
-"@projectstorm/geometry@^6.5.2":
-  version "6.5.2"
-  resolved "https://registry.yarnpkg.com/@projectstorm/geometry/-/geometry-6.5.2.tgz#76ccc7280a49c64953036aa96287f408981e5913"
-  integrity sha512-PGrcMXr6CkdH1DvcY+MDYzg6suWnOXehP8S69DhiEeWUFmQhKJSCAPEovdQOpohL6urlKaSNbDM8auUypFbTfw==
+"@projectstorm/geometry@^6.6.1":
+  version "6.6.1"
+  resolved "https://registry.yarnpkg.com/@projectstorm/geometry/-/geometry-6.6.1.tgz#4a42f5c8fdfcc3d951e73f5db7fe9546514acc3d"
+  integrity sha512-gWRkv+fm+VIpoffHzDHPmGYlEqx8xWGfE/JR7TXAZweNdjEIxyhT++hVlCJiFJS+/cGqgN3z+eP7PNjwZUPGRg==
 
-"@projectstorm/react-canvas-core@^6.5.2":
-  version "6.5.2"
-  resolved "https://registry.yarnpkg.com/@projectstorm/react-canvas-core/-/react-canvas-core-6.5.2.tgz#65726df39c15487d9c6b23616cfa6b182d82fcbe"
-  integrity sha512-tFfWpaPZ71lMDFRL69jRFTjmYit6FKNpkAiI9sqYeH2I4Y7OjuxmCqYomlzh8ZSLVwKHtcI6Vd7hhoatEBupEQ==
+"@projectstorm/react-canvas-core@^6.6.1":
+  version "6.6.1"
+  resolved "https://registry.yarnpkg.com/@projectstorm/react-canvas-core/-/react-canvas-core-6.6.1.tgz#93cc6e70e986fe620b6fad6b597d3aa038075244"
+  integrity sha512-wAxEh4Wja2Au0QAuLqxJNaWpVxYIffTFUZhjH8wtW8MKCWS6W9RnP6upeC8QVQi29NS59UIX4wXNzb6e6ht5ww==
   dependencies:
-    "@projectstorm/geometry" "^6.5.2"
+    "@projectstorm/geometry" "^6.6.1"
 
-"@projectstorm/react-diagrams-core@^6.5.2":
-  version "6.5.2"
-  resolved "https://registry.yarnpkg.com/@projectstorm/react-diagrams-core/-/react-diagrams-core-6.5.2.tgz#4c8c92ed288b2934de11c1a52fda72249b151932"
-  integrity sha512-7ganJGs7lcRB1sTvUs+MQ9RiSCGD+IHgISo45aS81+XFllO8u7uZRaPdIyObhz+khwZvMk2pWmXYPNJwGThOZQ==
+"@projectstorm/react-diagrams-core@^6.6.1":
+  version "6.6.1"
+  resolved "https://registry.yarnpkg.com/@projectstorm/react-diagrams-core/-/react-diagrams-core-6.6.1.tgz#f626c6253dd6f4b04c3256976b55377ffac2b1bb"
+  integrity sha512-TiDwpcH+t2b2tG/UHDQvhlyx3gOQRJXxTyNDo7p+430ikTrvz1f8uNe5Rt3SrzyqxeUazLFXYBgbGpEanqOykQ==
   dependencies:
-    "@projectstorm/geometry" "^6.5.2"
-    "@projectstorm/react-canvas-core" "^6.5.2"
+    "@projectstorm/geometry" "^6.6.1"
+    "@projectstorm/react-canvas-core" "^6.6.1"
 
-"@projectstorm/react-diagrams-defaults@^6.5.2":
-  version "6.5.2"
-  resolved "https://registry.yarnpkg.com/@projectstorm/react-diagrams-defaults/-/react-diagrams-defaults-6.5.2.tgz#084138e8b2ac2643bcfa115fb543f69c0eaf88f3"
-  integrity sha512-8+hAe88Lj7uBsugAT7f5SsjqxmjYfeBYwViaFpnIilmuYF/uXN0w/ns8Mcq2FE49wGOXtBoxFusoWmDWwgE+fQ==
+"@projectstorm/react-diagrams-defaults@^6.6.1":
+  version "6.6.1"
+  resolved "https://registry.yarnpkg.com/@projectstorm/react-diagrams-defaults/-/react-diagrams-defaults-6.6.1.tgz#a97cdda56d7336b84775f76a925b90286ea2833d"
+  integrity sha512-FJu8BNBjvANVZ8N99WXS/f6Mu5/yMC4Pi55kTG3vq7o14tsVMcghosmxst5eoeL251O4I+ulNvQ/yCc1Mc5org==
   dependencies:
-    "@projectstorm/react-diagrams-core" "^6.5.2"
+    "@projectstorm/react-diagrams-core" "^6.6.1"
 
-"@projectstorm/react-diagrams-routing@^6.5.2":
-  version "6.5.2"
-  resolved "https://registry.yarnpkg.com/@projectstorm/react-diagrams-routing/-/react-diagrams-routing-6.5.2.tgz#824dadbcd8c14c647829bdd4761afef69dec5622"
-  integrity sha512-pWsDmk/4hbx6Ii2Z3Uvd9dZ/xB9F7u66mGVGMWb3txxTT68Y6mwdVJRQFu/frm/Sk3sZv7gNf1EqadsilIh7vg==
+"@projectstorm/react-diagrams-routing@^6.6.1":
+  version "6.6.1"
+  resolved "https://registry.yarnpkg.com/@projectstorm/react-diagrams-routing/-/react-diagrams-routing-6.6.1.tgz#06b77ab1f94f4567391099ffe5e1d91db34408ff"
+  integrity sha512-m8akJynhanxmpc/A2U7bcgFxIMxsjb3zmYBRGFltVJve87mir8ACaH2gmiHYcAfgEHxdh+x7mCuUlfNP242Ytw==
   dependencies:
-    "@projectstorm/geometry" "^6.5.2"
-    "@projectstorm/react-diagrams-core" "^6.5.2"
-    "@projectstorm/react-diagrams-defaults" "^6.5.2"
+    "@projectstorm/geometry" "^6.6.1"
+    "@projectstorm/react-diagrams-core" "^6.6.1"
+    "@projectstorm/react-diagrams-defaults" "^6.6.1"
 
-"@projectstorm/react-diagrams@^6.5.2":
-  version "6.5.2"
-  resolved "https://registry.yarnpkg.com/@projectstorm/react-diagrams/-/react-diagrams-6.5.2.tgz#3f65a903b1853e51d68109a513d91d190d278864"
-  integrity sha512-1xlz1jVffWq5R7Oqj/BEY06Cf+2uLV5eEY6pGxuGFfp5SXeTNCSIS/khkbFou707Gor3D8MOqdBpZvF2NfoLmA==
+"@projectstorm/react-diagrams@^6.6.1":
+  version "6.6.1"
+  resolved "https://registry.yarnpkg.com/@projectstorm/react-diagrams/-/react-diagrams-6.6.1.tgz#3af4007613f487ba58801cdcded955683b3f01c5"
+  integrity sha512-tLSXfEf/dGFUN8JCCRMrYyIBhhn+eVw24xQodmtcReJxQpKa31EWh9CmJ6UEg7xUnabMG9f2plOPyJqyFssGTA==
   dependencies:
-    "@projectstorm/react-diagrams-core" "^6.5.2"
-    "@projectstorm/react-diagrams-defaults" "^6.5.2"
-    "@projectstorm/react-diagrams-routing" "^6.5.2"
+    "@projectstorm/react-diagrams-core" "^6.6.1"
+    "@projectstorm/react-diagrams-defaults" "^6.6.1"
+    "@projectstorm/react-diagrams-routing" "^6.6.1"
 
 "@rollup/plugin-node-resolve@^7.1.1":
   version "7.1.3"
@@ -5661,6 +5668,11 @@ extsprintf@^1.2.0:
   resolved "https://registry.yarnpkg.com/extsprintf/-/extsprintf-1.4.0.tgz#e2689f8f356fad62cca65a3a91c5df5f9551692f"
   integrity sha1-4mifjzVvrWLMplo6kcXfX5VRaS8=
 
+fast-deep-equal@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/fast-deep-equal/-/fast-deep-equal-2.0.1.tgz#7b05218ddf9667bf7f370bf7fdb2cb15fdd0aa49"
+  integrity sha1-ewUhjd+WZ79/Nwv3/bLLFf3Qqkk=
+
 fast-deep-equal@^3.1.1, fast-deep-equal@^3.1.3:
   version "3.1.3"
   resolved "https://registry.yarnpkg.com/fast-deep-equal/-/fast-deep-equal-3.1.3.tgz#3a7d56b559d6cbc3eb512325244e619a65c6c525"
@@ -9359,6 +9371,11 @@ pkg-up@^2.0.0:
   dependencies:
     find-up "^2.1.0"
 
+plantuml-encoder@^1.4.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/plantuml-encoder/-/plantuml-encoder-1.4.0.tgz#7899302cf785de956bf1a167e15420feee5975f7"
+  integrity sha512-sxMwpDw/ySY1WB2CE3+IdMuEcWibJ72DDOsXLkSmEaSzwEUaYBT6DWgOfBiHGCux4q433X6+OEFWjlVqp7gL6g==
+
 plurals-cldr@^1.0.4:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/plurals-cldr/-/plurals-cldr-1.0.4.tgz#534e4784f80679d3b0b39b0fb6cc46645fcf5de8"
@@ -10144,7 +10161,7 @@ prompts@^2.0.1:
     kleur "^3.0.3"
     sisteransi "^1.0.5"
 
-prop-types@^15.6.2, prop-types@^15.7.2:
+prop-types@^15.6.2, prop-types@^15.7.1, prop-types@^15.7.2:
   version "15.7.2"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.7.2.tgz#52c41e75b8c87e72b9d9360e0206b99dcbffa6c5"
   integrity sha512-8QQikdH7//R2vurIJSutZ1smHYTcLpRWEOlHnzcWHmBYrOGUysKwSsrC89BCiFj3CbrfJ/nXFdJepOVrY1GCHQ==
@@ -10336,6 +10353,14 @@ react-app-polyfill@^2.0.0:
     raf "^3.4.1"
     regenerator-runtime "^0.13.7"
     whatwg-fetch "^3.4.1"
+
+react-contenteditable@^3.3.5:
+  version "3.3.5"
+  resolved "https://registry.yarnpkg.com/react-contenteditable/-/react-contenteditable-3.3.5.tgz#febff7a46570fdb2f5ff199e506c512e5924e22e"
+  integrity sha512-38A7hlRQfb2KQAQT0kIJC2YlQUU7jcyYM4eh1fj6kAYb3Hmk6hHlr0snelyxVSpPXjPdFllrnSsPkzUS5AtrEA==
+  dependencies:
+    fast-deep-equal "^2.0.1"
+    prop-types "^15.7.1"
 
 react-dev-utils@^11.0.3:
   version "11.0.4"
@@ -12088,6 +12113,16 @@ tough-cookie@~2.5.0:
     psl "^1.1.28"
     punycode "^2.1.1"
 
+tplant@^3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/tplant/-/tplant-3.1.0.tgz#4f31bf703cb056f96e121a335b5c223ca79acfad"
+  integrity sha512-2UJ2MXKvsdik0Xv/5ZVj+UmEngLLV/1TMId3L9WWEeLQg71kH9F3xEgtl/i3ttyusgueDTdsLioOpm7b0GMSUA==
+  dependencies:
+    commander "^6.1.0"
+    glob "^7.1.6"
+    plantuml-encoder "^1.4.0"
+    typescript "^4.0.3"
+
 tr46@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/tr46/-/tr46-2.1.0.tgz#fa87aa81ca5d5941da8cbf1f9b749dc969a4e240"
@@ -12251,6 +12286,11 @@ typedarray@^0.0.6:
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=
+
+typescript@^4.0.3:
+  version "4.4.3"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.4.3.tgz#bdc5407caa2b109efd4f82fe130656f977a29324"
+  integrity sha512-4xfscpisVgqqDfPaJo5vkd+Qd/ItkoagnHpufr+i2QCHBsNYp+G7UAoyFl8aPtx879u38wPV65rZ8qbGZijalA==
 
 typescript@^4.3.5:
   version "4.3.5"

@@ -1,7 +1,10 @@
 import { ReactNode } from 'react';
-import { RouteType } from '../config/types';
+import { RouteType } from '../config';
 import RouteItem from './RouteItem';
-import { RouteListProps } from './types';
+
+type RouteListProps = {
+    list: RouteType[]
+};
 
 /**
  * The function of generating RouteItem a list of serviced routers.

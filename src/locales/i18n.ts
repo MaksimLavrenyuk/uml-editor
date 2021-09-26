@@ -1,6 +1,7 @@
 import { i18n } from '@lingui/core';
 import { en, ru } from 'make-plural/plurals';
-import { AppLocales } from './types';
+
+export type AppLocales = 'ru' | 'en';
 
 export const locales = {
     en: 'English',

@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import LoadablePage from '../index';
-import { LoadFn } from '../../types';
+import { LoadFn } from '../../models';
 
 const TEXT = 'test';
 const Component = () => <div>{TEXT}</div>;
