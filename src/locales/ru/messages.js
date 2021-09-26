@@ -1,1 +1,1 @@
-/*eslint-disable*/module.exports={messages:{"ADD_METHOD":"Добавить метод","ADD_PROPERTY":"Добавить свойство","COMPONENTS_NAMES_CLASS":"класс","COMPONENTS_NAMES_ENUM":"Перечисление","COMPONENTS_NAMES_INTERFACE":"Интерфейс","COMPONENTS_NAMES_NAMESPACE":"Пространство имен","NEW_METHOD":"Новый метод","NEW_PROPERTY":"Новое свойство","NODE_TYPE_CLASS":"Класс","NODE_TYPE_INTERFACE":"Интерфейс"}};
+/*eslint-disable*/module.exports={messages:{"ADD_METHOD":"Добавить метод","ADD_PROPERTY":"Добавить свойство","COMPONENTS_NAMES_CLASS":"Класс","COMPONENTS_NAMES_INTERFACE":"Интерфейс"}};

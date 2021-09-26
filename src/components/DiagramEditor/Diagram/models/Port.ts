@@ -1,7 +1,7 @@
 import {
-    // LinkModel,
+    DefaultLinkModel,
+    LinkModel,
     PortModel,
-    // DefaultLinkModel,
     PortModelAlignment,
 } from '@projectstorm/react-diagrams';
 
@@ -14,18 +14,7 @@ export class Port extends PortModel {
         });
     }
 
-    // createLinkModel = (): LinkModel => {
-    //     const link = new DefaultLinkModel();
-    //
-    //     link.registerListener({
-    //         sourcePortChanged(event: BaseEvent) {
-    //             console.log('sourcePortChanged', event, this);
-    //         },
-    //         targetPortChanged(event: BaseEvent) {
-    //             console.log('targetPortChanged', event, this);
-    //         },
-    //     });
-    //
-    //     return link;
-    // };
+    createLinkModel(): LinkModel {
+        return new DefaultLinkModel();
+    }
 }
