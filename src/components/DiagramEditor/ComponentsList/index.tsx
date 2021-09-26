@@ -3,9 +3,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import { AppBar } from '@material-ui/core';
 import List from '@material-ui/core/List';
 import InboxIcon from '@material-ui/icons/Inbox';
-import { ComponentKind } from 'tplant/dist/Models/ComponentKind';
 import classes from './ComponentsList.module.scss';
 import Component from './Component';
+import ComponentType from '../../../models/ComponentType';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -21,19 +21,11 @@ function ComponentsList() {
     const styles = useStyles();
     const components = useMemo(() => [
         {
-            componentKind: ComponentKind.CLASS,
+            componentType: ComponentType.CLASS,
             icon: <InboxIcon />,
         },
         {
-            componentKind: ComponentKind.INTERFACE,
-            icon: <InboxIcon />,
-        },
-        {
-            componentKind: ComponentKind.ENUM,
-            icon: <InboxIcon />,
-        },
-        {
-            componentKind: ComponentKind.NAMESPACE,
+            componentType: ComponentType.INTERFACE,
             icon: <InboxIcon />,
         },
     ], []);
@@ -43,8 +35,8 @@ function ComponentsList() {
             <List className={styles.root} component="nav" aria-label="main mailbox folders">
                 {components.map((component) => (
                     <Component
-                        key={component.componentKind}
-                        componentKind={component.componentKind}
+                        key={component.componentType}
+                        componentType={component.componentType}
                         icon={<InboxIcon />}
                     />
                 ))}

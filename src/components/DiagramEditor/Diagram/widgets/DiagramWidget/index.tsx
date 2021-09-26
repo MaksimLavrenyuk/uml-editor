@@ -1,8 +1,8 @@
 import React, { useCallback, DragEvent } from 'react';
 import { CanvasWidget } from '@projectstorm/react-canvas-core';
-import { ComponentKind } from 'tplant/dist/Models/ComponentKind';
 import Diagram from '../../../../../models/Diagram';
 import classes from './DiagramWidget.module.scss';
+import ComponentType from '../../../../../models/ComponentType';
 
 type DiagramWidgetProps = {
     diagram: Diagram
@@ -22,9 +22,9 @@ function DiagramWidget(props: DiagramWidgetProps) {
 
     const dropHandler = useCallback((event: DragEvent) => {
         const engine = diagram.engine();
-        const componentKind: ComponentKind = JSON.parse(event.dataTransfer.getData(diagramDragAndDropEvent.ADD));
+        const componentType = event.dataTransfer.getData(diagramDragAndDropEvent.ADD) as ComponentType;
 
-        diagram.addNode(componentKind, engine.getRelativeMousePoint(event));
+        diagram.addNode(componentType, engine.getRelativeMousePoint(event));
     }, [diagram]);
 
     const dragOverHandler = useCallback((event: DragEvent) => {

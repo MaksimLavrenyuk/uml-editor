@@ -1,8 +1,7 @@
 import { t } from '@lingui/macro';
+import ComponentType from '../models/ComponentType';
 
-export const COMPONENTS_NAMES: { [key: number]: string } = {
-    0: t`COMPONENTS_NAMES_CLASS`,
-    1: t`COMPONENTS_NAMES_ENUM`,
-    4: t`COMPONENTS_NAMES_INTERFACE`,
-    6: t`COMPONENTS_NAMES_NAMESPACE`,
+export const COMPONENTS_NAMES: { [key in ComponentType]: string } = {
+    [ComponentType.CLASS]: t`COMPONENTS_NAMES_CLASS`,
+    [ComponentType.INTERFACE]: t`COMPONENTS_NAMES_INTERFACE`,
 };

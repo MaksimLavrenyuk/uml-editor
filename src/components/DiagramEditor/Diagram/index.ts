@@ -1,12 +1,13 @@
 import createEngine, {
-    DiagramEngine, DiagramModel, NodeModel, PortModelAlignment,
+    DiagramEngine, DiagramModel,
 } from '@projectstorm/react-diagrams';
 import { I18n } from '@lingui/core';
 import { Point } from '@projectstorm/geometry';
-import { ComponentKind } from 'tplant/dist/Models/ComponentKind';
-import { ClassNodeFactory } from './factories/ClassNodeFactory';
+import { NodeClassFactory } from './factories/NodeClassFactory';
 import DiagramStruct from '../../../models/Diagram';
-import { ClassNodeModel } from './models/ClassNodeModel';
+import { Node } from './models/Node';
+import ComponentType from '../../../models/ComponentType';
+import { COMPONENTS_NAMES } from '../../../locales/lang-constants';
 
 export class Diagram implements DiagramStruct {
     protected activeModel: DiagramModel | undefined;
@@ -33,32 +34,19 @@ export class Diagram implements DiagramStruct {
      * @private
      */
     private registerFactories() {
-        this.diagramEngine
-            .getNodeFactories()
-            .registerFactory(new ClassNodeFactory({ i18n: this.i18n }));
+        this.diagramEngine.getNodeFactories().registerFactory(new NodeClassFactory({ i18n: this.i18n }));
     }
 
     public engine(): DiagramEngine {
         return this.diagramEngine;
     }
 
-    addNode(item: ComponentKind, point?: Point) {
+    addNode(type: ComponentType, point?: Point) {
         const { diagramEngine } = this;
-        let node: NodeModel | null;
+        const node = new Node({ type, name: COMPONENTS_NAMES[type], i18n: this.i18n });
 
-        switch (item) {
-        case 0:
-            node = new ClassNodeModel({ name: this.i18n._('CLASS'), i18n: this.i18n });
-            break;
-        default:
-            node = null;
-        }
-
-        if (node) {
-            node.setPosition(point || new Point(100, 100));
-            diagramEngine.getModel().addNode(node);
-        }
-
+        node.setPosition(point || new Point(100, 100));
+        diagramEngine.getModel().addNode(node);
         this.diagramEngine.repaintCanvas();
     }
 }

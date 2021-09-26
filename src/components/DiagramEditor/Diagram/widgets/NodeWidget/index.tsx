@@ -6,11 +6,11 @@ import { DiagramEngine, PortModelAlignment, PortWidget } from '@projectstorm/rea
 import ContentEditable, { ContentEditableEvent } from 'react-contenteditable';
 import { makeStyles } from '@material-ui/core/styles';
 import { Trans } from '@lingui/macro';
-import { ClassNodeModel } from '../../models/ClassNodeModel';
-import style from './ClassNodeWidget.module.scss';
+import { Node } from '../../models/Node';
+import style from './NodeWidget.module.scss';
 
-export interface ClassNodeWidgetProps {
-    node: ClassNodeModel;
+export interface NodeWidgetProps {
+    node: Node;
     engine: DiagramEngine;
 }
 
@@ -25,13 +25,11 @@ const useStyles = makeStyles((theme) => ({
  *
  * @param props - React node.
  */
-function ClassNodeWidget(props: ClassNodeWidgetProps) {
+function NodeWidget(props: NodeWidgetProps) {
     const { node, engine } = props;
     const classes = useStyles();
     const portTop = node.getPort(PortModelAlignment.TOP);
     const portBottom = node.getPort(PortModelAlignment.BOTTOM);
-    const portMethod = node.getPort('method');
-    const portProperty = node.getPort('propery');
 
     const changeNameHandler = (event: ContentEditableEvent) => {
         node.changeName(event.target.value);
@@ -72,4 +70,4 @@ function ClassNodeWidget(props: ClassNodeWidgetProps) {
     );
 }
 
-export default ClassNodeWidget;
+export default NodeWidget;
