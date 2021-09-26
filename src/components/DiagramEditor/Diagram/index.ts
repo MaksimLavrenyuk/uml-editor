@@ -8,6 +8,7 @@ import DiagramStruct from '../../../models/Diagram';
 import { Node } from './models/Node';
 import ComponentType from '../../../models/ComponentType';
 import { COMPONENTS_NAMES } from '../../../locales/lang-constants';
+import NodeInterfaceFactory from './factories/NodeInterfaceFactory';
 
 export class Diagram implements DiagramStruct {
     protected activeModel: DiagramModel | undefined;
@@ -34,7 +35,8 @@ export class Diagram implements DiagramStruct {
      * @private
      */
     private registerFactories() {
-        this.diagramEngine.getNodeFactories().registerFactory(new NodeClassFactory({ i18n: this.i18n }));
+        this.diagramEngine.getNodeFactories().registerFactory(new NodeClassFactory());
+        this.diagramEngine.getNodeFactories().registerFactory(new NodeInterfaceFactory());
     }
 
     public engine(): DiagramEngine {
@@ -43,7 +45,7 @@ export class Diagram implements DiagramStruct {
 
     addNode(type: ComponentType, point?: Point) {
         const { diagramEngine } = this;
-        const node = new Node({ type, name: COMPONENTS_NAMES[type], i18n: this.i18n });
+        const node = new Node({ type, name: COMPONENTS_NAMES[type] });
 
         node.setPosition(point || new Point(100, 100));
         diagramEngine.getModel().addNode(node);

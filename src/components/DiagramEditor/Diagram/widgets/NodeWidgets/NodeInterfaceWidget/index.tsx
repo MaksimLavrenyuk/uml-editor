@@ -1,13 +1,12 @@
 import * as React from 'react';
 import {
-    Card, CardContent, Typography, CardActions, Button,
+    Card, CardContent, Typography,
 } from '@material-ui/core';
 import { DiagramEngine, PortModelAlignment, PortWidget } from '@projectstorm/react-diagrams';
 import ContentEditable, { ContentEditableEvent } from 'react-contenteditable';
 import { makeStyles } from '@material-ui/core/styles';
-import { Trans } from '@lingui/macro';
-import { Node } from '../../models/Node';
-import style from './NodeWidget.module.scss';
+import { Node } from '../../../models/Node';
+import style from './NodeInterfaceWidget.module.scss';
 
 export interface NodeWidgetProps {
     node: Node;
@@ -21,11 +20,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 /**
- * Class node for uml widget.
+ * Class node widget for diagram.
  *
  * @param props - React node.
  */
-function NodeWidget(props: NodeWidgetProps) {
+function NodeInterfaceWidget(props: NodeWidgetProps) {
     const { node, engine } = props;
     const classes = useStyles();
     const portTop = node.getPort(PortModelAlignment.TOP);
@@ -52,10 +51,6 @@ function NodeWidget(props: NodeWidgetProps) {
                         <ContentEditable html={node.name} onChange={changeNameHandler} />
                     </Typography>
                 </CardContent>
-                <CardActions>
-                    <Button variant="outlined" size="small" color="primary"><Trans>ADD_METHOD</Trans></Button>
-                    <Button variant="outlined" size="small" color="primary"><Trans>ADD_PROPERTY</Trans></Button>
-                </CardActions>
             </Card>
             {portBottom && (
                 <PortWidget
@@ -70,4 +65,4 @@ function NodeWidget(props: NodeWidgetProps) {
     );
 }
 
-export default NodeWidget;
+export default NodeInterfaceWidget;
