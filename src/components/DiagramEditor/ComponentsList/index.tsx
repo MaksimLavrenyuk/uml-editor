@@ -31,18 +31,35 @@ function ComponentsList() {
     ], []);
 
     return (
-        <AppBar color="default" className={classes.list}>
-            <List className={styles.root} component="nav" aria-label="main mailbox folders">
-                {components.map((component) => (
-                    <Component
-                        key={component.componentType}
-                        componentType={component.componentType}
-                        icon={<InboxIcon />}
-                    />
-                ))}
-            </List>
-        </AppBar>
+        <div className={classes.list}>
+            <span>example string</span>
+            <AppBar color="default">
+                <List className={styles.root} component="nav" aria-label="main mailbox folders">
+                    {components.map((component) => (
+                        <Component
+                            key={component.componentType}
+                            componentType={component.componentType}
+                            icon={<InboxIcon />}
+                        />
+                    ))}
+                </List>
+            </AppBar>
+        </div>
     );
+    //
+    // return (
+    //     <AppBar color="default" className={classes.list}>
+    //         <List className={styles.root} component="nav" aria-label="main mailbox folders">
+    //             {components.map((component) => (
+    //                 <Component
+    //                     key={component.componentType}
+    //                     componentType={component.componentType}
+    //                     icon={<InboxIcon />}
+    //                 />
+    //             ))}
+    //         </List>
+    //     </AppBar>
+    // );
 }
 
 export default ComponentsList;

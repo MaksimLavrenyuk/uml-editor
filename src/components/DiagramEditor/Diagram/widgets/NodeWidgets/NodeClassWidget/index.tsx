@@ -48,7 +48,7 @@ function NodeClassWidget(props: NodeWidgetProps) {
             <Card className={classes.root}>
                 <CardContent>
                     <Typography variant="h5" component="h2">
-                        <ContentEditable html={node.name} onChange={changeNameHandler} />
+                        <ContentEditable html="" onChange={changeNameHandler} />
                     </Typography>
                 </CardContent>
             </Card>

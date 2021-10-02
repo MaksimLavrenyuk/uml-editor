@@ -17,7 +17,7 @@ type DiagramEditorProps = {
  */
 function DiagramEditor(props: DiagramEditorProps) {
     const { i18n } = props;
-    const diagram = useMemo(() => new Diagram(i18n), [i18n]);
+    const diagram = useMemo(() => new Diagram([], { i18n }), [i18n]);
 
     return (
         <div className={classes.body}>

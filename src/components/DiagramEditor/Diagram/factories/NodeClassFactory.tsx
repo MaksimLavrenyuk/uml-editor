@@ -5,6 +5,11 @@ import { Node } from '../models/Node';
 import NodeClassWidget from '../widgets/NodeWidgets/NodeClassWidget';
 import ComponentType from '../../../../models/ComponentType';
 import { COMPONENTS_NAMES } from '../../../../locales/lang-constants';
+import ComponentFactory from '../../../../models/factories/ComponentFactory';
+
+type NodeClassFactoryProps = {
+    factory: ComponentFactory
+};
 
 /**
  * Factory to create the "Class" nodes of the diagram.
@@ -13,8 +18,11 @@ import { COMPONENTS_NAMES } from '../../../../locales/lang-constants';
 export class NodeClassFactory extends AbstractReactFactory<Node, DiagramEngine> {
     private readonly componentType = ComponentType.CLASS;
 
-    constructor() {
+    private readonly factory: ComponentFactory;
+
+    constructor(props: NodeClassFactoryProps) {
         super(ComponentType.CLASS);
+        this.factory = props.factory;
     }
 
     generateReactWidget(event: { model: Node }): JSX.Element {
@@ -22,6 +30,10 @@ export class NodeClassFactory extends AbstractReactFactory<Node, DiagramEngine> 
     }
 
     generateModel() {
-        return new Node({ type: this.componentType, name: COMPONENTS_NAMES[this.componentType] });
+        return new Node({
+            type: this.componentType,
+            name: COMPONENTS_NAMES[this.componentType],
+            factory: this.factory,
+        });
     }
 }
