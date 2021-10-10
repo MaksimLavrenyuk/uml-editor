@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { KeyboardEvent, useCallback } from 'react';
 import { observer } from 'mobx-react';
 import { Typography } from '@material-ui/core';
 import ContentEditable, { ContentEditableEvent } from 'react-contenteditable';
@@ -21,9 +21,15 @@ function NodeName(props: NameProps) {
         changeName(event.target.value);
     }, [changeName]);
 
+    const keyDownHandler = useCallback((event: KeyboardEvent<HTMLDivElement>) => {
+        if (event.key === 'Delete' || event.key === 'Backspace') {
+            event.nativeEvent.stopPropagation();
+        }
+    }, []);
+
     return (
         <Typography variant="h5" component="h2">
-            <ContentEditable html={getName()} onChange={changeNameHandler} />
+            <ContentEditable html={getName()} onChange={changeNameHandler} onKeyDown={keyDownHandler} />
         </Typography>
     );
 }
