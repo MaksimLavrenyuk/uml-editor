@@ -50,6 +50,8 @@ export class Node extends NodeModel implements NodeI {
         switch (this.getType()) {
         case ComponentType.CLASS:
             return this.factory.createClass(this.name, this.extend);
+        case ComponentType.INTERFACE:
+            return this.factory.createInterface(this.name, this.extend);
         default:
             return undefined;
         }
