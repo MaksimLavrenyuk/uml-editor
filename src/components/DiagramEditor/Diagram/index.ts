@@ -13,6 +13,13 @@ import ComponentFactory from '../../../models/factories/ComponentFactory';
 import { ComponentI } from '../../../models/components/Component';
 import isType from '../../../utils/guards/isType';
 import { Class } from '../../../models/components/Class';
+import { LinkValidatorI } from './models/LinkValidator';
+
+type DiagramDeps = {
+    i18n: I18n,
+    linkValidator: LinkValidatorI,
+    componentFactory: ComponentFactory,
+};
 
 export class Diagram implements DiagramStruct {
     protected activeModel: DiagramModel | undefined;
@@ -23,10 +30,13 @@ export class Diagram implements DiagramStruct {
 
     private readonly componentFactory: ComponentFactory;
 
-    constructor(components: ComponentI[], deps: { i18n: I18n }) {
+    private readonly linkValidator: LinkValidatorI;
+
+    constructor(components: ComponentI[], deps: DiagramDeps) {
         this.diagramEngine = createEngine();
         this.i18n = deps.i18n;
-        this.componentFactory = new ComponentFactory();
+        this.componentFactory = deps.componentFactory;
+        this.linkValidator = deps.linkValidator;
         this.registerFactories();
         this.newModel();
         this.fill(components);
@@ -45,10 +55,14 @@ export class Diagram implements DiagramStruct {
     private registerFactories() {
         this.diagramEngine
             .getNodeFactories()
-            .registerFactory(new NodeClassFactory({ factory: this.componentFactory }));
+            .registerFactory(new NodeClassFactory({
+                factory: this.componentFactory, linkValidator: this.linkValidator,
+            }));
         this.diagramEngine
             .getNodeFactories()
-            .registerFactory(new NodeInterfaceFactory({ factory: this.componentFactory }));
+            .registerFactory(new NodeInterfaceFactory({
+                factory: this.componentFactory, linkValidator: this.linkValidator,
+            }));
     }
 
     public engine(): DiagramEngine {
@@ -64,9 +78,10 @@ export class Diagram implements DiagramStruct {
         const { diagramEngine } = this;
         const node = new Node({
             type: initialNode.type,
-            name: initialNode.name || this.i18n._(COMPONENTS_NAMES[initialNode.type]),
+            name: initialNode.name || '',
             extend: initialNode.extend,
             factory: this.componentFactory,
+            linkValidator: this.linkValidator,
         });
 
         node.setPosition(initialNode.point || new Point(100, 100));

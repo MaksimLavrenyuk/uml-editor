@@ -5,6 +5,10 @@ import messagesEn from '../../../../locales/en/messages';
 import Diagram from '../index';
 import ComponentType from '../../../../models/ComponentType';
 import ComponentFactory from '../../../../models/factories/ComponentFactory';
+import LinkValidator from '../models/LinkValidator';
+
+const componentFactory = new ComponentFactory();
+const linkValidator = new LinkValidator();
 
 beforeAll(() => {
     i18n.load({ ru: messagesRu.messages, en: messagesEn.messages });
@@ -13,7 +17,7 @@ beforeAll(() => {
 
 describe('Functionality of the root component of the diagram.', () => {
     it('Adding new class node.', () => {
-        const diagram = new Diagram([], { i18n });
+        const diagram = new Diagram([], { i18n, componentFactory, linkValidator });
 
         const id = diagram.addNode({ type: ComponentType.CLASS });
 
@@ -25,7 +29,7 @@ describe('Functionality of the root component of the diagram.', () => {
     });
 
     it('Adding new interface node.', () => {
-        const diagram = new Diagram([], { i18n });
+        const diagram = new Diagram([], { i18n, componentFactory, linkValidator });
         const id = diagram.addNode({ type: ComponentType.INTERFACE });
 
         expect(diagram.engine()
@@ -36,8 +40,7 @@ describe('Functionality of the root component of the diagram.', () => {
     });
 
     it('Extract data to a component class without extension.', () => {
-        const diagram = new Diagram([], { i18n });
-        const componentFactory = new ComponentFactory();
+        const diagram = new Diagram([], { i18n, componentFactory, linkValidator });
         const name = 'test';
 
         diagram.addNode({ type: ComponentType.CLASS, name });
@@ -47,8 +50,7 @@ describe('Functionality of the root component of the diagram.', () => {
     });
 
     it('Extract data to a component class with extension.', () => {
-        const diagram = new Diagram([], { i18n });
-        const componentFactory = new ComponentFactory();
+        const diagram = new Diagram([], { i18n, componentFactory, linkValidator });
         const name = 'test';
 
         diagram.addNode({ type: ComponentType.CLASS, name });
@@ -60,12 +62,11 @@ describe('Functionality of the root component of the diagram.', () => {
 
 describe('Filling the diagram with the list of nodes.', () => {
     it('Filling with classes without extension', () => {
-        const componentFactory = new ComponentFactory();
         const components = [
             componentFactory.createClass('test_1', 'test_1'),
             componentFactory.createClass('test_2'),
         ];
-        const diagram = new Diagram(components, { i18n });
+        const diagram = new Diagram(components, { i18n, componentFactory, linkValidator });
 
         expect(diagram.content()).toEqual(components);
     });
