@@ -2122,6 +2122,11 @@
   dependencies:
     "@types/node" "*"
 
+"@types/has@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@types/has/-/has-1.0.0.tgz#8ab9a26dd8f08a75ec02c542e36105655889616b"
+  integrity sha512-1J4U6Ipq5B+ytzNa9XWYg+U5cI5nt12a+RiISbKD9a74QDoRVhoBd6GPtd+imkqQRaTGO1l6bvdP1cqsM6dCpw==
+
 "@types/history@*":
   version "4.7.8"
   resolved "https://registry.yarnpkg.com/@types/history/-/history-4.7.8.tgz#49348387983075705fe8f4e02fb67f7daaec4934"

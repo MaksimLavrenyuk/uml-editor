@@ -24,7 +24,10 @@ function DiagramWidget(props: DiagramWidgetProps) {
         const engine = diagram.engine();
         const componentType = event.dataTransfer.getData(diagramDragAndDropEvent.ADD) as ComponentType;
 
-        diagram.addNode(componentType, engine.getRelativeMousePoint(event));
+        diagram.addNode({
+            type: componentType,
+            point: engine.getRelativeMousePoint(event),
+        });
     }, [diagram]);
 
     const dragOverHandler = useCallback((event: DragEvent) => {
