@@ -1,9 +1,6 @@
 import * as React from 'react';
-import {
-    Card, CardContent,
-} from '@material-ui/core';
+import { Card, CardContent } from '@mui/material';
 import { DiagramEngine, PortModelAlignment, PortWidget } from '@projectstorm/react-diagrams';
-import { makeStyles } from '@material-ui/core/styles';
 import { Node } from '../../../models/Node';
 import style from './NodeInterfaceWidget.module.scss';
 import NodeName from '../NodeName';
@@ -13,12 +10,6 @@ export interface NodeWidgetProps {
     engine: DiagramEngine;
 }
 
-const useStyles = makeStyles((theme) => ({
-    root: {
-        backgroundColor: theme.palette.background.paper,
-    },
-}));
-
 /**
  * Class node widget for diagram.
  *
@@ -26,7 +17,6 @@ const useStyles = makeStyles((theme) => ({
  */
 function NodeInterfaceWidget(props: NodeWidgetProps) {
     const { node, engine } = props;
-    const classes = useStyles();
     const portTop = node.getPort(PortModelAlignment.TOP);
     const portBottom = node.getPort(PortModelAlignment.BOTTOM);
 
@@ -41,7 +31,7 @@ function NodeInterfaceWidget(props: NodeWidgetProps) {
                     <div className={style.dot} />
                 </PortWidget>
             )}
-            <Card className={classes.root}>
+            <Card>
                 <CardContent>
                     <NodeName getName={node.getName} changeName={node.changeName} />
                 </CardContent>
