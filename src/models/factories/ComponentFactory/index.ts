@@ -1,4 +1,4 @@
-import { Class } from '../../components/Class';
+import Class from '../../components/Class';
 import { ComponentI } from '../../components/Component';
 
 export default class ComponentFactory {

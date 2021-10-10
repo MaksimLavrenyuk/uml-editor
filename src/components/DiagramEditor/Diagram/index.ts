@@ -6,13 +6,11 @@ import { Point } from '@projectstorm/geometry';
 import { NodeClassFactory } from './factories/NodeClassFactory';
 import DiagramStruct, { DiagramInitialNode } from '../../../models/Diagram';
 import { Node, NodeI } from './models/Node';
-import ComponentType from '../../../models/ComponentType';
-import { COMPONENTS_NAMES } from '../../../locales/lang-constants';
 import NodeInterfaceFactory from './factories/NodeInterfaceFactory';
 import ComponentFactory from '../../../models/factories/ComponentFactory';
 import { ComponentI } from '../../../models/components/Component';
 import isType from '../../../utils/guards/isType';
-import { Class } from '../../../models/components/Class';
+import Class from '../../../models/components/Class';
 import { LinkValidatorI } from './models/LinkValidator';
 
 type DiagramDeps = {

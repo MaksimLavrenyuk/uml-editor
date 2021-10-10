@@ -1,4 +1,4 @@
-import { Class } from '../Class';
+import Class from '../Class';
 import ComponentType from '../../ComponentType';
 
 test('Checking class component', () => {

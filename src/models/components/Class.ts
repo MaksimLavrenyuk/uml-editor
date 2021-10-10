@@ -1,7 +1,7 @@
 import { Component, ComponentI } from './Component';
 import ComponentType from '../ComponentType';
 
-export class Class extends Component implements ComponentI {
+export default class Class extends Component implements ComponentI {
     public readonly componentType: ComponentType = ComponentType.CLASS;
 
     public extends: string | undefined;

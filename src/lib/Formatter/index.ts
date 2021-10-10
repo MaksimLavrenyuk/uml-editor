@@ -1,6 +1,6 @@
 import { ComponentI } from '../../models/components/Component';
 import ComponentType from '../../models/ComponentType';
-import { Class } from '../../models/components/Class';
+import Class from '../../models/components/Class';
 import isType from '../../utils/guards/isType';
 
 class Formatter {

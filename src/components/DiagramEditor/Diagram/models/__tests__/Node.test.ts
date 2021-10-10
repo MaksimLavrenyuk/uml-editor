@@ -3,7 +3,7 @@ import ComponentType from '../../../../../models/ComponentType';
 import { Node } from '../Node';
 import { Port } from '../Port';
 import ComponentFactory from '../../../../../models/factories/ComponentFactory';
-import { Class } from '../../../../../models/components/Class';
+import Class from '../../../../../models/components/Class';
 import LinkValidator from '../LinkValidator';
 
 const componentFactory = new ComponentFactory();

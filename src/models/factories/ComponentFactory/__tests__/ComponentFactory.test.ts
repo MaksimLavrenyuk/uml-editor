@@ -1,5 +1,5 @@
 import ComponentFactory from '../index';
-import { Class } from '../../../components/Class';
+import Class from '../../../components/Class';
 
 describe('Check the functionality of the ComponentFactory.', () => {
     const factory = new ComponentFactory();
