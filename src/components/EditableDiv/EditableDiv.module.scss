@@ -1,0 +1,17 @@
+.contentEditable {
+  border: 1px solid transparent;
+  border-radius: 4px;
+  outline-width: 1px;
+  outline-color: transparent;
+  padding: 16.5px 14px;
+
+  &:hover {
+    border-width: 1px;
+    cursor: text;
+    border-color: rgba(0, 0, 0, 0.87);
+  }
+  &:focus-visible {
+    border-color: #1976d2;
+    outline-color: #1976d2;
+  }
+}

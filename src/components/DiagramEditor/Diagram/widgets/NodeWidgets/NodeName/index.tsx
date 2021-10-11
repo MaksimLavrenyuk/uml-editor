@@ -1,8 +1,9 @@
 import { KeyboardEvent, useCallback } from 'react';
 import { observer } from 'mobx-react';
 import { Typography } from '@mui/material';
-import ContentEditable, { ContentEditableEvent } from 'react-contenteditable';
+import { ContentEditableEvent } from 'react-contenteditable';
 import * as React from 'react';
+import EditableDiv from '../../../../../EditableDiv';
 
 type NameProps = {
     getName(): string
@@ -29,7 +30,7 @@ function NodeName(props: NameProps) {
 
     return (
         <Typography variant="h5" component="h2">
-            <ContentEditable html={getName()} onChange={changeNameHandler} onKeyDown={keyDownHandler} />
+            <EditableDiv html={getName()} onChange={changeNameHandler} onKeyDown={keyDownHandler} />
         </Typography>
     );
 }
