@@ -1,8 +1,6 @@
 import { I18n } from '@lingui/core';
 import { withI18n } from '@lingui/react';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import { ListItemText } from '@material-ui/core';
+import { ListItem, ListItemIcon, ListItemText } from '@mui/material';
 import { DragEvent, ReactNode, useCallback } from 'react';
 import { diagramDragAndDropEvent } from '../Diagram/widgets/DiagramWidget';
 import { COMPONENTS_NAMES } from '../../../locales/lang-constants';

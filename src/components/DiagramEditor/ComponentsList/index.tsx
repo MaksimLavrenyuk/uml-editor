@@ -1,32 +1,23 @@
 import { useMemo } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import { AppBar } from '@material-ui/core';
-import List from '@material-ui/core/List';
-import InboxIcon from '@material-ui/icons/Inbox';
+import { AppBar, List } from '@mui/material';
+import { Inbox } from '@mui/icons-material';
 import classes from './ComponentsList.module.scss';
 import Component from './Component';
 import ComponentType from '../../../models/ComponentType';
-
-const useStyles = makeStyles((theme) => ({
-    root: {
-        backgroundColor: theme.palette.background.paper,
-    },
-}));
 
 /**
  * Component for the list of elements used in the language, such as Class, Interface.
  * By dragging and dropping such elements on the canvas, you can create new diagram nodes.
  */
 function ComponentsList() {
-    const styles = useStyles();
     const components = useMemo(() => [
         {
             componentType: ComponentType.CLASS,
-            icon: <InboxIcon />,
+            icon: <Inbox />,
         },
         {
             componentType: ComponentType.INTERFACE,
-            icon: <InboxIcon />,
+            icon: <Inbox />,
         },
     ], []);
 
@@ -34,32 +25,18 @@ function ComponentsList() {
         <div className={classes.list}>
             <span>example string</span>
             <AppBar color="default">
-                <List className={styles.root} component="nav" aria-label="main mailbox folders">
+                <List component="nav" aria-label="main mailbox folders">
                     {components.map((component) => (
                         <Component
                             key={component.componentType}
                             componentType={component.componentType}
-                            icon={<InboxIcon />}
+                            icon={<Inbox />}
                         />
                     ))}
                 </List>
             </AppBar>
         </div>
     );
-    //
-    // return (
-    //     <AppBar color="default" className={classes.list}>
-    //         <List className={styles.root} component="nav" aria-label="main mailbox folders">
-    //             {components.map((component) => (
-    //                 <Component
-    //                     key={component.componentType}
-    //                     componentType={component.componentType}
-    //                     icon={<InboxIcon />}
-    //                 />
-    //             ))}
-    //         </List>
-    //     </AppBar>
-    // );
 }
 
 export default ComponentsList;

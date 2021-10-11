@@ -1,6 +1,4 @@
-import createEngine, {
-    DiagramEngine, DiagramModel, NodeModel,
-} from '@projectstorm/react-diagrams';
+import createEngine, { DiagramEngine, DiagramModel, NodeModel } from '@projectstorm/react-diagrams';
 import { I18n } from '@lingui/core';
 import { Point } from '@projectstorm/geometry';
 import { NodeClassFactory } from './factories/NodeClassFactory';
