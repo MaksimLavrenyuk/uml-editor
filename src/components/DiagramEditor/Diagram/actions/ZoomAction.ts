@@ -3,7 +3,7 @@ import { WheelEvent } from 'react';
 import isType from '../../../../utils/guards/isType';
 
 const ZOOM_LEVELS = [10, 25, 50, 75, 100, 150, 200, 300];
-//
+
 export default class ZoomAction extends Action {
     constructor() {
         super({

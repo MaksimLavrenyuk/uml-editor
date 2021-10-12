@@ -1,0 +1,8 @@
+$size: 200px;
+
+.node {
+  position: relative;
+  width: 100%;
+  min-width: $size;
+  max-width: $size * 2;
+}

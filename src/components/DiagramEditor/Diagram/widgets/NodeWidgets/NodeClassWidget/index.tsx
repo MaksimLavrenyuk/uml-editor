@@ -1,9 +1,8 @@
-import * as React from 'react';
-import { Card, CardContent } from '@mui/material';
-import { DiagramEngine, PortModelAlignment, PortWidget } from '@projectstorm/react-diagrams';
+import React from 'react';
+import { DiagramEngine, PortModelAlignment } from '@projectstorm/react-diagrams';
 import { Node } from '../../../models/Node';
-import style from './NodeClassWidget.module.scss';
 import NodeName from '../NodeName';
+import NodeWidget from '../NodeWidget';
 
 export interface NodeWidgetProps {
     node: Node;
@@ -21,31 +20,12 @@ function NodeClassWidget(props: NodeWidgetProps) {
     const portBottom = node.getPort(PortModelAlignment.BOTTOM);
 
     return (
-        <div className={style.node}>
-            {portTop && (
-                <PortWidget
-                    className={`${style.port} ${style.top}`}
-                    port={portTop}
-                    engine={engine}
-                >
-                    <div className={style.dot} />
-                </PortWidget>
-            )}
-            <Card>
-                <CardContent>
-                    <NodeName getName={node.getName} changeName={node.changeName} />
-                </CardContent>
-            </Card>
-            {portBottom && (
-                <PortWidget
-                    className={`${style.port} ${style.bottom}`}
-                    port={portBottom}
-                    engine={engine}
-                >
-                    <div className={style.dot} />
-                </PortWidget>
-            )}
-        </div>
+        <NodeWidget
+            portTop={portTop}
+            portBottom={portBottom}
+            diagramEngine={engine}
+            header={<NodeName getName={node.getName} changeName={node.changeName} />}
+        />
     );
 }
 
