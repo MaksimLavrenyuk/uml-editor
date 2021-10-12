@@ -1,4 +1,4 @@
-import DiagramEditor from '../../components/DiagramEditor';
+import DiagramEditor from '../../components/ComponentDiagram';
 
 /**
  * Component serving the main page of the application.

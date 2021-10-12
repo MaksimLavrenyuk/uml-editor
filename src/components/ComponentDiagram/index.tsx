@@ -3,7 +3,7 @@ import { withI18n } from '@lingui/react';
 import { useMemo } from 'react';
 import Diagram from './Diagram';
 import DiagramWidget from './Diagram/widgets/DiagramWidget';
-import classes from './DiagramEditor.module.scss';
+import classes from './ComponentDiagram.module.scss';
 import ComponentsList from './ComponentsList';
 import LinkValidator from './Diagram/models/LinkValidator';
 import ComponentFactory from '../../models/factories/ComponentFactory';
@@ -17,7 +17,7 @@ type DiagramEditorProps = {
  *
  * @param props - React props.
  */
-function DiagramEditor(props: DiagramEditorProps) {
+function ComponentDiagram(props: DiagramEditorProps) {
     const { i18n } = props;
     const diagram = useMemo(() => (
         new Diagram([], {
@@ -33,4 +33,4 @@ function DiagramEditor(props: DiagramEditorProps) {
     );
 }
 
-export default withI18n()(DiagramEditor);
+export default withI18n()(ComponentDiagram);
