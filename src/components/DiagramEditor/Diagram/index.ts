@@ -10,6 +10,7 @@ import { ComponentI } from '../../../models/components/Component';
 import isType from '../../../utils/guards/isType';
 import Class from '../../../models/components/Class';
 import { LinkValidatorI } from './models/LinkValidator';
+import ZoomAction from './actions/ZoomAction';
 
 type DiagramDeps = {
     i18n: I18n,
@@ -29,11 +30,14 @@ export class Diagram implements DiagramStruct {
     private readonly linkValidator: LinkValidatorI;
 
     constructor(components: ComponentI[], deps: DiagramDeps) {
-        this.diagramEngine = createEngine();
+        this.diagramEngine = createEngine({
+            registerDefaultZoomCanvasAction: false,
+        });
         this.i18n = deps.i18n;
         this.componentFactory = deps.componentFactory;
         this.linkValidator = deps.linkValidator;
         this.registerFactories();
+        this.registerActions();
         this.newModel();
         this.fill(components);
     }
@@ -59,6 +63,14 @@ export class Diagram implements DiagramStruct {
             .registerFactory(new NodeInterfaceFactory({
                 factory: this.componentFactory, linkValidator: this.linkValidator,
             }));
+    }
+
+    private registerActions() {
+        const actions = [
+            new ZoomAction(),
+        ];
+
+        actions.forEach((action) => this.diagramEngine.getActionEventBus().registerAction(action));
     }
 
     public engine(): DiagramEngine {
