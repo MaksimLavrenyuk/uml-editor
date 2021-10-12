@@ -1,6 +1,6 @@
 import { KeyboardEvent, useCallback } from 'react';
 import { observer } from 'mobx-react';
-import { Typography } from '@mui/material';
+import { TextField, Typography } from '@mui/material';
 import { ContentEditableEvent } from 'react-contenteditable';
 import * as React from 'react';
 import EditableDiv from '../../../../../EditableDiv';
@@ -29,7 +29,7 @@ function NodeName(props: NameProps) {
     }, []);
 
     return (
-        <Typography variant="h5" component="h2">
+        <Typography component="h5">
             <EditableDiv html={getName()} onChange={changeNameHandler} onKeyDown={keyDownHandler} />
         </Typography>
     );

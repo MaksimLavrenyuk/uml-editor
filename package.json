@@ -25,7 +25,6 @@
     "closest": "^0.0.1",
     "dagre": "^0.8.5",
     "has": "^1.0.3",
-    "lodash": "^4.17.21",
     "make-plural": "^6.2.2",
     "mobx": "^6.3.2",
     "mobx-react": "^7.2.0",
@@ -85,5 +84,9 @@
     "eslint-plugin-jsx-a11y": "^6.4.1",
     "eslint-plugin-react": "^7.24.0",
     "eslint-plugin-react-hooks": "^4.2.0"
+  },
+  "peerDependencies": {
+    "@types/lodash": "^4.14.175",
+    "lodash": "^4.17.21"
   }
 }
