@@ -10,6 +10,7 @@ import ComponentFactory from '../../models/factories/ComponentFactory';
 
 type DiagramEditorProps = {
     i18n: I18n
+    className?: string
 };
 
 /**
@@ -18,7 +19,7 @@ type DiagramEditorProps = {
  * @param props - React props.
  */
 function ComponentDiagram(props: DiagramEditorProps) {
-    const { i18n } = props;
+    const { i18n, className = '' } = props;
     const diagram = useMemo(() => (
         new Diagram([], {
             i18n, linkValidator: new LinkValidator(), componentFactory: new ComponentFactory(),
@@ -26,7 +27,7 @@ function ComponentDiagram(props: DiagramEditorProps) {
     ), [i18n]);
 
     return (
-        <div className={classes.body}>
+        <div className={`${classes.container} ${className}`}>
             <ComponentsList />
             <DiagramWidget diagram={diagram} />
         </div>

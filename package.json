@@ -9,6 +9,7 @@
     "@lingui/macro": "^3.10.2",
     "@lingui/react": "^3.10.2",
     "@loadable/component": "^5.15.0",
+    "@monaco-editor/react": "^4.3.1",
     "@mui/icons-material": "^5.0.3",
     "@mui/material": "^5.0.3",
     "@projectstorm/geometry": "^6.6.1",
@@ -83,10 +84,12 @@
     "eslint-plugin-jsdoc": "^35.4.1",
     "eslint-plugin-jsx-a11y": "^6.4.1",
     "eslint-plugin-react": "^7.24.0",
-    "eslint-plugin-react-hooks": "^4.2.0"
+    "eslint-plugin-react-hooks": "^4.2.0",
+    "monaco-editor-webpack-plugin": "^5.0.0"
   },
   "peerDependencies": {
     "@types/lodash": "^4.14.175",
-    "lodash": "^4.17.21"
+    "lodash": "^4.17.21",
+    "monaco-editor": "^0.29.1"
   }
 }
