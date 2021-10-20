@@ -1,7 +1,7 @@
 import { NodeModel } from '@projectstorm/react-diagrams';
 import { Node } from './Node';
 import TypeChecker from '../../../../lib/TypeChecker';
-import Formatter from '../../../../lib/Formatter';
+import FormatterDiagram from '../../../../lib/Formatter';
 
 export interface LinkValidatorI {
     isValidLink(source: NodeModel, target: NodeModel): boolean
@@ -10,11 +10,11 @@ export interface LinkValidatorI {
 export default class LinkValidator implements LinkValidatorI {
     private typeChecker: TypeChecker;
 
-    private formatter: Formatter;
+    private formatter: FormatterDiagram;
 
     constructor() {
         this.typeChecker = new TypeChecker();
-        this.formatter = new Formatter();
+        this.formatter = new FormatterDiagram();
     }
 
     isValidLink(source: Node, target: Node) {

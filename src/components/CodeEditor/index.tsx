@@ -1,9 +1,10 @@
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import Editor from '@monaco-editor/react';
 import classes from './CodeEditor.module.scss';
 
 type CodeEditorProps = {
     className?: string
+    value: string
 };
 
 /**
@@ -13,15 +14,13 @@ type CodeEditorProps = {
  * @see {@link https://github.com/microsoft/monaco-editor}
  */
 function CodeEditor(props: CodeEditorProps) {
-    const { className = '' } = props;
+    const { className = '', value } = props;
 
     return (
         <div className={`${classes.container} ${className}`}>
             <Editor
                 defaultLanguage="typescript"
-                defaultValue={`
-                type Example = 'example' | 'example2'
-                `}
+                value={value}
             />
         </div>
     );

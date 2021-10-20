@@ -1,6 +1,7 @@
 import { NodeModel, PortModelAlignment } from '@projectstorm/react-diagrams';
 import { action, makeObservable, observable } from 'mobx';
-import { Port } from './Port';
+import { Subject } from 'rxjs';
+import { Port, PortEvents } from './Port';
 import ComponentType from '../../../../models/ComponentType';
 import ComponentFactory from '../../../../models/factories/ComponentFactory';
 import { ComponentI } from '../../../../models/components/Component';
@@ -18,6 +19,14 @@ export type NodeProps = {
     linkValidator: LinkValidatorI
 };
 
+export enum NodeEvents {
+    change = 'change'
+}
+
+type EventPayload = {
+    [NodeEvents.change]: ComponentI
+};
+
 export class Node extends NodeModel implements NodeI {
     @observable
     private name: string;
@@ -26,22 +35,52 @@ export class Node extends NodeModel implements NodeI {
 
     private readonly extend: string | undefined;
 
+    private observableChange: Subject<EventPayload[NodeEvents.change]>;
+
     constructor(props: NodeProps) {
         super({
             type: props.type,
         });
+        const portTop = new Port(PortModelAlignment.TOP, props.linkValidator);
+        const portBottom = new Port(PortModelAlignment.BOTTOM, props.linkValidator);
         this.name = props.name;
         this.factory = props.factory;
         this.extend = props.extend;
-        this.addPort(new Port(PortModelAlignment.TOP, props.linkValidator));
-        this.addPort(new Port(PortModelAlignment.BOTTOM, props.linkValidator));
+        this.observableChange = new Subject<EventPayload[NodeEvents.change]>();
+        portTop.addEventListener(PortEvents.createLink, () => {
+            this.dispatchChangeEvent();
+        });
+        portBottom.addEventListener(PortEvents.createLink, () => {
+            this.dispatchChangeEvent();
+        });
+        this.addPort(portTop);
+        this.addPort(portBottom);
 
         makeObservable(this);
+    }
+
+    private dispatchChangeEvent() {
+        const content = this.content();
+        if (content) this.observableChange.next(content);
     }
 
     @action.bound
     changeName(name: string) {
         this.name = name;
+        this.dispatchChangeEvent();
+    }
+
+    public addEventListener<T extends NodeEvents>(event: T, listener: (payload: EventPayload[T]) => void) {
+        const observer = {
+            next: listener,
+        };
+
+        switch (event) {
+        case NodeEvents.change:
+            this.observableChange.subscribe(observer);
+            break;
+        default:
+        }
     }
 
     getName = () => this.name;

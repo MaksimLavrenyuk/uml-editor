@@ -1,8 +1,8 @@
 import ComponentFactory from '../../../models/factories/ComponentFactory';
-import Formatter from '../index';
+import FormatterDiagram from '../index';
 
 describe('Serialization component.', () => {
-    const formatter = new Formatter();
+    const formatter = new FormatterDiagram();
     const factory = new ComponentFactory();
 
     it('Serialization Class component', () => {

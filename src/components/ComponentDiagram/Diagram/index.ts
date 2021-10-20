@@ -1,9 +1,10 @@
 import createEngine, { DiagramEngine, DiagramModel, NodeModel } from '@projectstorm/react-diagrams';
+import { Subject } from 'rxjs';
 import { I18n } from '@lingui/core';
 import { Point } from '@projectstorm/geometry';
 import { NodeClassFactory } from './factories/NodeClassFactory';
 import DiagramStruct, { DiagramInitialNode } from '../../../models/Diagram';
-import { Node, NodeI } from './models/Node';
+import { Node, NodeEvents, NodeI } from './models/Node';
 import NodeInterfaceFactory from './factories/NodeInterfaceFactory';
 import ComponentFactory from '../../../models/factories/ComponentFactory';
 import { ComponentI } from '../../../models/components/Component';
@@ -18,6 +19,14 @@ type DiagramDeps = {
     componentFactory: ComponentFactory,
 };
 
+export enum DiagramEvents {
+    change = 'change'
+}
+
+type EventPayload = {
+    [DiagramEvents.change]: ComponentI[]
+};
+
 export class Diagram implements DiagramStruct {
     protected activeModel: DiagramModel | undefined;
 
@@ -28,6 +37,8 @@ export class Diagram implements DiagramStruct {
     private readonly componentFactory: ComponentFactory;
 
     private readonly linkValidator: LinkValidatorI;
+
+    private observableChange: Subject<EventPayload[DiagramEvents.change]>;
 
     constructor(components: ComponentI[], deps: DiagramDeps) {
         this.diagramEngine = createEngine({
@@ -40,6 +51,7 @@ export class Diagram implements DiagramStruct {
         this.registerActions();
         this.newModel();
         this.fill(components);
+        this.observableChange = new Subject<EventPayload[DiagramEvents.change]>();
     }
 
     private newModel() {
@@ -73,6 +85,19 @@ export class Diagram implements DiagramStruct {
         actions.forEach((action) => this.diagramEngine.getActionEventBus().registerAction(action));
     }
 
+    public addEventListener<T extends DiagramEvents>(event: T, listener: (payload: EventPayload[T]) => void) {
+        const observer = {
+            next: listener,
+        };
+
+        switch (event) {
+        case DiagramEvents.change:
+            this.observableChange.subscribe(observer);
+            break;
+        default:
+        }
+    }
+
     public engine(): DiagramEngine {
         return this.diagramEngine;
     }
@@ -92,9 +117,19 @@ export class Diagram implements DiagramStruct {
             linkValidator: this.linkValidator,
         });
 
+        node.addEventListener(NodeEvents.change, () => {
+            this.observableChange.next(this.content());
+        });
+
+        node.addEventListener(NodeEvents.change, () => {
+            this.observableChange.next(this.content());
+        });
+
         node.setPosition(initialNode.point || new Point(100, 100));
         diagramEngine.getModel().addNode(node);
         this.diagramEngine.repaintCanvas();
+
+        this.observableChange.next(this.content());
 
         return node.getID();
     }
