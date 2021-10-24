@@ -6,9 +6,9 @@ import {
     NodeModel,
 } from '@projectstorm/react-diagrams';
 import { BaseEntityEvent, BaseEvent } from '@projectstorm/react-canvas-core';
-import { Subject } from 'rxjs';
 import isType from '../../../../utils/guards/isType';
 import { LinkValidatorI } from './LinkValidator';
+import Observable from '../../../../lib/Observable';
 
 type PortChangeEvent = BaseEntityEvent<LinkModel> & { port: null | PortModel };
 
@@ -26,7 +26,7 @@ type EventPayload = {
 export class Port extends PortModel {
     private linkValidator: LinkValidatorI;
 
-    private observableCreateLink: Subject<EventPayload[PortEvents.createLink]>;
+    private observableCreateLink: Observable<EventPayload[PortEvents.createLink]>;
 
     constructor(alignment: PortModelAlignment, linkValidator: LinkValidatorI) {
         super({
@@ -36,17 +36,13 @@ export class Port extends PortModel {
         });
 
         this.linkValidator = linkValidator;
-        this.observableCreateLink = new Subject<EventPayload[PortEvents.createLink]>();
+        this.observableCreateLink = new Observable<EventPayload[PortEvents.createLink]>();
     }
 
     public addEventListener<T extends PortEvents>(event: T, subscribe: (payload: EventPayload[T]) => void) {
-        const observer = {
-            next: subscribe,
-        };
-
         switch (event) {
         case PortEvents.createLink:
-            this.observableCreateLink.subscribe(observer);
+            this.observableCreateLink.registerListener(subscribe);
             break;
         default:
         }
@@ -70,7 +66,7 @@ export class Port extends PortModel {
                         return;
                     }
 
-                    this.observableCreateLink.next({
+                    this.observableCreateLink.emit({
                         source: sourceNode,
                         target: targetNode,
                     });

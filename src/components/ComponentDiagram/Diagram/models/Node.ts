@@ -1,11 +1,11 @@
 import { NodeModel, PortModelAlignment } from '@projectstorm/react-diagrams';
 import { action, makeObservable, observable } from 'mobx';
-import { Subject } from 'rxjs';
 import { Port, PortEvents } from './Port';
 import ComponentType from '../../../../models/ComponentType';
 import ComponentFactory from '../../../../models/factories/ComponentFactory';
 import { ComponentI } from '../../../../models/components/Component';
 import { LinkValidatorI } from './LinkValidator';
+import Observable from '../../../../lib/Observable';
 
 export interface NodeI extends NodeModel {
     content(): ComponentI | undefined
@@ -35,7 +35,7 @@ export class Node extends NodeModel implements NodeI {
 
     private readonly extend: string | undefined;
 
-    private observableChange: Subject<EventPayload[NodeEvents.change]>;
+    private observableChange: Observable<EventPayload[NodeEvents.change]>;
 
     constructor(props: NodeProps) {
         super({
@@ -46,7 +46,7 @@ export class Node extends NodeModel implements NodeI {
         this.name = props.name;
         this.factory = props.factory;
         this.extend = props.extend;
-        this.observableChange = new Subject<EventPayload[NodeEvents.change]>();
+        this.observableChange = new Observable<EventPayload[NodeEvents.change]>();
         portTop.addEventListener(PortEvents.createLink, () => {
             this.dispatchChangeEvent();
         });
@@ -61,7 +61,7 @@ export class Node extends NodeModel implements NodeI {
 
     private dispatchChangeEvent() {
         const content = this.content();
-        if (content) this.observableChange.next(content);
+        if (content) this.observableChange.emit(content);
     }
 
     @action.bound
@@ -71,13 +71,9 @@ export class Node extends NodeModel implements NodeI {
     }
 
     public addEventListener<T extends NodeEvents>(event: T, listener: (payload: EventPayload[T]) => void) {
-        const observer = {
-            next: listener,
-        };
-
         switch (event) {
         case NodeEvents.change:
-            this.observableChange.subscribe(observer);
+            this.observableChange.registerListener(listener);
             break;
         default:
         }

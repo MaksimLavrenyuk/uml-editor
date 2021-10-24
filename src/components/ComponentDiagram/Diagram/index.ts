@@ -1,5 +1,4 @@
 import createEngine, { DiagramEngine, DiagramModel, NodeModel } from '@projectstorm/react-diagrams';
-import { Subject } from 'rxjs';
 import { I18n } from '@lingui/core';
 import { Point } from '@projectstorm/geometry';
 import { NodeClassFactory } from './factories/NodeClassFactory';
@@ -12,6 +11,7 @@ import isType from '../../../utils/guards/isType';
 import Class from '../../../models/components/Class';
 import { LinkValidatorI } from './models/LinkValidator';
 import ZoomAction from './actions/ZoomAction';
+import Observable from '../../../lib/Observable';
 
 type DiagramDeps = {
     i18n: I18n,
@@ -38,7 +38,7 @@ export class Diagram implements DiagramStruct {
 
     private readonly linkValidator: LinkValidatorI;
 
-    private observableChange: Subject<EventPayload[DiagramEvents.change]>;
+    private observableChange: Observable<EventPayload[DiagramEvents.change]>;
 
     constructor(components: ComponentI[], deps: DiagramDeps) {
         this.diagramEngine = createEngine({
@@ -51,7 +51,7 @@ export class Diagram implements DiagramStruct {
         this.registerActions();
         this.newModel();
         this.fill(components);
-        this.observableChange = new Subject<EventPayload[DiagramEvents.change]>();
+        this.observableChange = new Observable<EventPayload[DiagramEvents.change]>();
     }
 
     private newModel() {
@@ -86,13 +86,9 @@ export class Diagram implements DiagramStruct {
     }
 
     public addEventListener<T extends DiagramEvents>(event: T, listener: (payload: EventPayload[T]) => void) {
-        const observer = {
-            next: listener,
-        };
-
         switch (event) {
         case DiagramEvents.change:
-            this.observableChange.subscribe(observer);
+            this.observableChange.registerListener(listener);
             break;
         default:
         }
@@ -118,18 +114,18 @@ export class Diagram implements DiagramStruct {
         });
 
         node.addEventListener(NodeEvents.change, () => {
-            this.observableChange.next(this.content());
+            this.observableChange.emit(this.content());
         });
 
         node.addEventListener(NodeEvents.change, () => {
-            this.observableChange.next(this.content());
+            this.observableChange.emit(this.content());
         });
 
         node.setPosition(initialNode.point || new Point(100, 100));
         diagramEngine.getModel().addNode(node);
         this.diagramEngine.repaintCanvas();
 
-        this.observableChange.next(this.content());
+        this.observableChange.emit(this.content());
 
         return node.getID();
     }
