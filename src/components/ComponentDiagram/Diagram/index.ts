@@ -47,11 +47,11 @@ export class Diagram implements DiagramStruct {
         this.i18n = deps.i18n;
         this.componentFactory = deps.componentFactory;
         this.linkValidator = deps.linkValidator;
+        this.observableChange = new Observable<EventPayload[DiagramEvents.change]>();
         this.registerFactories();
         this.registerActions();
         this.newModel();
         this.fill(components);
-        this.observableChange = new Observable<EventPayload[DiagramEvents.change]>();
     }
 
     private newModel() {
@@ -108,7 +108,7 @@ export class Diagram implements DiagramStruct {
         const node = new Node({
             type: initialNode.type,
             name: initialNode.name || '',
-            extend: initialNode.extend,
+            extends: initialNode.extends,
             factory: this.componentFactory,
             linkValidator: this.linkValidator,
         });
@@ -137,14 +137,14 @@ export class Diagram implements DiagramStruct {
      */
     fill(components: ComponentI[]) {
         components.forEach((component) => {
-            let extend;
+            let extendsComponent;
 
-            if (isType<Class>(component, 'extends')) extend = component.extends;
+            if (isType<Class>(component, 'extends')) extendsComponent = component.extends;
 
             this.addNode({
                 type: component.componentType,
                 name: component.name,
-                extend,
+                extends: extendsComponent,
             });
         });
     }

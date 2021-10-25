@@ -10,7 +10,7 @@ describe('Serialization component.', () => {
             'class Test {}',
         );
         expect(formatter.serialize(factory.createClass('Test', 'TestExtends'))).toBe(
-            'class Test extend TestExtends {}',
+            'class Test extends TestExtends {}',
         );
     });
 
@@ -19,7 +19,7 @@ describe('Serialization component.', () => {
             'interface Test {}',
         );
         expect(formatter.serialize(factory.createInterface('Test', 'TestExtends'))).toBe(
-            'interface Test extend TestExtends {}',
+            'interface Test extends TestExtends {}',
         );
     });
 
@@ -28,7 +28,7 @@ describe('Serialization component.', () => {
             'interface Test {}',
         );
         expect(formatter.serialize(factory.createInterface('Test', 'TestExtends'))).toBe(
-            'interface Test extend TestExtends {}',
+            'interface Test extends TestExtends {}',
         );
     });
 });

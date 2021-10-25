@@ -7,6 +7,22 @@ describe('Validation check of node links creation.', () => {
     const linkValidator = new LinkValidator();
     const componentFactory = new ComponentFactory();
 
+    it('Expanding the class with a class.', () => {
+        expect(linkValidator.isValidLink(
+            new Node({
+                type: ComponentType.CLASS,
+                name: 'test_1',
+                factory: componentFactory,
+                linkValidator,
+            }), new Node({
+                type: ComponentType.CLASS,
+                name: 'test_2',
+                factory: componentFactory,
+                linkValidator,
+            }),
+        )).toBeTruthy();
+    });
+
     it('Extend the class with a class with the same name.', () => {
         expect(linkValidator.isValidLink(
             new Node({
@@ -17,7 +33,7 @@ describe('Validation check of node links creation.', () => {
             }), new Node({
                 type: ComponentType.CLASS,
                 name: 'test_1',
-                extend: 'test_1',
+                extends: 'another',
                 factory: componentFactory,
                 linkValidator,
             }),
@@ -34,7 +50,6 @@ describe('Validation check of node links creation.', () => {
             }), new Node({
                 type: ComponentType.CLASS,
                 name: 'test_1',
-                extend: '',
                 factory: componentFactory,
                 linkValidator,
             }),
@@ -51,28 +66,10 @@ describe('Validation check of node links creation.', () => {
             }), new Node({
                 type: ComponentType.CLASS,
                 name: '',
-                extend: 'test_1',
                 factory: componentFactory,
                 linkValidator,
             }),
         )).toBeFalsy();
-    });
-
-    it('Expanding the class with a class.', () => {
-        expect(linkValidator.isValidLink(
-            new Node({
-                type: ComponentType.CLASS,
-                name: 'test_1',
-                factory: componentFactory,
-                linkValidator,
-            }), new Node({
-                type: ComponentType.CLASS,
-                name: 'test_2',
-                extend: 'test_1',
-                factory: componentFactory,
-                linkValidator,
-            }),
-        )).toBeTruthy();
     });
 
     it('Extend the interface with a interface with the same name.', () => {
@@ -86,7 +83,6 @@ describe('Validation check of node links creation.', () => {
                 type: ComponentType.INTERFACE,
                 name: 'test_1',
                 factory: componentFactory,
-                extend: 'test_1',
                 linkValidator,
             }),
         )).toBeFalsy();
@@ -102,7 +98,6 @@ describe('Validation check of node links creation.', () => {
             }), new Node({
                 type: ComponentType.INTERFACE,
                 name: 'test_1',
-                extend: '',
                 factory: componentFactory,
                 linkValidator,
             }),
@@ -119,7 +114,7 @@ describe('Validation check of node links creation.', () => {
             }), new Node({
                 type: ComponentType.INTERFACE,
                 name: '',
-                extend: 'test_1',
+                extends: 'test_1',
                 factory: componentFactory,
                 linkValidator,
             }),
@@ -136,7 +131,6 @@ describe('Validation check of node links creation.', () => {
             }), new Node({
                 type: ComponentType.INTERFACE,
                 name: 'test_2',
-                extend: 'test_1',
                 factory: componentFactory,
                 linkValidator,
             }),

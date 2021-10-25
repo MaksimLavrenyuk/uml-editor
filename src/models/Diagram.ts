@@ -4,7 +4,7 @@ import ComponentType from './ComponentType';
 import { ComponentI } from './components/Component';
 
 export type DiagramInitialNode = {
-    type: ComponentType, name?: string, extend?: string, point?: Point,
+    type: ComponentType, name?: string, extends?: string, point?: Point,
 };
 
 export default interface Diagram {

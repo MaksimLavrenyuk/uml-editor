@@ -3,30 +3,31 @@ import {
     LinkModel,
     PortModel,
     PortModelAlignment,
-    NodeModel,
 } from '@projectstorm/react-diagrams';
 import { BaseEntityEvent, BaseEvent } from '@projectstorm/react-canvas-core';
 import isType from '../../../../utils/guards/isType';
 import { LinkValidatorI } from './LinkValidator';
 import Observable from '../../../../lib/Observable';
+import { NodeI } from './Node';
 
-type PortChangeEvent = BaseEntityEvent<LinkModel> & { port: null | PortModel };
+export type PortChangeEvent = BaseEntityEvent<LinkModel> & { port: null | PortModel };
 
 export enum PortEvents {
-    createLink = 'createLink'
+    targetPortChanged = 'targetPortChanged',
+    sourcePortChanged = 'sourcePortChanged',
 }
 
 type EventPayload = {
-    [PortEvents.createLink]: {
-        source: NodeModel,
-        target: NodeModel,
-    }
+    [PortEvents.sourcePortChanged]: PortChangeEvent
+    [PortEvents.targetPortChanged]: PortChangeEvent
 };
 
 export class Port extends PortModel {
     private linkValidator: LinkValidatorI;
 
-    private observableCreateLink: Observable<EventPayload[PortEvents.createLink]>;
+    private observableSourcePortChanged: Observable<EventPayload[PortEvents.sourcePortChanged]>;
+
+    private observableTargetPortChanged: Observable<EventPayload[PortEvents.targetPortChanged]>;
 
     constructor(alignment: PortModelAlignment, linkValidator: LinkValidatorI) {
         super({
@@ -36,13 +37,17 @@ export class Port extends PortModel {
         });
 
         this.linkValidator = linkValidator;
-        this.observableCreateLink = new Observable<EventPayload[PortEvents.createLink]>();
+        this.observableSourcePortChanged = new Observable<EventPayload[PortEvents.sourcePortChanged]>();
+        this.observableTargetPortChanged = new Observable<EventPayload[PortEvents.targetPortChanged]>();
     }
 
     public addEventListener<T extends PortEvents>(event: T, subscribe: (payload: EventPayload[T]) => void) {
         switch (event) {
-        case PortEvents.createLink:
-            this.observableCreateLink.registerListener(subscribe);
+        case PortEvents.sourcePortChanged:
+            this.observableSourcePortChanged.registerListener(subscribe);
+            break;
+        case PortEvents.targetPortChanged:
+            this.observableTargetPortChanged.registerListener(subscribe);
             break;
         default:
         }
@@ -54,22 +59,17 @@ export class Port extends PortModel {
         link.registerListener({
             targetPortChanged: (event: PortChangeEvent | BaseEvent) => {
                 if (isType<PortChangeEvent>(event, 'entity')) {
-                    const sourceNode = event.entity.getSourcePort().getNode();
-                    const targetNode = event.entity.getTargetPort().getNode();
-                    const isValidLink = this.linkValidator.isValidLink(
-                        sourceNode,
-                        targetNode,
-                    );
+                    const source = event.entity.getSourcePort().getNode();
+                    const target = event.entity.getTargetPort().getNode();
+                    let isValidLink = false;
+
+                    if (isType<NodeI>(source, 'getName') && isType<NodeI>(target, 'getName')) {
+                        isValidLink = source.extend(target);
+                    }
 
                     if (!isValidLink) {
                         event.entity.remove();
-                        return;
                     }
-
-                    this.observableCreateLink.emit({
-                        source: sourceNode,
-                        target: targetNode,
-                    });
                 }
             },
         });
