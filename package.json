@@ -9,6 +9,7 @@
     "@lingui/macro": "^3.10.2",
     "@lingui/react": "^3.10.2",
     "@loadable/component": "^5.15.0",
+    "@monaco-editor/react": "^4.3.1",
     "@mui/icons-material": "^5.0.3",
     "@mui/material": "^5.0.3",
     "@projectstorm/geometry": "^6.6.1",
@@ -19,12 +20,14 @@
     "@testing-library/react": "^12.0.0",
     "@testing-library/user-event": "^13.1.9",
     "@types/jest": "^26.0.15",
+    "@types/lodash": "^4.14.175",
     "@types/node": "^16.0.0",
     "@types/react": "^17.0.13",
     "@types/react-dom": "^17.0.8",
     "closest": "^0.0.1",
     "dagre": "^0.8.5",
     "has": "^1.0.3",
+    "lodash": "^4.17.21",
     "make-plural": "^6.2.2",
     "mobx": "^6.3.2",
     "mobx-react": "^7.2.0",
@@ -83,10 +86,10 @@
     "eslint-plugin-jsdoc": "^35.4.1",
     "eslint-plugin-jsx-a11y": "^6.4.1",
     "eslint-plugin-react": "^7.24.0",
-    "eslint-plugin-react-hooks": "^4.2.0"
+    "eslint-plugin-react-hooks": "^4.2.0",
+    "monaco-editor-webpack-plugin": "^5.0.0"
   },
   "peerDependencies": {
-    "@types/lodash": "^4.14.175",
-    "lodash": "^4.17.21"
+    "monaco-editor": "^0.29.1"
   }
 }

@@ -1,0 +1,12 @@
+$background-color: #ffffff;
+$background-lines-color: #f7f7f7;
+
+.container {
+  height: 100%;
+  background-color: $background-color;
+  display: flex;
+  background-size: 25px 25px;
+  background-image:
+          linear-gradient(to right, $background-lines-color 1px, transparent 1px),
+          linear-gradient(to bottom, $background-lines-color 1px, transparent 1px);
+}

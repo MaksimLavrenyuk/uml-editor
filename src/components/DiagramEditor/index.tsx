@@ -1,36 +1,30 @@
-import { I18n } from '@lingui/core';
-import { withI18n } from '@lingui/react';
-import { useMemo } from 'react';
-import Diagram from './Diagram';
-import DiagramWidget from './Diagram/widgets/DiagramWidget';
+import React, { useState, useCallback, useMemo } from 'react';
+import ComponentDiagram from '../ComponentDiagram';
+import CodeEditor from '../CodeEditor';
 import classes from './DiagramEditor.module.scss';
-import ComponentsList from './ComponentsList';
-import LinkValidator from './Diagram/models/LinkValidator';
-import ComponentFactory from '../../models/factories/ComponentFactory';
-
-type DiagramEditorProps = {
-    i18n: I18n
-};
+import { ComponentI } from '../../models/components/Component';
+import FormatterDiagram from '../../lib/Formatter';
+import { Formatter } from '../../models/Formatter';
 
 /**
- * Component of the diagram editor. Includes everything you need - host and control.
+ * Component for creating and editing diagrams.
+ * Includes a component diagram and a code editor that reflects changes to the diagram.
  *
- * @param props - React props.
  */
-function DiagramEditor(props: DiagramEditorProps) {
-    const { i18n } = props;
-    const diagram = useMemo(() => (
-        new Diagram([], {
-            i18n, linkValidator: new LinkValidator(), componentFactory: new ComponentFactory(),
-        })
-    ), [i18n]);
+function DiagramEditor() {
+    const [editorContent, setEditorContent] = useState('');
+    const formatter: Formatter = useMemo(() => new FormatterDiagram(), []);
+
+    const changeDiagramHandler = useCallback((components: ComponentI[]) => {
+        setEditorContent(formatter.serialize(components));
+    }, [formatter]);
 
     return (
-        <div className={classes.body}>
-            <ComponentsList />
-            <DiagramWidget diagram={diagram} />
+        <div className={classes.container}>
+            <ComponentDiagram onChange={changeDiagramHandler} className={classes.diagram} />
+            <CodeEditor className={classes.code} value={editorContent} />
         </div>
     );
 }
 
-export default withI18n()(DiagramEditor);
+export default React.memo(DiagramEditor);
