@@ -1,6 +1,7 @@
-import { I18n } from '@lingui/core';
-import { withI18n } from '@lingui/react';
-import { useEffect, useMemo, memo } from 'react';
+import { useLingui } from '@lingui/react';
+import React, {
+    useEffect, useMemo, memo, ForwardedRef,
+} from 'react';
 import Diagram, { DiagramEvents } from './Diagram';
 import DiagramWidget from './Diagram/widgets/DiagramWidget';
 import classes from './ComponentDiagram.module.scss';
@@ -10,7 +11,6 @@ import ComponentFactory from '../../models/factories/ComponentFactory';
 import { ComponentI } from '../../models/components/Component';
 
 type DiagramEditorProps = {
-    i18n: I18n
     className?: string
     onChange(content: ComponentI[]): void
 };
@@ -20,8 +20,9 @@ type DiagramEditorProps = {
  *
  * @param props - React props.
  */
-function ComponentDiagram(props: DiagramEditorProps) {
-    const { i18n, className = '', onChange } = props;
+const ComponentDiagram = React.forwardRef((props: DiagramEditorProps, diagramRef: ForwardedRef<HTMLDivElement>) => {
+    const { className = '', onChange } = props;
+    const { i18n } = useLingui();
     const diagram = useMemo(() => (
         new Diagram([], {
             i18n, linkValidator: new LinkValidator(), componentFactory: new ComponentFactory(),
@@ -35,11 +36,11 @@ function ComponentDiagram(props: DiagramEditorProps) {
     }, [diagram, onChange]);
 
     return (
-        <div className={`${classes.container} ${className}`}>
+        <div ref={diagramRef} className={`${classes.container} ${className}`}>
             <ComponentsList />
             <DiagramWidget diagram={diagram} />
         </div>
     );
-}
+});
 
-export default withI18n()(memo(ComponentDiagram));
+export default memo(ComponentDiagram);

@@ -1,0 +1,15 @@
+$dividerWidth: 18px;
+$dividerBackground: #f5f5f5;
+$dividerBorderWidth: 1px;
+$dividerBorderColor: #cacaca;
+
+.divider {
+  height: 100%;
+  width: $dividerWidth;
+  cursor: col-resize;
+  border: $dividerBorderWidth solid $dividerBorderColor;
+  background-color: $dividerBackground;
+  position: absolute;
+  left: calc(50% - #{$dividerWidth / 2});
+  z-index: 3;
+}
