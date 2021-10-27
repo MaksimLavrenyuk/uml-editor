@@ -5,7 +5,13 @@
  * @param precision -  Number of significant digits. Must be in the range 1 - 21, inclusive.
  */
 function getPercent(value: number, total: number, precision = 2) {
-    return Number(((value / total) * 100).toPrecision(precision));
+    if (total === 0) return null;
+
+    try {
+        return Number(((value / total) * 100).toFixed(precision));
+    } catch (e) {
+        return null;
+    }
 }
 
 export default getPercent;
