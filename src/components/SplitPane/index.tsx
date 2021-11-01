@@ -32,28 +32,31 @@ function SplitPane(props: SplitPaneProps) {
         let pane2Width = 0;
         let parentWidth = 0;
         let resizerWidth = 0;
+        let workspaceWidth = 0;
+        let newLeftPos = 0;
 
         if (resizer && parent && pane1 && pane2) {
-            const rightEdge = parent.offsetWidth - resizer.offsetWidth;
-            let newLeft = mouseMoveClientX + shiftX - parent.getBoundingClientRect().left;
+            newLeftPos = mouseMoveClientX + shiftX - parent.getBoundingClientRect().left;
+            workspaceWidth = parent.offsetWidth - resizer.offsetWidth;
 
             parentWidth = parent.offsetWidth;
             resizerWidth = resizer.offsetWidth;
 
-            if (newLeft < 0) {
-                newLeft = 0;
+            if (newLeftPos < 0) {
+                newLeftPos = 0;
             }
 
-            if (newLeft > rightEdge) {
-                newLeft = rightEdge;
-                newLeft -= resizerWidth;
+            if (newLeftPos > workspaceWidth) {
+                newLeftPos = workspaceWidth;
+                newLeftPos -= resizerWidth;
             }
-            pane2Width = rightEdge - newLeft;
-            pane1Width = rightEdge - pane2Width;
 
-            resizer.style.left = `${getPercent(newLeft, parentWidth)}%`;
-            pane1.style.width = `calc(${getPercent(pane1Width, rightEdge)}% - ${resizerWidth / 2}px)`;
-            pane2.style.width = `calc(${getPercent(pane2Width, rightEdge)}% - ${resizerWidth / 2}px)`;
+            pane2Width = workspaceWidth - newLeftPos;
+            pane1Width = workspaceWidth - pane2Width;
+
+            resizer.style.left = `${getPercent(newLeftPos, parentWidth)}%`;
+            pane1.style.width = `calc(${getPercent(pane1Width, workspaceWidth)}% - ${resizerWidth / 2}px)`;
+            pane2.style.width = `calc(${getPercent(pane2Width, workspaceWidth)}% - ${resizerWidth / 2}px)`;
         }
     }, []);
 
