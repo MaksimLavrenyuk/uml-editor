@@ -3,7 +3,6 @@ import React, {
 } from 'react';
 import ComponentDiagram from '../ComponentDiagram';
 import CodeEditor from '../CodeEditor';
-import classes from './DiagramEditor.module.scss';
 import { ComponentI } from '../../models/components/Component';
 import FormatterDiagram from '../../lib/Formatter';
 import { Formatter } from '../../models/Formatter';
@@ -23,9 +22,9 @@ function DiagramEditor() {
     }, [formatter]);
 
     return (
-        <SplitPane className={classes.container}>
-            <ComponentDiagram onChange={changeDiagramHandler} className={classes.diagram} />
-            <CodeEditor className={classes.code} value={editorContent} />
+        <SplitPane>
+            <ComponentDiagram onChange={changeDiagramHandler} />
+            <CodeEditor value={editorContent} />
         </SplitPane>
     );
 }
