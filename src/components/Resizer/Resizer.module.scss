@@ -1,0 +1,15 @@
+$resizerWidth: 18px;
+$resizerBackground: #f5f5f5;
+$resizerBorderWidth: 1px;
+$resizerBorderColor: #cacaca;
+
+.resizer {
+  height: calc(100% - #{$resizerBorderWidth} * 2);
+  width: $resizerWidth;
+  cursor: col-resize;
+  border: $resizerBorderWidth solid $resizerBorderColor;
+  background-color: $resizerBackground;
+  position: absolute;
+  left: calc(50% - #{$resizerWidth / 2});
+  z-index: 3;
+}
