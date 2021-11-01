@@ -1,5 +1,5 @@
 import React, {
-    useState, useCallback, useMemo, useRef,
+    useState, useCallback, useMemo,
 } from 'react';
 import ComponentDiagram from '../ComponentDiagram';
 import CodeEditor from '../CodeEditor';
@@ -7,7 +7,7 @@ import classes from './DiagramEditor.module.scss';
 import { ComponentI } from '../../models/components/Component';
 import FormatterDiagram from '../../lib/Formatter';
 import { Formatter } from '../../models/Formatter';
-import Resizer from '../Resizer';
+import SplitPane from '../SplitPane';
 
 /**
  * Component for creating and editing diagrams.
@@ -15,9 +15,6 @@ import Resizer from '../Resizer';
  *
  */
 function DiagramEditor() {
-    const diagramRef = useRef<HTMLDivElement>(null);
-    const editorRef = useRef<HTMLDivElement>(null);
-    const containerRef = useRef<HTMLDivElement>(null);
     const [editorContent, setEditorContent] = useState('');
     const formatter: Formatter = useMemo(() => new FormatterDiagram(), []);
 
@@ -26,15 +23,10 @@ function DiagramEditor() {
     }, [formatter]);
 
     return (
-        <div ref={containerRef} className={classes.container}>
-            <ComponentDiagram ref={diagramRef} onChange={changeDiagramHandler} className={classes.diagram} />
-            <Resizer
-                parentContainer={containerRef}
-                leftContainer={diagramRef}
-                rightContainer={editorRef}
-            />
-            <CodeEditor ref={editorRef} className={classes.code} value={editorContent} />
-        </div>
+        <SplitPane className={classes.container}>
+            <ComponentDiagram onChange={changeDiagramHandler} className={classes.diagram} />
+            <CodeEditor className={classes.code} value={editorContent} />
+        </SplitPane>
     );
 }
 

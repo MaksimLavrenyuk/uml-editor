@@ -2,7 +2,7 @@ import React, {
     useCallback, useEffect, useMemo, useRef,
 } from 'react';
 import classes from './Resizer.module.scss';
-import getPercent from '../../utils/number/getPercent';
+import getPercent from '../../../utils/number/getPercent';
 
 type ResizerProps<
     LeftContainer extends HTMLElement,
@@ -50,8 +50,8 @@ const Resizer = <
             leftPartWidth = rightEdge - rightPartWidth;
 
             resizer.style.left = `${getPercent(newLeft, parentWidth)}%`;
-            left.style.width = `${getPercent(leftPartWidth, rightEdge)}%`;
-            right.style.width = `${getPercent(rightPartWidth, rightEdge)}%`;
+            left.style.flexBasis = `${getPercent(leftPartWidth, rightEdge)}%`;
+            right.style.flexBasis = `${getPercent(rightPartWidth, rightEdge)}%`;
         }
     }, [leftContainer, parentContainer, rightContainer]);
 
