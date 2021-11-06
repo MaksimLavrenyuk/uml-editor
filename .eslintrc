@@ -79,7 +79,8 @@
     "no-trailing-spaces": "warn",
     "function-paren-newline": "warn",
     "spaced-comment": "warn",
-    "class-methods-use-this": "off"
+    "class-methods-use-this": "off",
+    "react/no-find-dom-node": "off",
   },
   "settings": {
     "import/resolver": {

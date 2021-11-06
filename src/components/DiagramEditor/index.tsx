@@ -1,10 +1,12 @@
-import React, { useState, useCallback, useMemo } from 'react';
+import React, {
+    useState, useCallback, useMemo,
+} from 'react';
 import ComponentDiagram from '../ComponentDiagram';
 import CodeEditor from '../CodeEditor';
-import classes from './DiagramEditor.module.scss';
 import { ComponentI } from '../../models/components/Component';
 import FormatterDiagram from '../../lib/Formatter';
 import { Formatter } from '../../models/Formatter';
+import SplitPane from '../SplitPane';
 
 /**
  * Component for creating and editing diagrams.
@@ -20,10 +22,10 @@ function DiagramEditor() {
     }, [formatter]);
 
     return (
-        <div className={classes.container}>
-            <ComponentDiagram onChange={changeDiagramHandler} className={classes.diagram} />
-            <CodeEditor className={classes.code} value={editorContent} />
-        </div>
+        <SplitPane>
+            <ComponentDiagram onChange={changeDiagramHandler} />
+            <CodeEditor value={editorContent} />
+        </SplitPane>
     );
 }
 
