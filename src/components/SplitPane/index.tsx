@@ -34,12 +34,9 @@ class SplitPane extends Component<SplitPaneProps> {
         this.move = this.move.bind(this);
         this.mouseDownHandler = this.mouseDownHandler.bind(this);
         this.MouseMoveHandler = this.MouseMoveHandler.bind(this);
+        this.touchStartHandler = this.touchStartHandler.bind(this);
+        this.touchMoveHandler = this.touchMoveHandler.bind(this);
     }
-    //
-    // componentDidMount() {
-    //     document.addEventListener('mousemove', onMouseMove);
-    //     document.addEventListener('mouseup', onMouseUp);
-    // }
 
     move(position = 0) {
         const resizer = this.resizerRef.current;
@@ -82,24 +79,35 @@ class SplitPane extends Component<SplitPaneProps> {
         this.move(e.clientX);
     }
 
+    touchMoveHandler(e: TouchEvent) {
+        this.move(e.touches[0].clientX);
+    }
+
     mouseDownHandler(event: React.MouseEvent) {
         event.preventDefault();
-        const resizer = this.resizerRef.current;
 
         const onMouseUp = () => {
             document.removeEventListener('mouseup', onMouseUp);
             document.removeEventListener('mousemove', this.MouseMoveHandler);
         };
 
-        if (resizer) {
-            document.addEventListener('mousemove', this.MouseMoveHandler);
-            document.addEventListener('mouseup', onMouseUp);
-        }
+        document.addEventListener('mousemove', this.MouseMoveHandler);
+        document.addEventListener('mouseup', onMouseUp);
+    }
+
+    touchStartHandler() {
+        const onTouchEnd = () => {
+            document.removeEventListener('touchend', onTouchEnd);
+            document.removeEventListener('touchmove', this.touchMoveHandler);
+        };
+
+        document.addEventListener('touchmove', this.touchMoveHandler);
+        document.addEventListener('touchend', onTouchEnd);
     }
 
     render() {
         const {
-            splitPaneRef, pane1Ref, pane2Ref, resizerRef, mouseDownHandler,
+            splitPaneRef, pane1Ref, pane2Ref, resizerRef, mouseDownHandler, touchStartHandler,
         } = this;
         const { children, className = '' } = this.props;
         const notNullChildren = removeNullChildren(children);
@@ -109,7 +117,11 @@ class SplitPane extends Component<SplitPaneProps> {
                 <Pane innerRef={pane1Ref}>
                     {notNullChildren[0]}
                 </Pane>
-                <Resizer innerRef={resizerRef} onMouseDown={mouseDownHandler} />
+                <Resizer
+                    innerRef={resizerRef}
+                    onMouseDown={mouseDownHandler}
+                    onTouchStart={touchStartHandler}
+                />
                 <Pane innerRef={pane2Ref}>
                     {notNullChildren[1]}
                 </Pane>

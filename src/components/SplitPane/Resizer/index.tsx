@@ -5,6 +5,7 @@ import classes from './Resizer.module.scss';
 
 type ResizerProps = {
     onMouseDown(event: React.MouseEvent): void
+    onTouchStart(event: React.TouchEvent): void
     innerRef: RefObject<HTMLDivElement>
 };
 
@@ -13,7 +14,7 @@ class Resizer extends Component<ResizerProps> {
 
     render() {
         const { dragStartHandler } = this;
-        const { onMouseDown, innerRef } = this.props;
+        const { onMouseDown, onTouchStart, innerRef } = this.props;
 
         return (
             <div
@@ -21,6 +22,7 @@ class Resizer extends Component<ResizerProps> {
                 ref={innerRef}
                 className={classes.resizer}
                 onDragStart={dragStartHandler}
+                onTouchStart={onTouchStart}
                 onMouseDown={onMouseDown}
             />
         );
