@@ -1,5 +1,5 @@
 import React, {
-    ReactNode, useRef, useMemo, useEffect, useCallback,
+    ReactNode, Component, createRef,
 } from 'react';
 import Pane from './Pane';
 import Resizer from './Resizer';
@@ -15,19 +15,37 @@ function removeNullChildren(children: ReactNode) {
     return React.Children.toArray(children).filter((c) => c);
 }
 
-function SplitPane(props: SplitPaneProps) {
-    const { className = '', children } = props;
-    const splitPaneRef = useRef<HTMLDivElement>(null);
-    const pane1Ref = useRef<HTMLDivElement>(null);
-    const pane2Ref = useRef<HTMLDivElement>(null);
-    const resizerRef = useRef<HTMLDivElement>(null);
-    const notNullChildren = useMemo(() => removeNullChildren(children), [children]);
+class SplitPane extends Component<SplitPaneProps> {
+    private splitPaneRef: React.RefObject<HTMLDivElement>;
 
-    const move = useCallback((shiftX = 0, mouseMoveClientX = 0) => {
-        const resizer = resizerRef.current;
-        const parent = splitPaneRef.current;
-        const pane1 = pane1Ref.current;
-        const pane2 = pane2Ref.current;
+    private pane1Ref: React.RefObject<HTMLDivElement>;
+
+    private pane2Ref: React.RefObject<HTMLDivElement>;
+
+    private resizerRef: React.RefObject<HTMLDivElement>;
+
+    constructor(props: SplitPaneProps) {
+        super(props);
+
+        this.splitPaneRef = createRef<HTMLDivElement>();
+        this.pane1Ref = createRef<HTMLDivElement>();
+        this.pane2Ref = createRef<HTMLDivElement>();
+        this.resizerRef = createRef<HTMLDivElement>();
+        this.move = this.move.bind(this);
+        this.mouseDownHandler = this.mouseDownHandler.bind(this);
+        this.MouseMoveHandler = this.MouseMoveHandler.bind(this);
+    }
+    //
+    // componentDidMount() {
+    //     document.addEventListener('mousemove', onMouseMove);
+    //     document.addEventListener('mouseup', onMouseUp);
+    // }
+
+    move(position = 0) {
+        const resizer = this.resizerRef.current;
+        const parent = this.splitPaneRef.current;
+        const pane1 = this.pane1Ref.current;
+        const pane2 = this.pane2Ref.current;
         let pane1Width = 0;
         let pane2Width = 0;
         let parentWidth = 0;
@@ -36,7 +54,7 @@ function SplitPane(props: SplitPaneProps) {
         let newLeftPos = 0;
 
         if (resizer && parent && pane1 && pane2) {
-            newLeftPos = mouseMoveClientX + shiftX - parent.getBoundingClientRect().left;
+            newLeftPos = position - parent.getBoundingClientRect().left;
             workspaceWidth = parent.offsetWidth - resizer.offsetWidth;
 
             parentWidth = parent.offsetWidth;
@@ -54,47 +72,50 @@ function SplitPane(props: SplitPaneProps) {
             pane2Width = workspaceWidth - newLeftPos;
             pane1Width = workspaceWidth - pane2Width;
 
-            resizer.style.left = `${getPercent(newLeftPos, parentWidth)}%`;
-            pane1.style.width = `calc(${getPercent(pane1Width, workspaceWidth)}% - ${resizerWidth / 2}px)`;
-            pane2.style.width = `calc(${getPercent(pane2Width, workspaceWidth)}% - ${resizerWidth / 2}px)`;
+            resizer.style.left = `${getPercent(newLeftPos, parentWidth) || 0}%`;
+            pane1.style.width = `calc(${getPercent(pane1Width, workspaceWidth) || 0}% - ${resizerWidth / 2}px)`;
+            pane2.style.width = `calc(${getPercent(pane2Width, workspaceWidth) || 0}% - ${resizerWidth / 2}px)`;
         }
-    }, []);
+    }
 
-    const mouseDownHandler = (event: React.MouseEvent) => {
-        event.preventDefault(); // prevent the selection from starting (browser action)
-        const resizer = resizerRef.current;
-        let shiftX = 0;
+    MouseMoveHandler(e: MouseEvent) {
+        this.move(e.clientX);
+    }
 
-        if (resizer) {
-            shiftX = event.clientX - resizer.getBoundingClientRect().left;
-        }
+    mouseDownHandler(event: React.MouseEvent) {
+        event.preventDefault();
+        const resizer = this.resizerRef.current;
 
-        function onMouseMove(e: MouseEvent) {
-            move(shiftX, e.clientX);
-        }
-
-        function onMouseUp() {
+        const onMouseUp = () => {
             document.removeEventListener('mouseup', onMouseUp);
-            document.removeEventListener('mousemove', onMouseMove);
-        }
+            document.removeEventListener('mousemove', this.MouseMoveHandler);
+        };
 
         if (resizer) {
-            document.addEventListener('mousemove', onMouseMove);
+            document.addEventListener('mousemove', this.MouseMoveHandler);
             document.addEventListener('mouseup', onMouseUp);
         }
-    };
+    }
 
-    return (
-        <div ref={splitPaneRef} className={`${classes.SplitPane} ${className}`}>
-            <Pane ref={pane1Ref}>
-                {notNullChildren[0]}
-            </Pane>
-            <Resizer ref={resizerRef} onMouseDown={mouseDownHandler} />
-            <Pane ref={pane2Ref}>
-                {notNullChildren[1]}
-            </Pane>
-        </div>
-    );
+    render() {
+        const {
+            splitPaneRef, pane1Ref, pane2Ref, resizerRef, mouseDownHandler,
+        } = this;
+        const { children, className = '' } = this.props;
+        const notNullChildren = removeNullChildren(children);
+
+        return (
+            <div ref={splitPaneRef} className={`${classes.SplitPane} ${className}`}>
+                <Pane innerRef={pane1Ref}>
+                    {notNullChildren[0]}
+                </Pane>
+                <Resizer innerRef={resizerRef} onMouseDown={mouseDownHandler} />
+                <Pane innerRef={pane2Ref}>
+                    {notNullChildren[1]}
+                </Pane>
+            </div>
+        );
+    }
 }
 
-export default React.memo(SplitPane);
+export default SplitPane;

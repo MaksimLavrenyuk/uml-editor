@@ -1,23 +1,30 @@
-import React, { ForwardedRef } from 'react';
+import React, {
+    Component, RefObject,
+} from 'react';
 import classes from './Resizer.module.scss';
 
 type ResizerProps = {
     onMouseDown(event: React.MouseEvent): void
+    innerRef: RefObject<HTMLDivElement>
 };
 
-const Resizer = React.forwardRef((props: ResizerProps, ref: ForwardedRef<HTMLDivElement>) => {
-    const { onMouseDown } = props;
-    const dragStartHandler = () => false;
+class Resizer extends Component<ResizerProps> {
+    dragStartHandler() { return false; }
 
-    return (
-        <div
-            role="presentation"
-            ref={ref}
-            className={classes.resizer}
-            onDragStart={dragStartHandler}
-            onMouseDown={onMouseDown}
-        />
-    );
-});
+    render() {
+        const { dragStartHandler } = this;
+        const { onMouseDown, innerRef } = this.props;
 
-export default React.memo(Resizer);
+        return (
+            <div
+                role="presentation"
+                ref={innerRef}
+                className={classes.resizer}
+                onDragStart={dragStartHandler}
+                onMouseDown={onMouseDown}
+            />
+        );
+    }
+}
+
+export default Resizer;
