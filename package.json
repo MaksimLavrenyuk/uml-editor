@@ -27,6 +27,7 @@
     "closest": "^0.0.1",
     "dagre": "^0.8.5",
     "has": "^1.0.3",
+    "inversify": "^6.0.1",
     "lodash": "^4.17.21",
     "make-plural": "^6.2.2",
     "mobx": "^6.3.2",
@@ -45,7 +46,7 @@
     "reset-css": "^5.0.1",
     "resize-observer-polyfill": "^1.5.1",
     "tplant": "^3.1.0",
-    "typescript": "^4.3.5"
+    "typescript": "^4.5.2"
   },
   "scripts": {
     "start": "yarn install --check-files && react-scripts start ",
