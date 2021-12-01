@@ -12,6 +12,7 @@ import Class from '../../../models/components/Class';
 import { LinkValidatorI } from './models/LinkValidator';
 import ZoomAction from './actions/ZoomAction';
 import Observable from '../../../lib/Observable';
+import LinkFactory from './factories/LinkFactory';
 
 type DiagramDeps = {
     i18n: I18n,
@@ -65,16 +66,16 @@ export class Diagram implements DiagramStruct {
      * @private
      */
     private registerFactories() {
-        this.diagramEngine
-            .getNodeFactories()
-            .registerFactory(new NodeClassFactory({
-                factory: this.componentFactory, linkValidator: this.linkValidator,
-            }));
-        this.diagramEngine
-            .getNodeFactories()
-            .registerFactory(new NodeInterfaceFactory({
-                factory: this.componentFactory, linkValidator: this.linkValidator,
-            }));
+        const nodeFactories = this.diagramEngine.getNodeFactories();
+        const linkFactories = this.diagramEngine.getLinkFactories();
+
+        nodeFactories.registerFactory(new NodeClassFactory({
+            factory: this.componentFactory, linkValidator: this.linkValidator,
+        }));
+        nodeFactories.registerFactory(new NodeInterfaceFactory({
+            factory: this.componentFactory, linkValidator: this.linkValidator,
+        }));
+        linkFactories.registerFactory(new LinkFactory());
     }
 
     private registerActions() {

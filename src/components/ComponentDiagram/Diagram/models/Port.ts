@@ -1,5 +1,4 @@
 import {
-    DefaultLinkModel,
     LinkModel,
     PortModel,
     PortModelAlignment,
@@ -9,6 +8,7 @@ import isType from '../../../../utils/guards/isType';
 import { LinkValidatorI } from './LinkValidator';
 import Observable from '../../../../lib/Observable';
 import { NodeI } from './Node';
+import Link from './Link';
 
 export type PortChangeEvent = BaseEntityEvent<LinkModel> & { port: null | PortModel };
 
@@ -54,7 +54,7 @@ export class Port extends PortModel {
     }
 
     createLinkModel(): LinkModel {
-        const link = new DefaultLinkModel();
+        const link = new Link();
 
         link.registerListener({
             targetPortChanged: (event: PortChangeEvent | BaseEvent) => {
