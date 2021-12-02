@@ -1,4 +1,9 @@
-import createEngine, { DiagramEngine, DiagramModel, NodeModel } from '@projectstorm/react-diagrams';
+import createEngine, {
+    DefaultDiagramState,
+    DiagramEngine,
+    DiagramModel,
+    NodeModel,
+} from '@projectstorm/react-diagrams';
 import { I18n } from '@lingui/core';
 import { Point } from '@projectstorm/geometry';
 import { NodeClassFactory } from './factories/NodeClassFactory';
@@ -49,15 +54,23 @@ export class Diagram implements DiagramStruct {
         this.componentFactory = deps.componentFactory;
         this.linkValidator = deps.linkValidator;
         this.observableChange = new Observable<EventPayload[DiagramEvents.change]>();
+        this.disableLooseLink();
         this.registerFactories();
         this.registerActions();
         this.newModel();
-        this.fill(components);
+        this.fill([new Class('example1'), new Class('example2')]);
     }
 
     private newModel() {
         this.activeModel = new DiagramModel();
         this.diagramEngine.setModel(this.activeModel);
+    }
+
+    private disableLooseLink() {
+        const state = this.diagramEngine.getStateMachine().getCurrentState();
+        if (state instanceof DefaultDiagramState) {
+            state.dragNewLink.config.allowLooseLinks = false;
+        }
     }
 
     /**
@@ -75,7 +88,7 @@ export class Diagram implements DiagramStruct {
         nodeFactories.registerFactory(new NodeInterfaceFactory({
             factory: this.componentFactory, linkValidator: this.linkValidator,
         }));
-        linkFactories.registerFactory(new LinkFactory());
+        // linkFactories.registerFactory(new LinkFactory());
     }
 
     private registerActions() {
