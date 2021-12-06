@@ -5,7 +5,7 @@ import LinkSegmentWidget from '../widgets/NodeWidgets/LinkSegmentWidget';
 
 export default class LinkFactory extends DefaultLinkFactory {
     constructor() {
-        super('nodeLink');
+        super('default');
     }
 
     generateModel(): Link {

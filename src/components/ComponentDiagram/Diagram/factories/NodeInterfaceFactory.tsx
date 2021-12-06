@@ -11,6 +11,7 @@ import { LinkValidatorI } from '../models/LinkValidator';
 type NodeInterfaceFactoryProps = {
     factory: ComponentFactory
     linkValidator: LinkValidatorI
+    isConnectionMode(): boolean
 };
 
 /**
@@ -24,14 +25,23 @@ export default class NodeInterfaceFactory extends AbstractReactFactory<Node, Dia
 
     private readonly linkValidator: LinkValidatorI;
 
+    private isConnectionMode: () => boolean;
+
     constructor(props: NodeInterfaceFactoryProps) {
         super(ComponentType.INTERFACE);
         this.factory = props.factory;
         this.linkValidator = props.linkValidator;
+        this.isConnectionMode = props.isConnectionMode;
     }
 
     generateReactWidget(event: { model: Node }): JSX.Element {
-        return <NodeInterfaceWidget engine={this.engine} node={event.model} />;
+        return (
+            <NodeInterfaceWidget
+                engine={this.engine}
+                node={event.model}
+                isConnectionMode={this.isConnectionMode}
+            />
+        );
     }
 
     generateModel() {

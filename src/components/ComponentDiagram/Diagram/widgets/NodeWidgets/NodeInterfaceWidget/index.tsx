@@ -7,6 +7,7 @@ import NodeWidget from '../NodeWidget';
 export interface NodeWidgetProps {
     node: Node;
     engine: DiagramEngine;
+    isConnectionMode(): boolean
 }
 
 /**
@@ -15,12 +16,13 @@ export interface NodeWidgetProps {
  * @param props - React node.
  */
 function NodeInterfaceWidget(props: NodeWidgetProps) {
-    const { node, engine } = props;
+    const { node, engine, isConnectionMode } = props;
     const portTop = node.getPort(PortModelAlignment.TOP);
     const portBottom = node.getPort(PortModelAlignment.BOTTOM);
 
     return (
         <NodeWidget
+            isConnectionMode={isConnectionMode}
             portTop={portTop}
             portBottom={portBottom}
             diagramEngine={engine}

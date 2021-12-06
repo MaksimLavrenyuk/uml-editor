@@ -6,9 +6,10 @@ import createEngine, {
 } from '@projectstorm/react-diagrams';
 import { I18n } from '@lingui/core';
 import { Point } from '@projectstorm/geometry';
+import { observable, makeObservable, action } from 'mobx';
 import { NodeClassFactory } from './factories/NodeClassFactory';
 import DiagramStruct, { DiagramInitialNode } from '../../../models/Diagram';
-import { Node, NodeEvents, NodeI } from './models/Node';
+import { Node, NodeI } from './models/Node';
 import NodeInterfaceFactory from './factories/NodeInterfaceFactory';
 import ComponentFactory from '../../../models/factories/ComponentFactory';
 import { ComponentI } from '../../../models/components/Component';
@@ -44,7 +45,10 @@ export class Diagram implements DiagramStruct {
 
     private readonly linkValidator: LinkValidatorI;
 
-    private observableChange: Observable<EventPayload[DiagramEvents.change]>;
+    private observableChange = new Observable<EventPayload[DiagramEvents.change]>();
+
+    @observable
+    private connectionMode = false;
 
     constructor(components: ComponentI[], deps: DiagramDeps) {
         this.diagramEngine = createEngine({
@@ -53,18 +57,26 @@ export class Diagram implements DiagramStruct {
         this.i18n = deps.i18n;
         this.componentFactory = deps.componentFactory;
         this.linkValidator = deps.linkValidator;
-        this.observableChange = new Observable<EventPayload[DiagramEvents.change]>();
         this.disableLooseLink();
         this.registerFactories();
         this.registerActions();
         this.newModel();
         this.fill([new Class('example1'), new Class('example2')]);
+
+        makeObservable(this);
     }
 
     private newModel() {
         this.activeModel = new DiagramModel();
         this.diagramEngine.setModel(this.activeModel);
     }
+
+    @action
+    private changeConnectionMode(connection: boolean) {
+        this.connectionMode = connection;
+    }
+
+    public isConnectionMode = () => this.connectionMode;
 
     private disableLooseLink() {
         const state = this.diagramEngine.getStateMachine().getCurrentState();
@@ -83,12 +95,16 @@ export class Diagram implements DiagramStruct {
         const linkFactories = this.diagramEngine.getLinkFactories();
 
         nodeFactories.registerFactory(new NodeClassFactory({
-            factory: this.componentFactory, linkValidator: this.linkValidator,
+            factory: this.componentFactory,
+            linkValidator: this.linkValidator,
+            isConnectionMode: this.isConnectionMode,
         }));
         nodeFactories.registerFactory(new NodeInterfaceFactory({
-            factory: this.componentFactory, linkValidator: this.linkValidator,
+            factory: this.componentFactory,
+            linkValidator: this.linkValidator,
+            isConnectionMode: this.isConnectionMode,
         }));
-        // linkFactories.registerFactory(new LinkFactory());
+        linkFactories.registerFactory(new LinkFactory());
     }
 
     private registerActions() {
@@ -96,7 +112,7 @@ export class Diagram implements DiagramStruct {
             new ZoomAction(),
         ];
 
-        actions.forEach((action) => this.diagramEngine.getActionEventBus().registerAction(action));
+        actions.forEach((zoomAction) => this.diagramEngine.getActionEventBus().registerAction(zoomAction));
     }
 
     public addEventListener<T extends DiagramEvents>(event: T, listener: (payload: EventPayload[T]) => void) {
@@ -127,12 +143,12 @@ export class Diagram implements DiagramStruct {
             linkValidator: this.linkValidator,
         });
 
-        node.addEventListener(NodeEvents.change, () => {
+        node.observableChange.registerListener(() => {
             this.observableChange.emit(this.content());
         });
 
-        node.addEventListener(NodeEvents.change, () => {
-            this.observableChange.emit(this.content());
+        node.observableConnection.registerListener((connection) => {
+            this.changeConnectionMode(connection);
         });
 
         node.setPosition(initialNode.point || new Point(100, 100));

@@ -10,6 +10,7 @@ type NodeWidgetProps = {
     portBottom: PortModel | null
     diagramEngine: DiagramEngine,
     header: ReactNode
+    isConnectionMode(): boolean
 };
 
 /**
@@ -19,16 +20,26 @@ type NodeWidgetProps = {
  */
 function NodeWidget(props: NodeWidgetProps) {
     const {
-        portBottom, portTop, diagramEngine, header,
+        portBottom, portTop, diagramEngine, header, isConnectionMode,
     } = props;
 
     return (
         <div className={classes.node}>
-            <Port port={portTop} diagramEngine={diagramEngine} position="top" />
+            <Port
+                isConnectionMode={isConnectionMode}
+                port={portTop}
+                diagramEngine={diagramEngine}
+                position="top"
+            />
             <NodeWidgetContent
                 header={header}
             />
-            <Port port={portBottom} diagramEngine={diagramEngine} position="bottom" />
+            <Port
+                isConnectionMode={isConnectionMode}
+                port={portBottom}
+                diagramEngine={diagramEngine}
+                position="bottom"
+            />
         </div>
     );
 }

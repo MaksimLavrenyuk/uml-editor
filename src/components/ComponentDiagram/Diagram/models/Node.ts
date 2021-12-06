@@ -1,12 +1,11 @@
 import { NodeModel, PortModelAlignment } from '@projectstorm/react-diagrams';
 import { action, makeObservable, observable } from 'mobx';
-import { Port, PortChangeEvent, PortEvents } from './Port';
+import { Port, PortEvents } from './Port';
 import ComponentType from '../../../../models/ComponentType';
 import ComponentFactory from '../../../../models/factories/ComponentFactory';
 import { ComponentI } from '../../../../models/components/Component';
 import { LinkValidatorI } from './LinkValidator';
 import Observable from '../../../../lib/Observable';
-import isType from '../../../../utils/guards/isType';
 
 export interface NodeI extends NodeModel {
     content(): ComponentI | undefined
@@ -22,14 +21,6 @@ export type NodeProps = {
     linkValidator: LinkValidatorI
 };
 
-export enum NodeEvents {
-    change = 'change'
-}
-
-type EventPayload = {
-    [NodeEvents.change]: ComponentI
-};
-
 export class Node extends NodeModel implements NodeI {
     @observable
     private name: string;
@@ -38,7 +29,9 @@ export class Node extends NodeModel implements NodeI {
 
     private extends: string | undefined;
 
-    private observableChange: Observable<EventPayload[NodeEvents.change]>;
+    public observableChange = new Observable<ComponentI>();
+
+    public observableConnection = new Observable<boolean>();
 
     private linkValidator: LinkValidatorI;
 
@@ -56,7 +49,6 @@ export class Node extends NodeModel implements NodeI {
         this.name = props.name;
         this.factory = props.factory;
         this.extends = props.extends;
-        this.observableChange = new Observable<EventPayload[NodeEvents.change]>();
 
         this.addPort(this.portTop);
         this.addPort(this.portBottom);
@@ -66,6 +58,12 @@ export class Node extends NodeModel implements NodeI {
     }
 
     private registerListeners() {
+        this.portTop.addEventListener(PortEvents.startConnection, () => {
+            this.observableConnection.emit(true);
+        });
+        this.portTop.addEventListener(PortEvents.endConnection, () => {
+            this.observableConnection.emit(false);
+        });
         this.portTop.addEventListener(PortEvents.targetPortChanged, () => {
             this.dispatchChangeEvent();
         });
@@ -80,15 +78,6 @@ export class Node extends NodeModel implements NodeI {
     changeName(name: string) {
         this.name = name;
         this.dispatchChangeEvent();
-    }
-
-    public addEventListener<T extends NodeEvents>(event: T, listener: (payload: EventPayload[T]) => void) {
-        switch (event) {
-        case NodeEvents.change:
-            this.observableChange.registerListener(listener);
-            break;
-        default:
-        }
     }
 
     getName = () => this.name;

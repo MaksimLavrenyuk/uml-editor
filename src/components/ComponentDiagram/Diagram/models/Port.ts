@@ -10,24 +10,25 @@ import Observable from '../../../../lib/Observable';
 import { NodeI } from './Node';
 import Link from './Link';
 
-export type PortChangeEvent = BaseEntityEvent<LinkModel> & { port: null | PortModel };
+export type PortEvent = BaseEntityEvent<LinkModel> & { port: null | PortModel };
 
 export enum PortEvents {
     targetPortChanged = 'targetPortChanged',
     sourcePortChanged = 'sourcePortChanged',
+    startConnection = 'startConnection',
+    endConnection = 'endConnection',
 }
-
-type EventPayload = {
-    [PortEvents.sourcePortChanged]: PortChangeEvent
-    [PortEvents.targetPortChanged]: PortChangeEvent
-};
 
 export class Port extends PortModel {
     private linkValidator: LinkValidatorI;
 
-    private observableSourcePortChanged: Observable<EventPayload[PortEvents.sourcePortChanged]>;
+    private observableSourcePortChanged = new Observable<PortEvent>();
 
-    private observableTargetPortChanged: Observable<EventPayload[PortEvents.targetPortChanged]>;
+    private observableTargetPortChanged = new Observable<PortEvent>();
+
+    private observableStartConnection = new Observable<PortEvent>();
+
+    private observableEndConnection = new Observable<PortEvent>();
 
     constructor(alignment: PortModelAlignment, linkValidator: LinkValidatorI) {
         super({
@@ -37,17 +38,21 @@ export class Port extends PortModel {
         });
 
         this.linkValidator = linkValidator;
-        this.observableSourcePortChanged = new Observable<EventPayload[PortEvents.sourcePortChanged]>();
-        this.observableTargetPortChanged = new Observable<EventPayload[PortEvents.targetPortChanged]>();
     }
 
-    public addEventListener<T extends PortEvents>(event: T, subscribe: (payload: EventPayload[T]) => void) {
+    public addEventListener<T extends PortEvents>(event: T, subscribe: (payload: PortEvent) => void) {
         switch (event) {
         case PortEvents.sourcePortChanged:
             this.observableSourcePortChanged.registerListener(subscribe);
             break;
         case PortEvents.targetPortChanged:
             this.observableTargetPortChanged.registerListener(subscribe);
+            break;
+        case PortEvents.startConnection:
+            this.observableStartConnection.registerListener(subscribe);
+            break;
+        case PortEvents.endConnection:
+            this.observableEndConnection.registerListener(subscribe);
             break;
         default:
         }
@@ -57,11 +62,23 @@ export class Port extends PortModel {
         const link = new Link();
 
         link.registerListener({
-            targetPortChanged: (event: PortChangeEvent | BaseEvent) => {
-                if (isType<PortChangeEvent>(event, 'entity')) {
+            entityRemoved: (event: PortEvent | BaseEvent) => {
+                if (isType<PortEvent>(event, 'entity')) {
+                    this.observableEndConnection.emit(event);
+                }
+            },
+            sourcePortChanged: (event: PortEvent | BaseEvent) => {
+                if (isType<PortEvent>(event, 'entity')) {
+                    this.observableStartConnection.emit(event);
+                }
+            },
+            targetPortChanged: (event: PortEvent | BaseEvent) => {
+                if (isType<PortEvent>(event, 'entity')) {
                     const source = event.entity.getSourcePort().getNode();
                     const target = event.entity.getTargetPort().getNode();
                     let isValidLink = false;
+
+                    this.observableEndConnection.emit(event);
 
                     if (isType<NodeI>(source, 'getName') && isType<NodeI>(target, 'getName')) {
                         isValidLink = source.extend(target);

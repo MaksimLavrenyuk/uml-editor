@@ -1,3 +1,5 @@
+@import "~animate.css";
+
 $border-color: #cacaca;
 $dot-size: 14px;
 $dot-background-color: #f5f5f5;
@@ -15,6 +17,14 @@ $dot-color-hover: rgb(0, 192, 255);
 
   &.bottom {
     bottom: - ($dot-size - 8);
+    opacity: 0;
+    animation: slideInTop; /* referring directly to the animation's @keyframe declaration */
+    animation-duration: 0.3s;
+    &.show {
+      animation: slideInDown; /* referring directly to the animation's @keyframe declaration */
+      opacity: 1;
+      animation-duration: 0.3s;
+    }
   }
 }
 
