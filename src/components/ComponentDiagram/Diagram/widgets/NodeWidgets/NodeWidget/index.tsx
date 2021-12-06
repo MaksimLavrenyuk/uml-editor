@@ -1,6 +1,7 @@
 import { PortModel } from '@projectstorm/react-diagrams';
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useCallback } from 'react';
 import { DiagramEngine } from '@projectstorm/react-diagrams-core';
+import { observer } from 'mobx-react';
 import classes from './NodeWidget.module.scss';
 import Port from '../Port';
 import NodeWidgetContent from '../NodeWidgetContent';
@@ -10,7 +11,9 @@ type NodeWidgetProps = {
     portBottom: PortModel | null
     diagramEngine: DiagramEngine,
     header: ReactNode
-    isConnectionMode(): boolean
+    findConnection(): {
+        port: null | PortModel,
+    }
 };
 
 /**
@@ -20,13 +23,19 @@ type NodeWidgetProps = {
  */
 function NodeWidget(props: NodeWidgetProps) {
     const {
-        portBottom, portTop, diagramEngine, header, isConnectionMode,
+        portBottom, portTop, diagramEngine, header, findConnection,
     } = props;
+
+    const showBottomPort = useCallback(() => {
+        const connection = findConnection();
+
+        return connection.port !== portTop;
+    }, [findConnection, portTop]);
 
     return (
         <div className={classes.node}>
             <Port
-                isConnectionMode={isConnectionMode}
+                findConnection={findConnection}
                 port={portTop}
                 diagramEngine={diagramEngine}
                 position="top"
@@ -35,7 +44,8 @@ function NodeWidget(props: NodeWidgetProps) {
                 header={header}
             />
             <Port
-                isConnectionMode={isConnectionMode}
+                show={showBottomPort}
+                findConnection={findConnection}
                 port={portBottom}
                 diagramEngine={diagramEngine}
                 position="bottom"
@@ -44,4 +54,4 @@ function NodeWidget(props: NodeWidgetProps) {
     );
 }
 
-export default React.memo(NodeWidget);
+export default observer(NodeWidget);

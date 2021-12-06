@@ -2,7 +2,7 @@ import createEngine, {
     DefaultDiagramState,
     DiagramEngine,
     DiagramModel,
-    NodeModel,
+    NodeModel, PortModel,
 } from '@projectstorm/react-diagrams';
 import { I18n } from '@lingui/core';
 import { Point } from '@projectstorm/geometry';
@@ -47,8 +47,14 @@ export class Diagram implements DiagramStruct {
 
     private observableChange = new Observable<EventPayload[DiagramEvents.change]>();
 
+    /**
+     * This is where the data about the currently connected ports of the nodes is stored.
+     * @private
+     */
     @observable
-    private connectionMode = false;
+    private connection: {
+        port: null | PortModel,
+    } = { port: null };
 
     constructor(components: ComponentI[], deps: DiagramDeps) {
         this.diagramEngine = createEngine({
@@ -72,11 +78,11 @@ export class Diagram implements DiagramStruct {
     }
 
     @action
-    private changeConnectionMode(connection: boolean) {
-        this.connectionMode = connection;
+    private changeConnectionMode(port: null | PortModel) {
+        this.connection.port = port;
     }
 
-    public isConnectionMode = () => this.connectionMode;
+    public findConnection = () => this.connection;
 
     private disableLooseLink() {
         const state = this.diagramEngine.getStateMachine().getCurrentState();
@@ -97,12 +103,12 @@ export class Diagram implements DiagramStruct {
         nodeFactories.registerFactory(new NodeClassFactory({
             factory: this.componentFactory,
             linkValidator: this.linkValidator,
-            isConnectionMode: this.isConnectionMode,
+            findConnection: this.findConnection,
         }));
         nodeFactories.registerFactory(new NodeInterfaceFactory({
             factory: this.componentFactory,
             linkValidator: this.linkValidator,
-            isConnectionMode: this.isConnectionMode,
+            findConnection: this.findConnection,
         }));
         linkFactories.registerFactory(new LinkFactory());
     }

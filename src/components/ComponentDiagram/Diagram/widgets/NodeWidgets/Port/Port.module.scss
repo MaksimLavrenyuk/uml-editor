@@ -20,7 +20,9 @@ $dot-color-hover: rgb(0, 192, 255);
     opacity: 0;
     animation: slideInTop; /* referring directly to the animation's @keyframe declaration */
     animation-duration: 0.3s;
+    pointer-events: none;
     &.show {
+      pointer-events: auto;
       animation: slideInDown; /* referring directly to the animation's @keyframe declaration */
       opacity: 1;
       animation-duration: 0.3s;

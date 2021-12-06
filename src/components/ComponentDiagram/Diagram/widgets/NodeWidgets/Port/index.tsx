@@ -8,7 +8,10 @@ type PortProps = {
     port: PortModel | null
     diagramEngine: DiagramEngine,
     position: 'top' | 'bottom' | 'left' | 'right'
-    isConnectionMode(): boolean
+    findConnection(): {
+        port: null | PortModel,
+    }
+    show?(): boolean
 };
 
 /**
@@ -18,9 +21,10 @@ type PortProps = {
  */
 function Port(props: PortProps) {
     const {
-        port, diagramEngine, position, isConnectionMode,
+        port, diagramEngine, position, findConnection, show,
     } = props;
-    const connection = isConnectionMode();
+    const connection = findConnection();
+    const isShow = show?.();
 
     return (
         <>
@@ -35,9 +39,9 @@ function Port(props: PortProps) {
                             <div className={classes.dot} />
                         </PortWidget>
                     )}
-                    {position === 'bottom' && (
+                    {position === 'bottom' && isShow && (
                         <PortWidget
-                            className={`${classes.port} ${classes[position]} ${connection ? classes.show : ''}`}
+                            className={`${classes.port} ${classes[position]} ${connection.port ? classes.show : ''}`}
                             port={port}
                             engine={diagramEngine}
                         >

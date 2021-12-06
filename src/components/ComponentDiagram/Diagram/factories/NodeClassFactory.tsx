@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { AbstractReactFactory } from '@projectstorm/react-canvas-core';
 import { DiagramEngine } from '@projectstorm/react-diagrams-core';
+import { PortModel } from '@projectstorm/react-diagrams';
 import { Node } from '../models/Node';
 import NodeClassWidget from '../widgets/NodeWidgets/NodeClassWidget';
 import ComponentType from '../../../../models/ComponentType';
@@ -11,7 +12,9 @@ import { LinkValidatorI } from '../models/LinkValidator';
 type NodeClassFactoryProps = {
     factory: ComponentFactory
     linkValidator: LinkValidatorI
-    isConnectionMode(): boolean
+    findConnection(): {
+        port: null | PortModel,
+    }
 };
 
 /**
@@ -25,19 +28,21 @@ export class NodeClassFactory extends AbstractReactFactory<Node, DiagramEngine> 
 
     private readonly linkValidator: LinkValidatorI;
 
-    private readonly isConnectionMode: () => boolean;
+    private readonly findConnection: () => {
+        port: null | PortModel,
+    };
 
     constructor(props: NodeClassFactoryProps) {
         super(ComponentType.CLASS);
         this.factory = props.factory;
         this.linkValidator = props.linkValidator;
-        this.isConnectionMode = props.isConnectionMode;
+        this.findConnection = props.findConnection;
     }
 
     generateReactWidget(event: { model: Node }): JSX.Element {
         return (
             <NodeClassWidget
-                isConnectionMode={this.isConnectionMode}
+                findConnection={this.findConnection}
                 engine={this.engine}
                 node={event.model}
             />

@@ -1,4 +1,4 @@
-import { NodeModel, PortModelAlignment } from '@projectstorm/react-diagrams';
+import { NodeModel, PortModel, PortModelAlignment } from '@projectstorm/react-diagrams';
 import { action, makeObservable, observable } from 'mobx';
 import { Port, PortEvents } from './Port';
 import ComponentType from '../../../../models/ComponentType';
@@ -31,7 +31,7 @@ export class Node extends NodeModel implements NodeI {
 
     public observableChange = new Observable<ComponentI>();
 
-    public observableConnection = new Observable<boolean>();
+    public observableConnection = new Observable<null | PortModel>();
 
     private linkValidator: LinkValidatorI;
 
@@ -58,11 +58,11 @@ export class Node extends NodeModel implements NodeI {
     }
 
     private registerListeners() {
-        this.portTop.addEventListener(PortEvents.startConnection, () => {
-            this.observableConnection.emit(true);
+        this.portTop.addEventListener(PortEvents.startConnection, (event) => {
+            this.observableConnection.emit(event.port);
         });
-        this.portTop.addEventListener(PortEvents.endConnection, () => {
-            this.observableConnection.emit(false);
+        this.portTop.addEventListener(PortEvents.endConnection, (event) => {
+            this.observableConnection.emit(null);
         });
         this.portTop.addEventListener(PortEvents.targetPortChanged, () => {
             this.dispatchChangeEvent();

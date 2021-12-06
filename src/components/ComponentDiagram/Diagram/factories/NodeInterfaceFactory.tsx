@@ -7,11 +7,14 @@ import ComponentType from '../../../../models/ComponentType';
 import { COMPONENTS_NAMES } from '../../../../locales/lang-constants';
 import ComponentFactory from '../../../../models/factories/ComponentFactory';
 import { LinkValidatorI } from '../models/LinkValidator';
+import { PortModel } from '@projectstorm/react-diagrams';
 
 type NodeInterfaceFactoryProps = {
     factory: ComponentFactory
     linkValidator: LinkValidatorI
-    isConnectionMode(): boolean
+    findConnection(): {
+        port: null | PortModel,
+    }
 };
 
 /**
@@ -25,13 +28,15 @@ export default class NodeInterfaceFactory extends AbstractReactFactory<Node, Dia
 
     private readonly linkValidator: LinkValidatorI;
 
-    private isConnectionMode: () => boolean;
+    private findConnection: () => {
+        port: null | PortModel,
+    };
 
     constructor(props: NodeInterfaceFactoryProps) {
         super(ComponentType.INTERFACE);
         this.factory = props.factory;
         this.linkValidator = props.linkValidator;
-        this.isConnectionMode = props.isConnectionMode;
+        this.findConnection = props.findConnection;
     }
 
     generateReactWidget(event: { model: Node }): JSX.Element {
@@ -39,7 +44,7 @@ export default class NodeInterfaceFactory extends AbstractReactFactory<Node, Dia
             <NodeInterfaceWidget
                 engine={this.engine}
                 node={event.model}
-                isConnectionMode={this.isConnectionMode}
+                findConnection={this.findConnection}
             />
         );
     }
