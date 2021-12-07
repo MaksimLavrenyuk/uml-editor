@@ -1,13 +1,13 @@
 import * as React from 'react';
 import { AbstractReactFactory } from '@projectstorm/react-canvas-core';
 import { DiagramEngine } from '@projectstorm/react-diagrams-core';
+import { PortModel } from '@projectstorm/react-diagrams';
 import { Node } from '../models/Node';
 import NodeInterfaceWidget from '../widgets/NodeWidgets/NodeInterfaceWidget';
 import ComponentType from '../../../../models/ComponentType';
 import { COMPONENTS_NAMES } from '../../../../locales/lang-constants';
 import ComponentFactory from '../../../../models/factories/ComponentFactory';
 import { LinkValidatorI } from '../models/LinkValidator';
-import { PortModel } from '@projectstorm/react-diagrams';
 
 type NodeInterfaceFactoryProps = {
     factory: ComponentFactory

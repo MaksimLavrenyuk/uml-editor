@@ -1,6 +1,6 @@
 .path {
   stroke: #cacaca;
-  stroke-width: 2px;
+  pointer-events: auto;
   &:hover {
     stroke: rgb(0, 192, 255);
     stroke-dasharray: 10, 2;
