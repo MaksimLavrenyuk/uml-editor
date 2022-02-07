@@ -4,7 +4,7 @@ import { Node } from '../Node';
 import { Port } from '../../Port/Port';
 import ComponentFactory from '../../../../../models/factories/ComponentFactory';
 import Class from '../../../../../models/components/Class';
-import LinkValidator from '../../LinkValidator';
+import LinkValidator from '../../../LinkValidator';
 
 const componentFactory = new ComponentFactory();
 const linkValidator = new LinkValidator();

@@ -6,7 +6,7 @@ import Diagram, { DiagramEvents } from './Diagram';
 import DiagramCanvas from './elements/DiagramCanvas';
 import classes from './ComponentDiagram.module.scss';
 import ComponentsList from './ComponentsList';
-import LinkValidator from './elements/LinkValidator';
+import LinkValidator from './LinkValidator';
 import ComponentFactory from '../../models/factories/ComponentFactory';
 import { ComponentI } from '../../models/components/Component';
 

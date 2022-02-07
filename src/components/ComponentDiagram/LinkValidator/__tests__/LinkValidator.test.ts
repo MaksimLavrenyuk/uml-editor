@@ -1,7 +1,7 @@
 import LinkValidator from '../index';
-import { Node } from '../../Node/Node';
-import ComponentType from '../../../../../models/ComponentType';
-import ComponentFactory from '../../../../../models/factories/ComponentFactory';
+import { Node } from '../../elements/Node/Node';
+import ComponentType from '../../../../models/ComponentType';
+import ComponentFactory from '../../../../models/factories/ComponentFactory';
 
 describe('Validation check of node links creation.', () => {
     const linkValidator = new LinkValidator();

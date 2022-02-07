@@ -1,9 +1,9 @@
 import { NodeModel } from '@projectstorm/react-diagrams';
-import { Node } from '../Node/Node';
-import TypeChecker from '../../../../lib/TypeChecker';
-import FormatterDiagram from '../../../../lib/Formatter';
-import Class from '../../../../models/components/Class';
-import Interface from '../../../../models/components/Interface';
+import { Node } from '../elements/Node/Node';
+import TypeChecker from '../../../lib/TypeChecker';
+import FormatterDiagram from '../../../lib/Formatter';
+import Class from '../../../models/components/Class';
+import Interface from '../../../models/components/Interface';
 
 export interface LinkValidatorI {
     isValidLink(source: NodeModel, target: NodeModel): boolean

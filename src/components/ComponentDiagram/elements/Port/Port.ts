@@ -5,7 +5,7 @@ import {
 } from '@projectstorm/react-diagrams';
 import { BaseEntityEvent, BaseEvent } from '@projectstorm/react-canvas-core';
 import isType from '../../../../utils/guards/isType';
-import { LinkValidatorI } from '../LinkValidator';
+import { LinkValidatorI } from '../../LinkValidator';
 import Observable from '../../../../lib/Observable';
 import { NodeI } from '../Node/Node';
 import Link from '../Link/Link';

@@ -15,7 +15,7 @@ import ComponentFactory from '../../../models/factories/ComponentFactory';
 import { ComponentI } from '../../../models/components/Component';
 import isType from '../../../utils/guards/isType';
 import Class from '../../../models/components/Class';
-import { LinkValidatorI } from '../elements/LinkValidator';
+import { LinkValidatorI } from '../LinkValidator';
 import ZoomAction from '../actions/ZoomAction';
 import Observable from '../../../lib/Observable';
 import LinkFactory from '../elements/Link/LinkFactory';

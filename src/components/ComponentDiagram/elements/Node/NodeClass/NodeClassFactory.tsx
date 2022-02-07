@@ -7,7 +7,7 @@ import NodeClassWidget from './NodeClassWidget';
 import ComponentType from '../../../../../models/ComponentType';
 import { COMPONENTS_NAMES } from '../../../../../locales/lang-constants';
 import ComponentFactory from '../../../../../models/factories/ComponentFactory';
-import { LinkValidatorI } from '../../LinkValidator';
+import { LinkValidatorI } from '../../../LinkValidator';
 
 type NodeClassFactoryProps = {
     factory: ComponentFactory
