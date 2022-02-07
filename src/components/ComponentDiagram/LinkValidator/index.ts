@@ -24,6 +24,11 @@ export default class LinkValidator implements LinkValidatorI {
      *
      * @param source - Source extensions.
      * @param target - Target extensions.
+     *
+     * @description
+     * Tries to match input data, set inheritance, check it with type checker.
+     * Based on the checks, it returns a boolean value.
+     *
      * @example
      * this.isValidLink(
      *    new Node({
@@ -45,24 +50,28 @@ export default class LinkValidator implements LinkValidatorI {
      * => true.
      */
     isValidLink(source: Node, target: Node) {
-        const sourceComponent = source.content();
-        const targetComponent = target.content();
+        const resultSource = source.content();
+        const resultTarget = target.content();
         let resultStr = '';
 
-        if (sourceComponent instanceof Class) {
-            if (targetComponent instanceof Class) {
-                targetComponent.extends = sourceComponent.name;
+        if (resultSource instanceof Class) {
+            if (resultTarget instanceof Class) {
+                resultTarget.extends = resultSource.name;
             }
         }
 
-        if (sourceComponent instanceof Interface) {
-            if (targetComponent instanceof Interface) {
-                targetComponent.extends = sourceComponent.name;
+        if (resultSource instanceof Interface) {
+            if (resultTarget instanceof Interface) {
+                resultTarget.extends = resultSource.name;
             }
         }
 
-        if (sourceComponent) resultStr += this.formatter.serialize(sourceComponent);
-        if (targetComponent) resultStr += this.formatter.serialize(targetComponent);
+        if (resultSource) {
+            resultStr += this.formatter.serialize(resultSource);
+        }
+        if (resultTarget) {
+            resultStr += this.formatter.serialize(resultTarget);
+        }
 
         return this.typeChecker.check(resultStr).length === 0;
     }

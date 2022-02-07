@@ -15,7 +15,7 @@ export default class NodeLinkWidget extends DefaultLinkWidget {
                     this.props.link.getSVGPath(),
                     {
                         onMouseDown: (event: MouseEvent) => {
-                            this.props.selected?.(event);
+                            this.props.link.setSelected(true);
                         },
                     },
                     '0',
@@ -36,7 +36,7 @@ export default class NodeLinkWidget extends DefaultLinkWidget {
                             'data-linkid': this.props.link.getID(),
                             'data-point': j,
                             onMouseDown: (event: MouseEvent) => {
-                                this.props.selected?.(event);
+                                this.props.link.setSelected(true);
                             },
                         },
                         j,

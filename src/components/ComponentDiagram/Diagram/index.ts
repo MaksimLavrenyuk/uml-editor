@@ -19,6 +19,7 @@ import { LinkValidatorI } from '../LinkValidator';
 import ZoomAction from '../actions/ZoomAction';
 import Observable from '../../../lib/Observable';
 import LinkFactory from '../elements/Link/LinkFactory';
+import DeleteItemsAction from '../actions/DeleteItemsAction';
 
 type DiagramDeps = {
     i18n: I18n,
@@ -59,6 +60,7 @@ export class Diagram implements DiagramStruct {
     constructor(components: ComponentI[], deps: DiagramDeps) {
         this.diagramEngine = createEngine({
             registerDefaultZoomCanvasAction: false,
+            registerDefaultDeleteItemsAction: false,
         });
         this.i18n = deps.i18n;
         this.componentFactory = deps.componentFactory;
@@ -84,6 +86,10 @@ export class Diagram implements DiagramStruct {
 
     public findConnection = () => this.connection;
 
+    /**
+     * Turn off free-hanging (not connected to 2 nodes at once) links.
+     * @private
+     */
     private disableLooseLink() {
         const state = this.diagramEngine.getStateMachine().getCurrentState();
         if (state instanceof DefaultDiagramState) {
@@ -115,6 +121,7 @@ export class Diagram implements DiagramStruct {
 
     private registerActions() {
         const actions = [
+            new DeleteItemsAction(),
             new ZoomAction(),
         ];
 
