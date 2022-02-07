@@ -1,8 +1,8 @@
 import { DefaultLinkFactory } from '@projectstorm/react-diagrams';
 import * as React from 'react';
 import { GenerateWidgetEvent } from '@projectstorm/react-canvas-core';
-import Link from '../models/Link';
-import NodeLinkWidget from '../widgets/NodeWidgets/NodeLinkWidget';
+import Link from './Link';
+import NodeLinkWidget from './NodeLinkWidget';
 
 export default class LinkFactory extends DefaultLinkFactory {
     constructor() {

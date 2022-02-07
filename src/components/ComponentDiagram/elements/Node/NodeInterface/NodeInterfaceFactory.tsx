@@ -2,14 +2,14 @@ import * as React from 'react';
 import { AbstractReactFactory } from '@projectstorm/react-canvas-core';
 import { DiagramEngine } from '@projectstorm/react-diagrams-core';
 import { PortModel } from '@projectstorm/react-diagrams';
-import { Node } from '../models/Node';
-import NodeClassWidget from '../widgets/NodeWidgets/NodeClassWidget';
-import ComponentType from '../../../../models/ComponentType';
-import { COMPONENTS_NAMES } from '../../../../locales/lang-constants';
-import ComponentFactory from '../../../../models/factories/ComponentFactory';
-import { LinkValidatorI } from '../models/LinkValidator';
+import { Node } from '../Node';
+import NodeInterfaceWidget from './NodeInterfaceWidget';
+import ComponentType from '../../../../../models/ComponentType';
+import { COMPONENTS_NAMES } from '../../../../../locales/lang-constants';
+import ComponentFactory from '../../../../../models/factories/ComponentFactory';
+import { LinkValidatorI } from '../../LinkValidator';
 
-type NodeClassFactoryProps = {
+type NodeInterfaceFactoryProps = {
     factory: ComponentFactory
     linkValidator: LinkValidatorI
     findConnection(): {
@@ -18,22 +18,22 @@ type NodeClassFactoryProps = {
 };
 
 /**
- * Factory to create the "Class" nodes of the diagram.
+ * Factory to create the "Interface" nodes of the diagram.
  * With its help the widget of such a node is created.
  */
-export class NodeClassFactory extends AbstractReactFactory<Node, DiagramEngine> {
-    private readonly componentType = ComponentType.CLASS;
+export default class NodeInterfaceFactory extends AbstractReactFactory<Node, DiagramEngine> {
+    private readonly componentType = ComponentType.INTERFACE;
 
     private readonly factory: ComponentFactory;
 
     private readonly linkValidator: LinkValidatorI;
 
-    private readonly findConnection: () => {
+    private findConnection: () => {
         port: null | PortModel,
     };
 
-    constructor(props: NodeClassFactoryProps) {
-        super(ComponentType.CLASS);
+    constructor(props: NodeInterfaceFactoryProps) {
+        super(ComponentType.INTERFACE);
         this.factory = props.factory;
         this.linkValidator = props.linkValidator;
         this.findConnection = props.findConnection;
@@ -41,10 +41,10 @@ export class NodeClassFactory extends AbstractReactFactory<Node, DiagramEngine> 
 
     generateReactWidget(event: { model: Node }): JSX.Element {
         return (
-            <NodeClassWidget
-                findConnection={this.findConnection}
+            <NodeInterfaceWidget
                 engine={this.engine}
                 node={event.model}
+                findConnection={this.findConnection}
             />
         );
     }

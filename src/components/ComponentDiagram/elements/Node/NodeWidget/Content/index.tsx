@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react';
 import { Card, CardContent } from '@mui/material';
-import classes from './NodeWidgetContent.module.scss';
+import classes from './Content.module.scss';
 
 type NodeContentProps = {
     header: ReactNode
@@ -11,7 +11,7 @@ type NodeContentProps = {
  *
  * @param props - React props.
  */
-function NodeWidgetContent(props: NodeContentProps) {
+function Content(props: NodeContentProps) {
     const { header } = props;
 
     return (
@@ -23,4 +23,4 @@ function NodeWidgetContent(props: NodeContentProps) {
     );
 }
 
-export default React.memo(NodeWidgetContent);
+export default React.memo(Content);

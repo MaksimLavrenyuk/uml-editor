@@ -1,5 +1,5 @@
-import LinkValidator from '../LinkValidator';
-import { Node } from '../Node';
+import LinkValidator from '../index';
+import { Node } from '../../Node/Node';
 import ComponentType from '../../../../../models/ComponentType';
 import ComponentFactory from '../../../../../models/factories/ComponentFactory';
 

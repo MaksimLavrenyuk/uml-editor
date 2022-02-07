@@ -3,8 +3,8 @@ import React, { ReactNode, useCallback } from 'react';
 import { DiagramEngine } from '@projectstorm/react-diagrams-core';
 import { observer } from 'mobx-react';
 import classes from './NodeWidget.module.scss';
-import Port from '../Port';
-import NodeWidgetContent from '../NodeWidgetContent';
+import Port from '../../Port/PortWidget';
+import Content from './Content';
 
 type NodeWidgetProps = {
     portTop: PortModel | null
@@ -40,7 +40,7 @@ function NodeWidget(props: NodeWidgetProps) {
                 diagramEngine={diagramEngine}
                 position="top"
             />
-            <NodeWidgetContent
+            <Content
                 header={header}
             />
             <Port

@@ -1,8 +1,8 @@
 import React, { useCallback, DragEvent } from 'react';
 import { CanvasWidget } from '@projectstorm/react-canvas-core';
-import Diagram from '../../../../../models/Diagram';
-import classes from './DiagramWidget.module.scss';
-import ComponentType from '../../../../../models/ComponentType';
+import Diagram from '../../../../models/Diagram';
+import classes from './DiagramCanvas.module.scss';
+import ComponentType from '../../../../models/ComponentType';
 
 type DiagramWidgetProps = {
     diagram: Diagram
@@ -17,7 +17,7 @@ export enum diagramDragAndDropEvent {
  *
  * @param props - React props.
  */
-function DiagramWidget(props: DiagramWidgetProps) {
+function DiagramCanvas(props: DiagramWidgetProps) {
     const { diagram } = props;
 
     const dropHandler = useCallback((event: DragEvent) => {
@@ -45,4 +45,4 @@ function DiagramWidget(props: DiagramWidgetProps) {
     );
 }
 
-export default DiagramWidget;
+export default DiagramCanvas;

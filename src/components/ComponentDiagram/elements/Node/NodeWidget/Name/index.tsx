@@ -15,7 +15,7 @@ type NameProps = {
  *
  * @param props - React props.
  */
-function NodeName(props: NameProps) {
+function Name(props: NameProps) {
     const { getName, changeName } = props;
 
     const changeNameHandler = useCallback((event: ContentEditableEvent) => {
@@ -35,4 +35,4 @@ function NodeName(props: NameProps) {
     );
 }
 
-export default observer(NodeName);
+export default observer(Name);

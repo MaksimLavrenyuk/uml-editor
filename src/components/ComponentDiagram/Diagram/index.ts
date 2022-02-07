@@ -7,18 +7,18 @@ import createEngine, {
 import { I18n } from '@lingui/core';
 import { Point } from '@projectstorm/geometry';
 import { observable, makeObservable, action } from 'mobx';
-import { NodeClassFactory } from './factories/NodeClassFactory';
+import { NodeClassFactory } from '../elements/Node/NodeClass/NodeClassFactory';
 import DiagramStruct, { DiagramInitialNode } from '../../../models/Diagram';
-import { Node, NodeI } from './models/Node';
-import NodeInterfaceFactory from './factories/NodeInterfaceFactory';
+import { Node, NodeI } from '../elements/Node/Node';
+import NodeInterfaceFactory from '../elements/Node/NodeInterface/NodeInterfaceFactory';
 import ComponentFactory from '../../../models/factories/ComponentFactory';
 import { ComponentI } from '../../../models/components/Component';
 import isType from '../../../utils/guards/isType';
 import Class from '../../../models/components/Class';
-import { LinkValidatorI } from './models/LinkValidator';
-import ZoomAction from './actions/ZoomAction';
+import { LinkValidatorI } from '../elements/LinkValidator';
+import ZoomAction from '../actions/ZoomAction';
 import Observable from '../../../lib/Observable';
-import LinkFactory from './factories/LinkFactory';
+import LinkFactory from '../elements/Link/LinkFactory';
 
 type DiagramDeps = {
     i18n: I18n,

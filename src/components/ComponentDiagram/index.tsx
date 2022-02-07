@@ -3,10 +3,10 @@ import React, {
     useEffect, useMemo, memo, ForwardedRef,
 } from 'react';
 import Diagram, { DiagramEvents } from './Diagram';
-import DiagramWidget from './Diagram/widgets/DiagramWidget';
+import DiagramCanvas from './elements/DiagramCanvas';
 import classes from './ComponentDiagram.module.scss';
 import ComponentsList from './ComponentsList';
-import LinkValidator from './Diagram/models/LinkValidator';
+import LinkValidator from './elements/LinkValidator';
 import ComponentFactory from '../../models/factories/ComponentFactory';
 import { ComponentI } from '../../models/components/Component';
 
@@ -38,7 +38,7 @@ const ComponentDiagram = React.forwardRef((props: DiagramEditorProps, diagramRef
     return (
         <div ref={diagramRef} className={`${classes.container} ${className}`}>
             <ComponentsList />
-            <DiagramWidget diagram={diagram} />
+            <DiagramCanvas diagram={diagram} />
         </div>
     );
 });

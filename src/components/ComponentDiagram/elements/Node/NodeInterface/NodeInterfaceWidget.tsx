@@ -1,7 +1,7 @@
 import React from 'react';
 import { DiagramEngine, PortModel, PortModelAlignment } from '@projectstorm/react-diagrams';
-import { Node } from '../../../models/Node';
-import NodeName from '../NodeName';
+import { Node } from '../Node';
+import NodeName from '../NodeWidget/Name';
 import NodeWidget from '../NodeWidget';
 
 export interface NodeWidgetProps {
@@ -17,7 +17,7 @@ export interface NodeWidgetProps {
  *
  * @param props - React node.
  */
-function NodeClassWidget(props: NodeWidgetProps) {
+function NodeInterfaceWidget(props: NodeWidgetProps) {
     const { node, engine, findConnection } = props;
     const portTop = node.getPort(PortModelAlignment.TOP);
     const portBottom = node.getPort(PortModelAlignment.BOTTOM);
@@ -33,4 +33,4 @@ function NodeClassWidget(props: NodeWidgetProps) {
     );
 }
 
-export default NodeClassWidget;
+export default NodeInterfaceWidget;

@@ -1,10 +1,10 @@
 import { NodeModel, PortModel, PortModelAlignment } from '@projectstorm/react-diagrams';
 import { action, makeObservable, observable } from 'mobx';
-import { Port, PortEvents } from './Port';
+import { Port, PortEvents } from '../Port/Port';
 import ComponentType from '../../../../models/ComponentType';
 import ComponentFactory from '../../../../models/factories/ComponentFactory';
 import { ComponentI } from '../../../../models/components/Component';
-import { LinkValidatorI } from './LinkValidator';
+import { LinkValidatorI } from '../LinkValidator';
 import Observable from '../../../../lib/Observable';
 
 export interface NodeI extends NodeModel {

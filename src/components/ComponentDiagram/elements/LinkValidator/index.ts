@@ -1,5 +1,5 @@
 import { NodeModel } from '@projectstorm/react-diagrams';
-import { Node } from './Node';
+import { Node } from '../Node/Node';
 import TypeChecker from '../../../../lib/TypeChecker';
 import FormatterDiagram from '../../../../lib/Formatter';
 import Class from '../../../../models/components/Class';

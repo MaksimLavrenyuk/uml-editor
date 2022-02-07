@@ -1,4 +1,4 @@
-import { PortWidget, PortModel } from '@projectstorm/react-diagrams';
+import { PortWidget as DefaultPortWidget, PortModel } from '@projectstorm/react-diagrams';
 import React from 'react';
 import { DiagramEngine } from '@projectstorm/react-diagrams-core';
 import { observer } from 'mobx-react';
@@ -15,11 +15,11 @@ type PortProps = {
 };
 
 /**
- * Port to create connections between nodes.
+ * PortWidget to create connections between nodes.
  *
  * @param props - React props.
  */
-function Port(props: PortProps) {
+function PortWidget(props: PortProps) {
     const {
         port, diagramEngine, position, findConnection, show,
     } = props;
@@ -31,22 +31,22 @@ function Port(props: PortProps) {
             {port && (
                 <>
                     {position === 'top' && (
-                        <PortWidget
+                        <DefaultPortWidget
                             className={`${classes.port} ${classes[position]}`}
                             port={port}
                             engine={diagramEngine}
                         >
                             <div className={classes.dot} />
-                        </PortWidget>
+                        </DefaultPortWidget>
                     )}
                     {position === 'bottom' && isShow && (
-                        <PortWidget
+                        <DefaultPortWidget
                             className={`${classes.port} ${classes[position]} ${connection.port ? classes.show : ''}`}
                             port={port}
                             engine={diagramEngine}
                         >
                             <div className={classes.dot} />
-                        </PortWidget>
+                        </DefaultPortWidget>
                     )}
                 </>
             )}
@@ -54,4 +54,4 @@ function Port(props: PortProps) {
     );
 }
 
-export default observer(Port);
+export default observer(PortWidget);
