@@ -1,5 +1,6 @@
 import { PortWidget as DefaultPortWidget, PortModel } from '@projectstorm/react-diagrams';
 import React from 'react';
+import { t } from '@lingui/macro';
 import { DiagramEngine } from '@projectstorm/react-diagrams-core';
 import { observer } from 'mobx-react';
 import classes from './Port.module.scss';
@@ -41,7 +42,7 @@ function PortWidget(props: PortProps) {
                             port={port}
                             engine={diagramEngine}
                         >
-                            <div className={classes.dot} />
+                            {t`COMPONENT_EXTENDS`}
                         </DefaultPortWidget>
                     )}
                 </>

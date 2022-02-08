@@ -20,3 +20,7 @@ msgstr "Класс"
 #: src/locales/lang-constants.ts:6
 msgid "COMPONENTS_NAMES_INTERFACE"
 msgstr "Интерфейс"
+
+#: src/components/ComponentDiagram/elements/Port/PortWidget/index.tsx:46
+msgid "COMPONENT_EXTENDS"
+msgstr "extends"

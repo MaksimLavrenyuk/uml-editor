@@ -1,46 +1,40 @@
-@import "~animate.css";
-
 $border-color: #cacaca;
-$dot-size: 14px;
+$min-dot-size: 14px;
 $dot-background-color: #fff;
 $dot-color-hover: rgb(0, 192, 255);
+$font-size: 12px;
 
 .port {
+  font-size: $font-size;
   position: absolute;
-  width: $dot-size;
-  height: $dot-size;
-  left: calc(50% - #{$dot-size} / 2);
-
-  &.top {
-    top: -($dot-size - 8);
-  }
-
-  &.bottom {
-    bottom: - ($dot-size - 8);
-    opacity: 0;
-    animation: slideInTop; /* referring directly to the animation's @keyframe declaration */
-    animation-duration: 0.3s;
-    pointer-events: none;
-    &.show {
-      pointer-events: auto;
-      animation: slideInDown; /* referring directly to the animation's @keyframe declaration */
-      opacity: 1;
-      animation-duration: 0.3s;
-    }
-  }
-}
-
-.dot {
-  width: 100%;
-  height: 100%;
+  left: 50%;
+  transform: translate3d(-50%, 0, 0);
   z-index: 10;
   border-radius: 50%;
-  background: $dot-background-color;
+  background-color: $dot-background-color;
   cursor: pointer;
   border: 1px solid $border-color;
-  transition: 0.1s background;
+  transition: background-color 0.1s;
+  min-width: $min-dot-size;
+  min-height: $min-dot-size;
 
   &:hover {
     background: rgb(0, 192, 255);
+  }
+
+  &.top {
+    top: -8px;
+  }
+
+  &.bottom {
+    bottom: -8px;
+    opacity: 0;
+    pointer-events: none;
+    &.show {
+      padding: 4px;
+      border-radius: 2px;
+      pointer-events: auto;
+      opacity: 1;
+    }
   }
 }
