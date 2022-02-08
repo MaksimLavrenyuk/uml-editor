@@ -86,6 +86,17 @@ export class Port extends PortModel {
 
                     if (!isValidLink) {
                         event.entity.remove();
+                    } else {
+                        /**
+                         * After successfully connecting the nodes, set the source node as not selected.
+                         * This prevents an error:
+                         * - drag and drop node
+                         * - node in the focus state
+                         * - link a node to another node
+                         * - the link and the node become selected
+                         * - Pressing the "Delete" button, deletes along with the created link also the node.
+                         */
+                        source.setSelected(false);
                     }
                 }
             },
