@@ -97,6 +97,7 @@ export class Port extends PortModel {
                          * - Pressing the "Delete" button, deletes along with the created link also the node.
                          */
                         source.setSelected(false);
+                        target.setSelected(false);
                     }
                 }
             },
