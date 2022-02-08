@@ -13,18 +13,12 @@ import Link from '../Link/Link';
 export type PortEvent = BaseEntityEvent<LinkModel> & { port: null | PortModel };
 
 export enum PortEvents {
-    targetPortChanged = 'targetPortChanged',
-    sourcePortChanged = 'sourcePortChanged',
     startConnection = 'startConnection',
     endConnection = 'endConnection',
 }
 
 export class Port extends PortModel {
     private linkValidator: LinkValidatorI;
-
-    private observableSourcePortChanged = new Observable<PortEvent>();
-
-    private observableTargetPortChanged = new Observable<PortEvent>();
 
     private observableStartConnection = new Observable<PortEvent>();
 
@@ -42,12 +36,6 @@ export class Port extends PortModel {
 
     public addEventListener<T extends PortEvents>(event: T, subscribe: (payload: PortEvent) => void) {
         switch (event) {
-        case PortEvents.sourcePortChanged:
-            this.observableSourcePortChanged.registerListener(subscribe);
-            break;
-        case PortEvents.targetPortChanged:
-            this.observableTargetPortChanged.registerListener(subscribe);
-            break;
         case PortEvents.startConnection:
             this.observableStartConnection.registerListener(subscribe);
             break;
@@ -64,7 +52,12 @@ export class Port extends PortModel {
         link.registerListener({
             entityRemoved: (event: PortEvent | BaseEvent) => {
                 if (isType<PortEvent>(event, 'entity')) {
-                    this.observableEndConnection.emit(event);
+                    const node = event.entity.getSourcePort().getNode();
+
+                    if (isType<NodeI>(node, 'getName')) {
+                        node.removeExtends();
+                        this.observableEndConnection.emit(event);
+                    }
                 }
             },
             sourcePortChanged: (event: PortEvent | BaseEvent) => {
@@ -77,8 +70,6 @@ export class Port extends PortModel {
                     const source = event.entity.getSourcePort().getNode();
                     const target = event.entity.getTargetPort().getNode();
                     let isValidLink = false;
-
-                    this.observableEndConnection.emit(event);
 
                     if (isType<NodeI>(source, 'getName') && isType<NodeI>(target, 'getName')) {
                         isValidLink = source.extend(target);
@@ -99,6 +90,8 @@ export class Port extends PortModel {
                         source.setSelected(false);
                         target.setSelected(false);
                     }
+
+                    this.observableEndConnection.emit(event);
                 }
             },
         });

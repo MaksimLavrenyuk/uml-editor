@@ -10,6 +10,7 @@ import Observable from '../../../../lib/Observable';
 export interface NodeI extends NodeModel {
     content(): ComponentI | undefined
     getName(): string
+    removeExtends(): void
     extend(node: NodeI): boolean
 }
 
@@ -64,9 +65,6 @@ export class Node extends NodeModel implements NodeI {
         this.portTop.addEventListener(PortEvents.endConnection, (event) => {
             this.observableConnection.emit(null);
         });
-        this.portTop.addEventListener(PortEvents.targetPortChanged, () => {
-            this.dispatchChangeEvent();
-        });
     }
 
     private dispatchChangeEvent() {
@@ -96,6 +94,11 @@ export class Node extends NodeModel implements NodeI {
         }
 
         return false;
+    }
+
+    removeExtends() {
+        this.extends = undefined;
+        this.dispatchChangeEvent();
     }
 
     content() {
