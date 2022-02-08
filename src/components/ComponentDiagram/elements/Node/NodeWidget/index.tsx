@@ -7,6 +7,7 @@ import Port from '../../Port/PortWidget';
 import Content from './Content';
 
 type NodeWidgetProps = {
+    selected: boolean
     portTop: PortModel | null
     portBottom: PortModel | null
     diagramEngine: DiagramEngine,
@@ -23,7 +24,7 @@ type NodeWidgetProps = {
  */
 function NodeWidget(props: NodeWidgetProps) {
     const {
-        portBottom, portTop, diagramEngine, header, findConnection,
+        portBottom, selected, portTop, diagramEngine, header, findConnection,
     } = props;
 
     const showBottomPort = useCallback(() => {
@@ -41,6 +42,7 @@ function NodeWidget(props: NodeWidgetProps) {
                 position="top"
             />
             <Content
+                selected={selected}
                 header={header}
             />
             <Port

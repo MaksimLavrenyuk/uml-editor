@@ -24,6 +24,7 @@ function NodeInterfaceWidget(props: NodeWidgetProps) {
 
     return (
         <NodeWidget
+            selected={node.isSelected()}
             findConnection={findConnection}
             portTop={portTop}
             portBottom={portBottom}

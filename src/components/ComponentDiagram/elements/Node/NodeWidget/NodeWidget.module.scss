@@ -5,7 +5,4 @@ $size: 200px;
   width: 100%;
   min-width: $size;
   max-width: $size * 2;
-  &.selected {
-   opacity: 0.5;
-  }
 }

@@ -1,6 +1,6 @@
 import { KeyboardEvent, useCallback } from 'react';
 import { observer } from 'mobx-react';
-import { TextField, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 import { ContentEditableEvent } from 'react-contenteditable';
 import * as React from 'react';
 import EditableDiv from '../../../../../EditableDiv';
