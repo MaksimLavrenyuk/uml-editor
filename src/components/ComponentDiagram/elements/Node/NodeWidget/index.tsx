@@ -29,14 +29,15 @@ function NodeWidget(props: NodeWidgetProps) {
 
     const showBottomPort = useCallback(() => {
         const connection = findConnection();
+        const links = portBottom?.getLinks();
 
-        return connection.port !== portTop;
-    }, [findConnection, portTop]);
+        return (connection.port !== null && connection.port !== portTop)
+            || Boolean(links && Object.keys(links).length > 0);
+    }, [findConnection, portBottom, portTop]);
 
     return (
         <div className={classes.node}>
             <Port
-                findConnection={findConnection}
                 port={portTop}
                 diagramEngine={diagramEngine}
                 position="top"
@@ -47,7 +48,6 @@ function NodeWidget(props: NodeWidgetProps) {
             />
             <Port
                 show={showBottomPort}
-                findConnection={findConnection}
                 port={portBottom}
                 diagramEngine={diagramEngine}
                 position="bottom"
