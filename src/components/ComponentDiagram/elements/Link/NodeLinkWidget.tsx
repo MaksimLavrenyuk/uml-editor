@@ -1,6 +1,5 @@
 import { DefaultLinkWidget, LinkWidget } from '@projectstorm/react-diagrams';
 import * as React from 'react';
-import { MouseEvent } from 'react';
 
 export default class NodeLinkWidget extends DefaultLinkWidget {
     render() {
@@ -14,8 +13,18 @@ export default class NodeLinkWidget extends DefaultLinkWidget {
                 this.generateLink(
                     this.props.link.getSVGPath(),
                     {
-                        onMouseDown: (event: MouseEvent) => {
+                        onMouseDown: () => {
                             this.props.link.setSelected(true);
+                            /**
+                             * Solves the problem
+                             * 1) highlight a node
+                             * 2) highlight the link
+                             * 3) delete the link
+                             * Both the node and the link are deleted at the same time.
+                             * The expected behavior is to delete only the link.
+                             */
+                            this.props.link.getSourcePort().getNode().setSelected(false);
+                            this.props.link.getTargetPort().getNode().setSelected(false);
                         },
                     },
                     '0',
@@ -35,8 +44,18 @@ export default class NodeLinkWidget extends DefaultLinkWidget {
                         {
                             'data-linkid': this.props.link.getID(),
                             'data-point': j,
-                            onMouseDown: (event: MouseEvent) => {
+                            onMouseDown: () => {
                                 this.props.link.setSelected(true);
+                                /**
+                                 * Solves the problem
+                                 * 1) highlight a node
+                                 * 2) highlight the link
+                                 * 3) delete the link
+                                 * Both the node and the link are deleted at the same time.
+                                 * The expected behavior is to delete only the link.
+                                 */
+                                this.props.link.getSourcePort().getNode().setSelected(false);
+                                this.props.link.getTargetPort().getNode().setSelected(false);
                             },
                         },
                         j,
