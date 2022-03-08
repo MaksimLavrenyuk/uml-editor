@@ -1,10 +1,10 @@
-import LinkValidator from '../index';
+import ConnectionValidator from '../index';
 import { Node } from '../../elements/Node/Node';
 import ComponentType from '../../../../models/ComponentType';
 import ComponentFactory from '../../../../models/factories/ComponentFactory';
 
 describe('Validation check of node links creation.', () => {
-    const linkValidator = new LinkValidator();
+    const linkValidator = new ConnectionValidator();
     const componentFactory = new ComponentFactory();
 
     it('Expanding the class with a class.', () => {

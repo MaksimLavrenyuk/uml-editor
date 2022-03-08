@@ -3,99 +3,28 @@ import {
     PortModel,
     PortModelAlignment,
 } from '@projectstorm/react-diagrams';
-import { BaseEntityEvent, BaseEvent } from '@projectstorm/react-canvas-core';
-import isType from '../../../../utils/guards/isType';
-import { LinkValidatorI } from '../../LinkValidator';
-import Observable from '../../../../lib/Observable';
-import { NodeI } from '../Node/Node';
 import Link from '../Link/Link';
+import DiagramContext from '../../Diagram/DiagramContext/DiagramContext';
 
-export type PortEvent = BaseEntityEvent<LinkModel> & { port: null | PortModel };
-
-export enum PortEvents {
-    startConnection = 'startConnection',
-    endConnection = 'endConnection',
-}
+type PortProps = {
+    alignment: PortModelAlignment,
+    context: DiagramContext
+};
 
 export class Port extends PortModel {
-    private linkValidator: LinkValidatorI;
+    private readonly context: DiagramContext;
 
-    private observableStartConnection = new Observable<PortEvent>();
-
-    private observableEndConnection = new Observable<PortEvent>();
-
-    constructor(alignment: PortModelAlignment, linkValidator: LinkValidatorI) {
+    constructor(props: PortProps) {
         super({
             type: 'class',
-            name: alignment,
-            alignment,
+            name: props.alignment,
+            alignment: props.alignment,
         });
 
-        this.linkValidator = linkValidator;
-    }
-
-    public addEventListener<T extends PortEvents>(event: T, subscribe: (payload: PortEvent) => void) {
-        switch (event) {
-        case PortEvents.startConnection:
-            this.observableStartConnection.registerListener(subscribe);
-            break;
-        case PortEvents.endConnection:
-            this.observableEndConnection.registerListener(subscribe);
-            break;
-        default:
-        }
+        this.context = props.context;
     }
 
     createLinkModel(): LinkModel {
-        const link = new Link();
-
-        link.registerListener({
-            entityRemoved: (event: PortEvent | BaseEvent) => {
-                if (isType<PortEvent>(event, 'entity')) {
-                    const node = event.entity.getSourcePort().getNode();
-
-                    if (isType<NodeI>(node, 'getName')) {
-                        node.removeExtends();
-                        this.observableEndConnection.emit(event);
-                    }
-                }
-            },
-            sourcePortChanged: (event: PortEvent | BaseEvent) => {
-                if (isType<PortEvent>(event, 'entity')) {
-                    this.observableStartConnection.emit(event);
-                }
-            },
-            targetPortChanged: (event: PortEvent | BaseEvent) => {
-                if (isType<PortEvent>(event, 'entity')) {
-                    const source = event.entity.getSourcePort().getNode();
-                    const target = event.entity.getTargetPort().getNode();
-                    let isValidLink = false;
-
-                    if (isType<NodeI>(source, 'getName') && isType<NodeI>(target, 'getName')) {
-                        isValidLink = source.extend(target);
-                    }
-
-                    if (!isValidLink) {
-                        event.entity.remove();
-                    } else {
-                        /**
-                         * After successfully connecting the nodes, set the source node as not selected.
-                         * This prevents an error:
-                         * - drag and drop node
-                         * - node in the focus state
-                         * - link a node to another node
-                         * - the link and the node become selected
-                         * - Pressing the "Delete" button, deletes along with the created link also the node.
-                         */
-                        source.setSelected(false);
-                        target.setSelected(false);
-                    }
-
-                    this.observableEndConnection.emit(event);
-                }
-            },
-        });
-
-        return link;
+        return new Link({ context: this.context });
     }
 }

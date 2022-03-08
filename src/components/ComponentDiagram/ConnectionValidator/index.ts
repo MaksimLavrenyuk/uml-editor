@@ -1,15 +1,15 @@
 import { NodeModel } from '@projectstorm/react-diagrams';
-import { Node } from '../elements/Node/Node';
-import TypeChecker from '../../../lib/TypeChecker';
-import FormatterDiagram from '../../../lib/Formatter';
+import { NodeI } from '../elements/Node/Node';
+import TypeChecker from '../../../utils/TypeChecker';
+import FormatterDiagram from '../../../utils/Formatter';
 import Class from '../../../models/components/Class';
 import Interface from '../../../models/components/Interface';
 
-export interface LinkValidatorI {
+export interface IConnectionValidator {
     isValidLink(source: NodeModel, target: NodeModel): boolean
 }
 
-export default class LinkValidator implements LinkValidatorI {
+export default class ConnectionValidator implements IConnectionValidator {
     private typeChecker: TypeChecker;
 
     private formatter: FormatterDiagram;
@@ -49,7 +49,7 @@ export default class LinkValidator implements LinkValidatorI {
      * class test_2 extends test_1 {}
      * => true.
      */
-    isValidLink(source: Node, target: Node) {
+    isValidLink(source: NodeI, target: NodeI) {
         const resultSource = source.content();
         const resultTarget = target.content();
         let resultStr = '';

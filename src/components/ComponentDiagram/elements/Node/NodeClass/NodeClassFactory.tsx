@@ -1,20 +1,16 @@
 import * as React from 'react';
 import { AbstractReactFactory } from '@projectstorm/react-canvas-core';
 import { DiagramEngine } from '@projectstorm/react-diagrams-core';
-import { PortModel } from '@projectstorm/react-diagrams';
 import { Node } from '../Node';
 import NodeClassWidget from './NodeClassWidget';
 import ComponentType from '../../../../../models/ComponentType';
 import { COMPONENTS_NAMES } from '../../../../../locales/lang-constants';
 import ComponentFactory from '../../../../../models/factories/ComponentFactory';
-import { LinkValidatorI } from '../../../LinkValidator';
+import DiagramContext from '../../../Diagram/DiagramContext/DiagramContext';
 
 type NodeClassFactoryProps = {
     factory: ComponentFactory
-    linkValidator: LinkValidatorI
-    findConnection(): {
-        port: null | PortModel,
-    }
+    context: DiagramContext
 };
 
 /**
@@ -26,23 +22,18 @@ export class NodeClassFactory extends AbstractReactFactory<Node, DiagramEngine> 
 
     private readonly factory: ComponentFactory;
 
-    private readonly linkValidator: LinkValidatorI;
-
-    private readonly findConnection: () => {
-        port: null | PortModel,
-    };
+    private readonly context: DiagramContext;
 
     constructor(props: NodeClassFactoryProps) {
         super(ComponentType.CLASS);
         this.factory = props.factory;
-        this.linkValidator = props.linkValidator;
-        this.findConnection = props.findConnection;
+        this.context = props.context;
     }
 
     generateReactWidget(event: { model: Node }): JSX.Element {
         return (
             <NodeClassWidget
-                findConnection={this.findConnection}
+                context={this.context}
                 engine={this.engine}
                 node={event.model}
             />
@@ -54,7 +45,7 @@ export class NodeClassFactory extends AbstractReactFactory<Node, DiagramEngine> 
             type: this.componentType,
             name: COMPONENTS_NAMES[this.componentType],
             factory: this.factory,
-            linkValidator: this.linkValidator,
+            context: this.context,
         });
     }
 }

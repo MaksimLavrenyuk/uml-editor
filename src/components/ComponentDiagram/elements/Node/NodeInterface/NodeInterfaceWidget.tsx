@@ -1,15 +1,14 @@
 import React from 'react';
-import { DiagramEngine, PortModel, PortModelAlignment } from '@projectstorm/react-diagrams';
+import { DiagramEngine, PortModelAlignment } from '@projectstorm/react-diagrams';
 import { Node } from '../Node';
 import NodeName from '../NodeWidget/Name';
 import NodeWidget from '../NodeWidget';
+import DiagramContext from '../../../Diagram/DiagramContext/DiagramContext';
 
 export interface NodeWidgetProps {
     node: Node;
     engine: DiagramEngine;
-    findConnection(): {
-        port: null | PortModel,
-    }
+    context: DiagramContext
 }
 
 /**
@@ -18,14 +17,14 @@ export interface NodeWidgetProps {
  * @param props - React node.
  */
 function NodeInterfaceWidget(props: NodeWidgetProps) {
-    const { node, engine, findConnection } = props;
+    const { node, engine, context } = props;
     const portTop = node.getPort(PortModelAlignment.TOP);
     const portBottom = node.getPort(PortModelAlignment.BOTTOM);
 
     return (
         <NodeWidget
+            context={context}
             selected={node.isSelected()}
-            findConnection={findConnection}
             portTop={portTop}
             portBottom={portBottom}
             diagramEngine={engine}

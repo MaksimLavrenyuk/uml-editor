@@ -5,10 +5,10 @@ import messagesEn from '../../../../locales/en/messages';
 import Diagram from '../index';
 import ComponentType from '../../../../models/ComponentType';
 import ComponentFactory from '../../../../models/factories/ComponentFactory';
-import LinkValidator from '../../LinkValidator';
+import ConnectionValidator from '../../ConnectionValidator';
 
 const componentFactory = new ComponentFactory();
-const linkValidator = new LinkValidator();
+const linkValidator = new ConnectionValidator();
 
 beforeAll(() => {
     i18n.load({ ru: messagesRu.messages, en: messagesEn.messages });

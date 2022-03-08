@@ -4,7 +4,7 @@ import React, {
 import ComponentDiagram from '../ComponentDiagram';
 import CodeEditor from '../CodeEditor';
 import { ComponentI } from '../../models/components/Component';
-import FormatterDiagram from '../../lib/Formatter';
+import FormatterDiagram from '../../utils/Formatter';
 import { Formatter } from '../../models/Formatter';
 import SplitPane from '../SplitPane';
 

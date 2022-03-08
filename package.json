@@ -47,7 +47,9 @@
     "react-transition-group": "^4.4.2",
     "reset-css": "^5.0.1",
     "resize-observer-polyfill": "^1.5.1",
+    "simple-typed-emitter": "https://github.com/MaksimLavrenyuk/simple-typed-emitter.git",
     "tplant": "^3.1.0",
+    "type-fest": "^2.12.0",
     "typescript": "^4.5.2"
   },
   "scripts": {

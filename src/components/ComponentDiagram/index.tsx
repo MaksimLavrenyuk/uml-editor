@@ -2,12 +2,10 @@ import { useLingui } from '@lingui/react';
 import React, {
     useEffect, useMemo, memo, ForwardedRef,
 } from 'react';
-import Diagram, { DiagramEvents } from './Diagram';
+import Diagram from './Diagram';
 import DiagramCanvas from './elements/DiagramCanvas';
 import classes from './ComponentDiagram.module.scss';
 import ComponentsList from './ComponentsList';
-import LinkValidator from './LinkValidator';
-import ComponentFactory from '../../models/factories/ComponentFactory';
 import { ComponentI } from '../../models/components/Component';
 
 type DiagramEditorProps = {
@@ -24,15 +22,11 @@ const ComponentDiagram = React.forwardRef((props: DiagramEditorProps, diagramRef
     const { className = '', onChange } = props;
     const { i18n } = useLingui();
     const diagram = useMemo(() => (
-        new Diagram([], {
-            i18n, linkValidator: new LinkValidator(), componentFactory: new ComponentFactory(),
-        })
+        new Diagram([], { i18n })
     ), [i18n]);
 
     useEffect(() => {
-        diagram.addEventListener(DiagramEvents.change, (value) => {
-            onChange(value);
-        });
+        diagram.events.registerListener('change', onChange);
     }, [diagram, onChange]);
 
     return (

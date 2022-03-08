@@ -5,6 +5,7 @@ import { observer } from 'mobx-react';
 import classes from './NodeWidget.module.scss';
 import Port from '../../Port/PortWidget';
 import Content from './Content';
+import DiagramContext from '../../../Diagram/DiagramContext/DiagramContext';
 
 type NodeWidgetProps = {
     selected: boolean
@@ -12,9 +13,7 @@ type NodeWidgetProps = {
     portBottom: PortModel | null
     diagramEngine: DiagramEngine,
     header: ReactNode
-    findConnection(): {
-        port: null | PortModel,
-    }
+    context: DiagramContext
 };
 
 /**
@@ -24,16 +23,16 @@ type NodeWidgetProps = {
  */
 function NodeWidget(props: NodeWidgetProps) {
     const {
-        portBottom, selected, portTop, diagramEngine, header, findConnection,
+        portBottom, selected, portTop, diagramEngine, header, context,
     } = props;
+    const { sourcePort } = context.getActiveLink();
 
-    const showBottomPort = useCallback(() => {
-        const connection = findConnection();
+    const showBottomPort = () => {
         const links = portBottom?.getLinks();
 
-        return (connection.port !== null && connection.port !== portTop)
+        return (sourcePort !== null && sourcePort !== portTop)
             || Boolean(links && Object.keys(links).length > 0);
-    }, [findConnection, portBottom, portTop]);
+    };
 
     return (
         <div className={classes.node}>

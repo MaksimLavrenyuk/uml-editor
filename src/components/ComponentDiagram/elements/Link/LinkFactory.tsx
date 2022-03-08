@@ -3,14 +3,22 @@ import * as React from 'react';
 import { GenerateWidgetEvent } from '@projectstorm/react-canvas-core';
 import Link from './Link';
 import NodeLinkWidget from './NodeLinkWidget';
+import DiagramContext from '../../Diagram/DiagramContext/DiagramContext';
+
+type LinkFactoryProps = {
+    context: DiagramContext
+};
 
 export default class LinkFactory extends DefaultLinkFactory {
-    constructor() {
+    private readonly context: DiagramContext;
+
+    constructor(props: LinkFactoryProps) {
         super('NodeLink');
+        this.context = props.context;
     }
 
     generateModel(): Link {
-        return new Link();
+        return new Link({ context: this.context });
     }
 
     generateReactWidget(event: GenerateWidgetEvent<Link>) {
