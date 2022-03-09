@@ -3,7 +3,7 @@ import { withI18n } from '@lingui/react';
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
 import { ListItem, ListItemIcon, ListItemText } from '@mui/material';
 import { DragEvent, useCallback } from 'react';
-import { diagramDragAndDropEvent } from '../Diagram/widgets/DiagramWidget';
+import { diagramDragAndDropEvent } from '../elements/DiagramCanvas';
 import { COMPONENTS_NAMES } from '../../../locales/lang-constants';
 import ComponentType from '../../../models/ComponentType';
 
@@ -13,7 +13,7 @@ type ComponentProps = {
 };
 
 /**
- * Component list item. Initialiozation data transfer to <DiagramWidget />.
+ * Component list item. Initialiozation data transfer to <DiagramCanvas />.
  *
  * @param props - React props.
  * @see DiagramWidget

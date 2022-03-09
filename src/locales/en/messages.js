@@ -1,1 +1,1 @@
-/*eslint-disable*/module.exports={messages:{"ADD_METHOD":"Add method","ADD_PROPERTY":"add property","COMPONENTS_NAMES_CLASS":"Class","COMPONENTS_NAMES_INTERFACE":"Interface"}};
+/*eslint-disable*/module.exports={messages:{"COMPONENTS_NAMES_CLASS":"Class","COMPONENTS_NAMES_INTERFACE":"Interface","COMPONENT_EXTENDS":"extends"}};

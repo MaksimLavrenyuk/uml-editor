@@ -16,6 +16,7 @@
     "@projectstorm/react-canvas-core": "^6.6.1",
     "@projectstorm/react-diagrams": "^6.6.1",
     "@projectstorm/react-diagrams-core": "^6.6.1",
+    "@projectstorm/react-diagrams-defaults": "^6.6.1",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^12.0.0",
     "@testing-library/user-event": "^13.1.9",
@@ -24,6 +25,7 @@
     "@types/node": "^16.0.0",
     "@types/react": "^17.0.13",
     "@types/react-dom": "^17.0.8",
+    "animate.css": "^4.1.1",
     "closest": "^0.0.1",
     "dagre": "^0.8.5",
     "has": "^1.0.3",
@@ -45,7 +47,9 @@
     "react-transition-group": "^4.4.2",
     "reset-css": "^5.0.1",
     "resize-observer-polyfill": "^1.5.1",
+    "simple-typed-emitter": "https://github.com/MaksimLavrenyuk/simple-typed-emitter.git",
     "tplant": "^3.1.0",
+    "type-fest": "^2.12.0",
     "typescript": "^4.5.2"
   },
   "scripts": {

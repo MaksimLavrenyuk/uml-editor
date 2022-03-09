@@ -1,30 +1,55 @@
-import createEngine, { DiagramEngine, DiagramModel, NodeModel } from '@projectstorm/react-diagrams';
+import createEngine, {
+    DefaultDiagramState,
+    DiagramEngine,
+    DiagramModel,
+    NodeModel, PortModel,
+} from '@projectstorm/react-diagrams';
 import { I18n } from '@lingui/core';
 import { Point } from '@projectstorm/geometry';
-import { NodeClassFactory } from './factories/NodeClassFactory';
+import { observable, makeObservable, action } from 'mobx';
+import EventEmitter from 'simple-typed-emitter';
+import { NodeClassFactory } from '../elements/Node/NodeClass/NodeClassFactory';
 import DiagramStruct, { DiagramInitialNode } from '../../../models/Diagram';
-import { Node, NodeEvents, NodeI } from './models/Node';
-import NodeInterfaceFactory from './factories/NodeInterfaceFactory';
+import { Node, NodeI } from '../elements/Node/Node';
+import NodeInterfaceFactory from '../elements/Node/NodeInterface/NodeInterfaceFactory';
 import ComponentFactory from '../../../models/factories/ComponentFactory';
 import { ComponentI } from '../../../models/components/Component';
 import isType from '../../../utils/guards/isType';
 import Class from '../../../models/components/Class';
-import { LinkValidatorI } from './models/LinkValidator';
-import ZoomAction from './actions/ZoomAction';
-import Observable from '../../../lib/Observable';
+import LinkValidator from '../LinkValidator';
+import ZoomAction from '../actions/ZoomAction';
+import LinkFactory from '../elements/Link/LinkFactory';
+import DeleteItemsAction from '../actions/DeleteItemsAction';
+import DiagramContext from './DiagramContext/DiagramContext';
 
 type DiagramDeps = {
     i18n: I18n,
-    linkValidator: LinkValidatorI,
-    componentFactory: ComponentFactory,
 };
 
-export enum DiagramEvents {
-    change = 'change'
-}
+export type CreateLink = (
+    (sourceNode: NodeI, targetNode: NodeI) => boolean
+);
 
-type EventPayload = {
-    [DiagramEvents.change]: ComponentI[]
+export type RemoveLinkHandler = (
+    (sourceNode: NodeI, targetNode: NodeI) => void
+);
+
+export type SetPort = (
+    (port: PortModel | null) => void
+);
+
+export type ActiveLink = {
+    sourcePort: null | PortModel,
+};
+
+export type GetActiveLink = (
+    () => ActiveLink
+);
+
+export type ChangeDiagramHandler = () => void;
+
+type DiagramEvents = {
+    change: ((components: ComponentI[]) => void)[]
 };
 
 export class Diagram implements DiagramStruct {
@@ -34,29 +59,81 @@ export class Diagram implements DiagramStruct {
 
     private readonly i18n: I18n;
 
-    private readonly componentFactory: ComponentFactory;
+    /**
+     * This is where the data about the currently connected ports of the nodes is stored.
+     * @private
+     */
+    @observable
+    private activeLink: ActiveLink = { sourcePort: null };
 
-    private readonly linkValidator: LinkValidatorI;
+    private linkValidator: LinkValidator;
 
-    private observableChange: Observable<EventPayload[DiagramEvents.change]>;
+    private readonly diagramContext: DiagramContext;
+
+    public readonly events: EventEmitter<DiagramEvents>;
 
     constructor(components: ComponentI[], deps: DiagramDeps) {
         this.diagramEngine = createEngine({
             registerDefaultZoomCanvasAction: false,
+            registerDefaultDeleteItemsAction: false,
         });
         this.i18n = deps.i18n;
-        this.componentFactory = deps.componentFactory;
-        this.linkValidator = deps.linkValidator;
-        this.observableChange = new Observable<EventPayload[DiagramEvents.change]>();
+        this.diagramContext = new DiagramContext({
+            createLink: this.createLink,
+            setPort: this.setSourcePort,
+            removeLinkHandler: this.removeLinkHandler,
+            getActiveLink: this.getActiveLink,
+            changeHandler: this.changeDiagramHandler,
+        });
+        this.linkValidator = new LinkValidator();
+        this.events = new EventEmitter<DiagramEvents>();
+        this.disableLooseLink();
         this.registerFactories();
         this.registerActions();
         this.newModel();
-        this.fill(components);
+        this.fill([new Class('example1'), new Class('example2')]);
+
+        makeObservable(this);
     }
+
+    private createLink: CreateLink = (
+        sourceNode,
+        targetNode,
+    ) => this.linkValidator.isValidLink(sourceNode, targetNode);
+
+    @action
+    private setSourcePort: SetPort = (port) => {
+        this.activeLink.sourcePort = port;
+    };
+
+    private getActiveLink = () => this.activeLink;
+
+    private removeLinkHandler: RemoveLinkHandler = (sourceNode: NodeI, targetNode: NodeI) => {
+        /**
+         * The Link is inheritance. When you delete a link, you need to null the inheritance.
+         */
+        sourceNode.removeExtends();
+        this.changeDiagramHandler();
+    };
+
+    private changeDiagramHandler: ChangeDiagramHandler = () => {
+        this.events.emit('change', this.content());
+    };
 
     private newModel() {
         this.activeModel = new DiagramModel();
         this.diagramEngine.setModel(this.activeModel);
+    }
+
+    /**
+     * Turn off free-hanging (not connected to 2 nodes at once) links.
+     * @private
+     */
+    private disableLooseLink() {
+        const state = this.diagramEngine.getStateMachine().getCurrentState();
+        if (state instanceof DefaultDiagramState) {
+            state.dragNewLink.config.allowLooseLinks = false;
+        }
     }
 
     /**
@@ -65,33 +142,25 @@ export class Diagram implements DiagramStruct {
      * @private
      */
     private registerFactories() {
-        this.diagramEngine
-            .getNodeFactories()
-            .registerFactory(new NodeClassFactory({
-                factory: this.componentFactory, linkValidator: this.linkValidator,
-            }));
-        this.diagramEngine
-            .getNodeFactories()
-            .registerFactory(new NodeInterfaceFactory({
-                factory: this.componentFactory, linkValidator: this.linkValidator,
-            }));
+        const nodeFactories = this.diagramEngine.getNodeFactories();
+        const linkFactories = this.diagramEngine.getLinkFactories();
+
+        nodeFactories.registerFactory(new NodeClassFactory({
+            context: this.diagramContext,
+        }));
+        nodeFactories.registerFactory(new NodeInterfaceFactory({
+            context: this.diagramContext,
+        }));
+        linkFactories.registerFactory(new LinkFactory({ context: this.diagramContext }));
     }
 
     private registerActions() {
         const actions = [
+            new DeleteItemsAction(),
             new ZoomAction(),
         ];
 
-        actions.forEach((action) => this.diagramEngine.getActionEventBus().registerAction(action));
-    }
-
-    public addEventListener<T extends DiagramEvents>(event: T, listener: (payload: EventPayload[T]) => void) {
-        switch (event) {
-        case DiagramEvents.change:
-            this.observableChange.registerListener(listener);
-            break;
-        default:
-        }
+        actions.forEach((zoomAction) => this.diagramEngine.getActionEventBus().registerAction(zoomAction));
     }
 
     public engine(): DiagramEngine {
@@ -109,23 +178,12 @@ export class Diagram implements DiagramStruct {
             type: initialNode.type,
             name: initialNode.name || '',
             extends: initialNode.extends,
-            factory: this.componentFactory,
-            linkValidator: this.linkValidator,
-        });
-
-        node.addEventListener(NodeEvents.change, () => {
-            this.observableChange.emit(this.content());
-        });
-
-        node.addEventListener(NodeEvents.change, () => {
-            this.observableChange.emit(this.content());
+            context: this.diagramContext,
         });
 
         node.setPosition(initialNode.point || new Point(100, 100));
         diagramEngine.getModel().addNode(node);
         this.diagramEngine.repaintCanvas();
-
-        this.observableChange.emit(this.content());
 
         return node.getID();
     }
