@@ -109,7 +109,11 @@ export class Diagram implements DiagramStruct {
     private getActiveLink = () => this.activeLink;
 
     private removeLinkHandler: RemoveLinkHandler = (sourceNode: NodeI, targetNode: NodeI) => {
-        // this.setSourcePort(null);
+        /**
+         * The Link is inheritance. When you delete a link, you need to null the inheritance.
+         */
+        sourceNode.removeExtends();
+        this.changeDiagramHandler();
     };
 
     private changeDiagramHandler: ChangeDiagramHandler = () => {
