@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { Card, CardContent, CardActionArea } from '@mui/material';
+import { Card, CardContent, Divider } from '@mui/material';
 import classes from './Content.module.scss';
 
 type NodeContentProps = {
@@ -21,7 +21,10 @@ function Content(props: NodeContentProps) {
             className={`${classes.card} ${selected ? classes.selected : ''}`}
         >
             <CardContent>
-                {header}
+                <div className={classes.header}>
+                    {header}
+                </div>
+                <Divider />
             </CardContent>
         </Card>
     );

@@ -4,6 +4,7 @@ import { Node } from '../Node';
 import NodeName from '../NodeWidget/Name';
 import NodeWidget from '../NodeWidget';
 import DiagramContext from '../../../Diagram/DiagramContext/DiagramContext';
+import ComponentType from '../../../../../models/ComponentType';
 
 export interface NodeWidgetProps {
     node: Node;
@@ -28,7 +29,7 @@ function NodeInterfaceWidget(props: NodeWidgetProps) {
             portTop={portTop}
             portBottom={portBottom}
             diagramEngine={engine}
-            header={<NodeName getName={node.getName} changeName={node.changeName} />}
+            header={<NodeName getName={node.getName} type={ComponentType.INTERFACE} changeName={node.changeName} />}
         />
     );
 }

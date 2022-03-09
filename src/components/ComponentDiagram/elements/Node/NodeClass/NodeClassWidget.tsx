@@ -1,9 +1,10 @@
 import React from 'react';
-import { DiagramEngine, PortModel, PortModelAlignment } from '@projectstorm/react-diagrams';
+import { DiagramEngine, PortModelAlignment } from '@projectstorm/react-diagrams';
 import { Node } from '../Node';
 import Name from '../NodeWidget/Name';
 import NodeWidget from '../NodeWidget';
 import DiagramContext from '../../../Diagram/DiagramContext/DiagramContext';
+import ComponentType from '../../../../../models/ComponentType';
 
 export interface NodeWidgetProps {
     node: Node;
@@ -28,7 +29,7 @@ function NodeClassWidget(props: NodeWidgetProps) {
             portTop={portTop}
             portBottom={portBottom}
             diagramEngine={engine}
-            header={<Name getName={node.getName} changeName={node.changeName} />}
+            header={<Name getName={node.getName} type={ComponentType.CLASS} changeName={node.changeName} />}
         />
     );
 }

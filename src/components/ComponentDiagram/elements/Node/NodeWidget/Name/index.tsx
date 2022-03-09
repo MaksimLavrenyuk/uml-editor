@@ -4,10 +4,14 @@ import { Typography } from '@mui/material';
 import { ContentEditableEvent } from 'react-contenteditable';
 import * as React from 'react';
 import EditableDiv from '../../../../../EditableDiv';
+import Type from '../Type';
+import ComponentType from '../../../../../../models/ComponentType';
+import classes from './Name.module.scss';
 
 type NameProps = {
     getName(): string
     changeName(name: string): void
+    type: ComponentType
 };
 
 /**
@@ -16,7 +20,7 @@ type NameProps = {
  * @param props - React props.
  */
 function Name(props: NameProps) {
-    const { getName, changeName } = props;
+    const { getName, changeName, type } = props;
 
     const changeNameHandler = useCallback((event: ContentEditableEvent) => {
         changeName(event.target.value);
@@ -29,8 +33,14 @@ function Name(props: NameProps) {
     }, []);
 
     return (
-        <Typography component="h5">
-            <EditableDiv html={getName()} onChange={changeNameHandler} onKeyDown={keyDownHandler} />
+        <Typography className={classes.container} component="h5">
+            <Type type={type} />
+            <EditableDiv
+                className={classes.name}
+                html={getName()}
+                onChange={changeNameHandler}
+                onKeyDown={keyDownHandler}
+            />
         </Typography>
     );
 }
