@@ -8,7 +8,7 @@ import DiagramContext from '../../Diagram/DiagramContext/DiagramContext';
 export type LinkEvent = BaseEntityEvent<LinkModel>;
 
 export type LinkProps = {
-    context: DiagramContext
+    context?: DiagramContext
 };
 
 export default class Link extends DefaultLinkModel {
@@ -23,26 +23,26 @@ export default class Link extends DefaultLinkModel {
                     const source = event.entity.getSourcePort()?.getNode();
                     const target = event.entity.getTargetPort()?.getNode();
 
-                    props.context.setPort(null);
+                    props.context?.setPort(null);
 
                     if (isType<NodeI>(source, 'getName') && isType<NodeI>(target, 'getName')) {
-                        props.context.removeLinkHandler(source, target);
+                        props.context?.removeLinkHandler(source, target);
                     }
                 }
             },
             sourcePortChanged: (event: BaseEvent) => {
                 if (isType<{ port: null | PortModel }>(event, 'port')) {
-                    props.context.setPort(event.port);
+                    props.context?.setPort(event.port);
                 }
             },
             targetPortChanged: (event: LinkEvent | BaseEvent) => {
                 if (isType<LinkEvent>(event, 'entity')) {
                     const source = event.entity.getSourcePort().getNode();
                     const target = event.entity.getTargetPort().getNode();
-                    let isValidLink = false;
+                    let isValidLink;
 
                     if (isType<NodeI>(source, 'getName') && isType<NodeI>(target, 'getName')) {
-                        isValidLink = props.context.linkValidityPredicate(source, target);
+                        isValidLink = props.context?.createLink(source, target);
 
                         if (!isValidLink) {
                             event.entity.remove();
@@ -61,7 +61,7 @@ export default class Link extends DefaultLinkModel {
                             target.setSelected(false);
                         }
 
-                        props.context.setPort(null);
+                        props.context?.setPort(null);
                     }
                 }
             },

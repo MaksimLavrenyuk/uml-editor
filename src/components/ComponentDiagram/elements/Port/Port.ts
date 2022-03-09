@@ -8,11 +8,11 @@ import DiagramContext from '../../Diagram/DiagramContext/DiagramContext';
 
 type PortProps = {
     alignment: PortModelAlignment,
-    context: DiagramContext
+    context?: DiagramContext
 };
 
 export class Port extends PortModel {
-    private readonly context: DiagramContext;
+    private readonly context?: DiagramContext;
 
     constructor(props: PortProps) {
         super({

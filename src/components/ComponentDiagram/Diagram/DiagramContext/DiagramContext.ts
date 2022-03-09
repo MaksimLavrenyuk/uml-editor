@@ -1,9 +1,9 @@
 import {
-    LinkValidityPredicate, RemoveLinkHandler, SetPort, GetActiveLink, ChangeDiagramHandler,
+    CreateLink, RemoveLinkHandler, SetPort, GetActiveLink, ChangeDiagramHandler,
 } from '../index';
 
 type DiagramContextProps = {
-    linkValidityPredicate: LinkValidityPredicate
+    createLink: CreateLink
     removeLinkHandler: RemoveLinkHandler
     setPort: SetPort
     getActiveLink: GetActiveLink
@@ -11,7 +11,7 @@ type DiagramContextProps = {
 };
 
 class DiagramContext {
-    public readonly linkValidityPredicate: LinkValidityPredicate;
+    public readonly createLink: CreateLink;
 
     public readonly removeLinkHandler: RemoveLinkHandler;
 
@@ -22,7 +22,7 @@ class DiagramContext {
     public readonly onChange: ChangeDiagramHandler;
 
     constructor(props: DiagramContextProps) {
-        this.linkValidityPredicate = props.linkValidityPredicate;
+        this.createLink = props.createLink;
         this.removeLinkHandler = props.removeLinkHandler;
         this.setPort = props.setPort;
         this.getActiveLink = props.getActiveLink;

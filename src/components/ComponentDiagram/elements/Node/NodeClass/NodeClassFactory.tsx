@@ -9,7 +9,6 @@ import ComponentFactory from '../../../../../models/factories/ComponentFactory';
 import DiagramContext from '../../../Diagram/DiagramContext/DiagramContext';
 
 type NodeClassFactoryProps = {
-    factory: ComponentFactory
     context: DiagramContext
 };
 
@@ -20,13 +19,10 @@ type NodeClassFactoryProps = {
 export class NodeClassFactory extends AbstractReactFactory<Node, DiagramEngine> {
     private readonly componentType = ComponentType.CLASS;
 
-    private readonly factory: ComponentFactory;
-
     private readonly context: DiagramContext;
 
     constructor(props: NodeClassFactoryProps) {
         super(ComponentType.CLASS);
-        this.factory = props.factory;
         this.context = props.context;
     }
 
@@ -44,7 +40,6 @@ export class NodeClassFactory extends AbstractReactFactory<Node, DiagramEngine> 
         return new Node({
             type: this.componentType,
             name: COMPONENTS_NAMES[this.componentType],
-            factory: this.factory,
             context: this.context,
         });
     }

@@ -16,7 +16,7 @@ import ComponentFactory from '../../../models/factories/ComponentFactory';
 import { ComponentI } from '../../../models/components/Component';
 import isType from '../../../utils/guards/isType';
 import Class from '../../../models/components/Class';
-import ConnectionValidator from '../ConnectionValidator';
+import LinkValidator from '../LinkValidator';
 import ZoomAction from '../actions/ZoomAction';
 import LinkFactory from '../elements/Link/LinkFactory';
 import DeleteItemsAction from '../actions/DeleteItemsAction';
@@ -26,7 +26,7 @@ type DiagramDeps = {
     i18n: I18n,
 };
 
-export type LinkValidityPredicate = (
+export type CreateLink = (
     (sourceNode: NodeI, targetNode: NodeI) => boolean
 );
 
@@ -59,8 +59,6 @@ export class Diagram implements DiagramStruct {
 
     private readonly i18n: I18n;
 
-    private readonly componentFactory: ComponentFactory;
-
     /**
      * This is where the data about the currently connected ports of the nodes is stored.
      * @private
@@ -68,7 +66,7 @@ export class Diagram implements DiagramStruct {
     @observable
     private activeLink: ActiveLink = { sourcePort: null };
 
-    private connectionValidator: ConnectionValidator;
+    private linkValidator: LinkValidator;
 
     private readonly diagramContext: DiagramContext;
 
@@ -80,15 +78,14 @@ export class Diagram implements DiagramStruct {
             registerDefaultDeleteItemsAction: false,
         });
         this.i18n = deps.i18n;
-        this.componentFactory = new ComponentFactory();
         this.diagramContext = new DiagramContext({
-            linkValidityPredicate: this.linkValidityPredicate,
+            createLink: this.createLink,
             setPort: this.setSourcePort,
             removeLinkHandler: this.removeLinkHandler,
             getActiveLink: this.getActiveLink,
             changeHandler: this.changeDiagramHandler,
         });
-        this.connectionValidator = new ConnectionValidator();
+        this.linkValidator = new LinkValidator();
         this.events = new EventEmitter<DiagramEvents>();
         this.disableLooseLink();
         this.registerFactories();
@@ -99,10 +96,13 @@ export class Diagram implements DiagramStruct {
         makeObservable(this);
     }
 
-    private linkValidityPredicate: LinkValidityPredicate = (
+    private createLink: CreateLink = (
         sourceNode,
         targetNode,
-    ) => this.connectionValidator.isValidLink(sourceNode, targetNode);
+    ) => {
+        console.log(sourceNode, targetNode);
+        return this.linkValidator.isValidLink(sourceNode, targetNode, this.content());
+    };
 
     @action
     private setSourcePort: SetPort = (port) => {
@@ -145,11 +145,9 @@ export class Diagram implements DiagramStruct {
         const linkFactories = this.diagramEngine.getLinkFactories();
 
         nodeFactories.registerFactory(new NodeClassFactory({
-            factory: this.componentFactory,
             context: this.diagramContext,
         }));
         nodeFactories.registerFactory(new NodeInterfaceFactory({
-            factory: this.componentFactory,
             context: this.diagramContext,
         }));
         linkFactories.registerFactory(new LinkFactory({ context: this.diagramContext }));
@@ -179,7 +177,6 @@ export class Diagram implements DiagramStruct {
             type: initialNode.type,
             name: initialNode.name || '',
             extends: initialNode.extends,
-            factory: this.componentFactory,
             context: this.diagramContext,
         });
 

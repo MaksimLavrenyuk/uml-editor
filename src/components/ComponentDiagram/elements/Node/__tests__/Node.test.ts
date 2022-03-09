@@ -4,10 +4,10 @@ import { Node } from '../Node';
 import { Port } from '../../Port/Port';
 import ComponentFactory from '../../../../../models/factories/ComponentFactory';
 import Class from '../../../../../models/components/Class';
-import ConnectionValidator from '../../../ConnectionValidator';
+import LinkValidator from '../../../LinkValidator';
 
 const componentFactory = new ComponentFactory();
-const linkValidator = new ConnectionValidator();
+const linkValidator = new LinkValidator();
 
 describe('Check basic functionality of the node.', () => {
     it('Check the overall operation of the unit.', () => {

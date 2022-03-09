@@ -1,15 +1,15 @@
-import { NodeModel } from '@projectstorm/react-diagrams';
 import { NodeI } from '../elements/Node/Node';
 import TypeChecker from '../../../utils/TypeChecker';
 import FormatterDiagram from '../../../utils/Formatter';
 import Class from '../../../models/components/Class';
 import Interface from '../../../models/components/Interface';
+import { ComponentI } from '../../../models/components/Component';
 
-export interface IConnectionValidator {
-    isValidLink(source: NodeModel, target: NodeModel): boolean
+export interface ILinkValidator {
+    isValidLink(source: NodeI, target: NodeI, currentComponents: ComponentI[]): boolean
 }
 
-export default class ConnectionValidator implements IConnectionValidator {
+export default class LinkValidator implements ILinkValidator {
     private typeChecker: TypeChecker;
 
     private formatter: FormatterDiagram;
@@ -25,6 +25,7 @@ export default class ConnectionValidator implements IConnectionValidator {
      * @param source - Source extensions.
      * @param target - Target extensions.
      *
+     * @param currentComponents
      * @description
      * Tries to match input data, set inheritance, check it with type checker.
      * Based on the checks, it returns a boolean value.
@@ -49,7 +50,7 @@ export default class ConnectionValidator implements IConnectionValidator {
      * class test_2 extends test_1 {}
      * => true.
      */
-    isValidLink(source: NodeI, target: NodeI) {
+    isValidLink(source: NodeI, target: NodeI, currentComponents?: ComponentI[]) {
         const resultSource = source.content();
         const resultTarget = target.content();
         let resultStr = '';

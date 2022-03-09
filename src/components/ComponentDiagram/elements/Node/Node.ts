@@ -4,7 +4,7 @@ import { Port } from '../Port/Port';
 import ComponentType from '../../../../models/ComponentType';
 import ComponentFactory from '../../../../models/factories/ComponentFactory';
 import { ComponentI } from '../../../../models/components/Component';
-import ConnectionValidator, { IConnectionValidator } from '../../ConnectionValidator';
+import LinkValidator, { ILinkValidator } from '../../LinkValidator';
 import DiagramContext from '../../Diagram/DiagramContext/DiagramContext';
 
 export interface NodeI extends NodeModel {
@@ -18,8 +18,7 @@ export type NodeProps = {
     name: string
     extends?: string
     type: ComponentType
-    factory: ComponentFactory
-    context: DiagramContext
+    context?: DiagramContext
 };
 
 export class Node extends NodeModel implements NodeI {
@@ -34,7 +33,7 @@ export class Node extends NodeModel implements NodeI {
 
     private readonly portBottom: Port;
 
-    private context: DiagramContext;
+    private context?: DiagramContext;
 
     constructor(props: NodeProps) {
         super({
@@ -43,9 +42,9 @@ export class Node extends NodeModel implements NodeI {
         this.portTop = new Port({ context: props.context, alignment: PortModelAlignment.TOP });
         this.portBottom = new Port({ context: props.context, alignment: PortModelAlignment.BOTTOM });
         this.name = props.name;
-        this.factory = props.factory;
         this.extends = props.extends;
         this.context = props.context;
+        this.factory = new ComponentFactory();
 
         this.addPort(this.portTop);
         this.addPort(this.portBottom);
@@ -56,14 +55,14 @@ export class Node extends NodeModel implements NodeI {
     @action.bound
     changeName(name: string) {
         this.name = name;
-        this.context.onChange();
+        this.context?.onChange();
     }
 
     getName = () => this.name;
 
     extend(node: NodeI) {
         this.extends = node.getName();
-        this.context.onChange();
+        this.context?.onChange();
     }
 
     removeExtends() {
