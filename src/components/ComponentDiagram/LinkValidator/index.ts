@@ -20,12 +20,37 @@ export default class LinkValidator implements ILinkValidator {
     }
 
     /**
+     * Update the extending of existing components
+     * @param fromExtends
+     * @param toExtends
+     * @param components
+     */
+    updateComponents(fromExtends: NodeI, toExtends: NodeI, components: ComponentI[]) {
+        const fromContent = fromExtends.content();
+        const targetContent = toExtends.content();
+
+        return components.map((component) => {
+            if (targetContent?.name === component.name) {
+                if (component instanceof Class || component instanceof Interface) {
+                    if (fromContent instanceof Class || fromContent instanceof Interface) {
+                        return {
+                            ...component,
+                            extends: fromContent.name,
+                        };
+                    }
+                }
+            }
+
+            return component;
+        });
+    }
+
+    /**
      * Checking the correctness of inheritance.
      *
-     * @param source - Source extensions.
-     * @param target - Target extensions.
+     * @param fromExtends - Source extensions.
+     * @param toExtends - Target extensions.
      *
-     * @param currentComponents
      * @description
      * Tries to match input data, set inheritance, check it with type checker.
      * Based on the checks, it returns a boolean value.
@@ -35,14 +60,10 @@ export default class LinkValidator implements ILinkValidator {
      *    new Node({
      *       type: ComponentType.CLASS,
      *       name: 'test_1',
-     *       factory: componentFactory,
-     *       linkValidator,
      *     }),
      *     new Node({
      *         type: ComponentType.CLASS,
      *         name: 'test_2',
-     *         factory: componentFactory,
-     *         linkValidator,
      *     })
      * )
      * =>
@@ -50,19 +71,23 @@ export default class LinkValidator implements ILinkValidator {
      * class test_2 extends test_1 {}
      * => true.
      */
-    isValidLink(source: NodeI, target: NodeI, currentComponents?: ComponentI[]) {
-        const resultSource = source.content();
-        const resultTarget = target.content();
+    isValidLink(fromExtends: NodeI, toExtends: NodeI) {
+        const resultSource = fromExtends.content();
+        const resultTarget = toExtends.content();
         let resultStr = '';
 
         if (resultSource instanceof Class) {
             if (resultTarget instanceof Class) {
+                if (resultTarget.extends) return false;
+
                 resultTarget.extends = resultSource.name;
             }
         }
 
         if (resultSource instanceof Interface) {
             if (resultTarget instanceof Interface) {
+                if (resultTarget.extends) return false;
+
                 resultTarget.extends = resultSource.name;
             }
         }

@@ -99,10 +99,7 @@ export class Diagram implements DiagramStruct {
     private createLink: CreateLink = (
         sourceNode,
         targetNode,
-    ) => {
-        console.log(sourceNode, targetNode);
-        return this.linkValidator.isValidLink(sourceNode, targetNode, this.content());
-    };
+    ) => this.linkValidator.isValidLink(sourceNode, targetNode);
 
     @action
     private setSourcePort: SetPort = (port) => {
