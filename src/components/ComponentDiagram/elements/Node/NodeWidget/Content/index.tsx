@@ -5,6 +5,7 @@ import classes from './Content.module.scss';
 type NodeContentProps = {
     header: ReactNode
     selected: boolean
+    children: ReactNode
 };
 
 /**
@@ -13,7 +14,7 @@ type NodeContentProps = {
  * @param props - React props.
  */
 function Content(props: NodeContentProps) {
-    const { header, selected } = props;
+    const { header, selected, children } = props;
 
     return (
         <Card
@@ -25,6 +26,7 @@ function Content(props: NodeContentProps) {
                     {header}
                 </div>
                 <Divider />
+                {children}
             </CardContent>
         </Card>
     );

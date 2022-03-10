@@ -21,6 +21,10 @@ msgstr "Class"
 msgid "COMPONENTS_NAMES_INTERFACE"
 msgstr "Interface"
 
-#: src/components/ComponentDiagram/elements/Port/PortWidget/index.tsx:46
+#: src/components/ComponentDiagram/elements/Port/PortWidget/index.tsx:45
 msgid "COMPONENT_EXTENDS"
 msgstr "extends"
+
+#: src/components/ComponentDiagram/elements/Node/NodeWidget/Fields/Label/index.tsx:8
+msgid "FIELDS"
+msgstr "Fields"

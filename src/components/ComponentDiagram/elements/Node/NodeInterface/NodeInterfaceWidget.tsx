@@ -5,6 +5,7 @@ import NodeName from '../NodeWidget/Name';
 import NodeWidget from '../NodeWidget';
 import DiagramContext from '../../../Diagram/DiagramContext/DiagramContext';
 import ComponentType from '../../../../../models/ComponentType';
+import Fields from '../NodeWidget/Fields';
 
 export interface NodeWidgetProps {
     node: Node;
@@ -30,6 +31,7 @@ function NodeInterfaceWidget(props: NodeWidgetProps) {
             portBottom={portBottom}
             diagramEngine={engine}
             header={<NodeName getName={node.getName} type={ComponentType.INTERFACE} changeName={node.changeName} />}
+            content={<Fields getFields={() => []} onAdd={() => undefined} onRemove={() => undefined} />}
         />
     );
 }

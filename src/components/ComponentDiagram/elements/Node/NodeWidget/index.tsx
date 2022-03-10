@@ -14,6 +14,7 @@ type NodeWidgetProps = {
     diagramEngine: DiagramEngine,
     header: ReactNode
     context: DiagramContext
+    content: ReactNode
 };
 
 /**
@@ -23,7 +24,7 @@ type NodeWidgetProps = {
  */
 function NodeWidget(props: NodeWidgetProps) {
     const {
-        portBottom, selected, portTop, diagramEngine, header, context,
+        portBottom, selected, portTop, diagramEngine, header, context, content,
     } = props;
     const { sourcePort } = context.getActiveLink();
 
@@ -44,7 +45,9 @@ function NodeWidget(props: NodeWidgetProps) {
             <Content
                 selected={selected}
                 header={header}
-            />
+            >
+                {content}
+            </Content>
             <Port
                 show={showBottomPort}
                 port={portBottom}
