@@ -1,14 +1,14 @@
 import React from 'react';
 import { DiagramEngine, PortModelAlignment } from '@projectstorm/react-diagrams';
-import { Node } from '../Node';
 import NodeName from '../NodeWidget/Name';
 import NodeWidget from '../NodeWidget';
 import DiagramContext from '../../../Diagram/DiagramContext/DiagramContext';
 import ComponentType from '../../../../../models/ComponentType';
 import Fields from '../NodeWidget/Properties';
+import NodeInterface from './index';
 
 export interface NodeWidgetProps {
-    node: Node;
+    node: NodeInterface;
     engine: DiagramEngine;
     context: DiagramContext
 }

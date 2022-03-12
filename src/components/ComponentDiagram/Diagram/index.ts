@@ -10,9 +10,8 @@ import { observable, makeObservable, action } from 'mobx';
 import EventEmitter from 'simple-typed-emitter';
 import { NodeClassFactory } from '../elements/Node/NodeClass/NodeClassFactory';
 import DiagramStruct, { DiagramInitialNode } from '../../../models/Diagram';
-import { Node, NodeI } from '../elements/Node/Node';
+import { NodeI } from '../elements/Node/NodeBasic';
 import NodeInterfaceFactory from '../elements/Node/NodeInterface/NodeInterfaceFactory';
-import ComponentFactory from '../../../models/factories/ComponentFactory';
 import { ComponentI } from '../../../models/components/Component';
 import isType from '../../../utils/guards/isType';
 import Class from '../../../models/components/Class';
@@ -21,6 +20,9 @@ import ZoomAction from '../actions/ZoomAction';
 import LinkFactory from '../elements/Link/LinkFactory';
 import DeleteItemsAction from '../actions/DeleteItemsAction';
 import DiagramContext from './DiagramContext/DiagramContext';
+import NodeClass from '../elements/Node/NodeClass';
+import ComponentType from '../../../models/ComponentType';
+import NodeInterface from '../elements/Node/NodeInterface';
 
 type DiagramDeps = {
     i18n: I18n,
@@ -99,7 +101,20 @@ export class Diagram implements DiagramStruct {
     private createLink: CreateLink = (
         sourceNode,
         targetNode,
-    ) => this.linkValidator.isValidLink(sourceNode, targetNode);
+    ) => {
+        const isValid = this.linkValidator.isValidLink(sourceNode, targetNode);
+
+        if (isValid) {
+            if (
+                (sourceNode instanceof NodeClass || sourceNode instanceof NodeInterface)
+                && (targetNode instanceof NodeClass || targetNode instanceof NodeInterface)
+            ) {
+                sourceNode.extend(targetNode);
+            }
+        }
+
+        return isValid;
+    };
 
     @action
     private setSourcePort: SetPort = (port) => {
@@ -112,7 +127,9 @@ export class Diagram implements DiagramStruct {
         /**
          * The Link is inheritance. When you delete a link, you need to null the inheritance.
          */
-        sourceNode.removeExtends();
+        if (sourceNode instanceof NodeClass || sourceNode instanceof NodeInterface) {
+            sourceNode.removeExtends();
+        }
         this.changeDiagramHandler();
     };
 
@@ -174,18 +191,34 @@ export class Diagram implements DiagramStruct {
      */
     addNode(initialNode: DiagramInitialNode) {
         const { diagramEngine } = this;
-        const node = new Node({
-            type: initialNode.type,
-            name: initialNode.name || '',
-            extends: initialNode.extends,
-            context: this.diagramContext,
-        });
+        let node: NodeModel | null = null;
 
-        node.setPosition(initialNode.point || new Point(100, 100));
-        diagramEngine.getModel().addNode(node);
-        this.diagramEngine.repaintCanvas();
+        switch (initialNode.type) {
+        case ComponentType.CLASS:
+            node = new NodeClass({
+                name: initialNode.name || '',
+                extends: initialNode.extends,
+            });
+            break;
+        case ComponentType.INTERFACE:
+            node = new NodeInterface({
+                name: initialNode.name || '',
+                extends: initialNode.extends,
+            });
+            break;
+        default:
+            break;
+        }
 
-        return node.getID();
+        if (node) {
+            node.setPosition(initialNode.point || new Point(100, 100));
+            diagramEngine.getModel().addNode(node);
+            this.diagramEngine.repaintCanvas();
+
+            return node.getID();
+        }
+
+        return undefined;
     }
 
     /**

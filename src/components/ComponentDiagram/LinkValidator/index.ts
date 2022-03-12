@@ -1,4 +1,4 @@
-import { NodeI } from '../elements/Node/Node';
+import { NodeI } from '../elements/Node/NodeBasic';
 import TypeChecker from '../../../utils/TypeChecker';
 import FormatterDiagram from '../../../utils/Formatter';
 import Class from '../../../models/components/Class';

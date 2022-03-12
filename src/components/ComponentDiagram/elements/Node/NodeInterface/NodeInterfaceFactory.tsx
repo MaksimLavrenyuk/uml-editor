@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { AbstractReactFactory } from '@projectstorm/react-canvas-core';
 import { DiagramEngine } from '@projectstorm/react-diagrams-core';
-import { Node } from '../Node';
 import NodeInterfaceWidget from './NodeInterfaceWidget';
 import ComponentType from '../../../../../models/ComponentType';
 import { COMPONENTS_NAMES } from '../../../../../locales/lang-constants';
 import DiagramContext from '../../../Diagram/DiagramContext/DiagramContext';
+import NodeInterface from './index';
 
 type NodeInterfaceFactoryProps = {
     context: DiagramContext
@@ -15,7 +15,7 @@ type NodeInterfaceFactoryProps = {
  * Factory to create the "Interface" nodes of the diagram.
  * With its help the widget of such a node is created.
  */
-export default class NodeInterfaceFactory extends AbstractReactFactory<Node, DiagramEngine> {
+export default class NodeInterfaceFactory extends AbstractReactFactory<NodeInterface, DiagramEngine> {
     private readonly componentType = ComponentType.INTERFACE;
 
     private readonly context: DiagramContext;
@@ -25,7 +25,7 @@ export default class NodeInterfaceFactory extends AbstractReactFactory<Node, Dia
         this.context = props.context;
     }
 
-    generateReactWidget(event: { model: Node }): JSX.Element {
+    generateReactWidget(event: { model: NodeInterface }): JSX.Element {
         return (
             <NodeInterfaceWidget
                 context={this.context}
@@ -36,8 +36,7 @@ export default class NodeInterfaceFactory extends AbstractReactFactory<Node, Dia
     }
 
     generateModel() {
-        return new Node({
-            type: this.componentType,
+        return new NodeInterface({
             name: COMPONENTS_NAMES[this.componentType],
             context: this.context,
         });

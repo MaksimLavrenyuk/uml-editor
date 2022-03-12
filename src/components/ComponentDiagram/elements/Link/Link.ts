@@ -2,7 +2,7 @@ import { DefaultLinkModel, LinkModel } from '@projectstorm/react-diagrams';
 import { BaseEntityEvent, BaseEvent } from '@projectstorm/react-canvas-core';
 import { PortModel } from '@projectstorm/react-diagrams-core/dist/@types/entities/port/PortModel';
 import isType from '../../../../utils/guards/isType';
-import { NodeI } from '../Node/Node';
+import { NodeI } from '../Node/NodeBasic';
 import DiagramContext from '../../Diagram/DiagramContext/DiagramContext';
 
 export type LinkEvent = BaseEntityEvent<LinkModel>;
@@ -47,7 +47,6 @@ export default class Link extends DefaultLinkModel {
                         if (!isValidLink) {
                             event.entity.remove();
                         } else {
-                            source.extend(target);
                             /**
                              * After successfully connecting the nodes, set the source node as not selected.
                              * This prevents an error:

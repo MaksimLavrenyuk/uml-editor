@@ -1,12 +1,11 @@
 import * as React from 'react';
 import { AbstractReactFactory } from '@projectstorm/react-canvas-core';
 import { DiagramEngine } from '@projectstorm/react-diagrams-core';
-import { Node } from '../Node';
 import NodeClassWidget from './NodeClassWidget';
 import ComponentType from '../../../../../models/ComponentType';
 import { COMPONENTS_NAMES } from '../../../../../locales/lang-constants';
-import ComponentFactory from '../../../../../models/factories/ComponentFactory';
 import DiagramContext from '../../../Diagram/DiagramContext/DiagramContext';
+import NodeClass from './index';
 
 type NodeClassFactoryProps = {
     context: DiagramContext
@@ -16,7 +15,7 @@ type NodeClassFactoryProps = {
  * Factory to create the "Class" nodes of the diagram.
  * With its help the widget of such a node is created.
  */
-export class NodeClassFactory extends AbstractReactFactory<Node, DiagramEngine> {
+export class NodeClassFactory extends AbstractReactFactory<NodeClass, DiagramEngine> {
     private readonly componentType = ComponentType.CLASS;
 
     private readonly context: DiagramContext;
@@ -26,7 +25,7 @@ export class NodeClassFactory extends AbstractReactFactory<Node, DiagramEngine> 
         this.context = props.context;
     }
 
-    generateReactWidget(event: { model: Node }): JSX.Element {
+    generateReactWidget(event: { model: NodeClass }): JSX.Element {
         return (
             <NodeClassWidget
                 context={this.context}
@@ -37,8 +36,7 @@ export class NodeClassFactory extends AbstractReactFactory<Node, DiagramEngine> 
     }
 
     generateModel() {
-        return new Node({
-            type: this.componentType,
+        return new NodeClass({
             name: COMPONENTS_NAMES[this.componentType],
             context: this.context,
         });

@@ -1,13 +1,13 @@
 import LinkValidator from '../index';
-import { Node } from '../../elements/Node/Node';
-import ComponentType from '../../../../models/ComponentType';
+import NodeClass from '../../elements/Node/NodeClass';
+import NodeInterface from '../../elements/Node/NodeInterface';
 
 describe('Validation check of class-node links creation.', () => {
     const linkValidator = new LinkValidator();
 
     it('Expanding the class with a class.', () => {
-        const node1 = new Node({ type: ComponentType.CLASS, name: 'Class1' });
-        const node2 = new Node({ type: ComponentType.CLASS, name: 'Class2' });
+        const node1 = new NodeClass({ name: 'Class1' });
+        const node2 = new NodeClass({ name: 'Class2' });
 
         /**
          * current components
@@ -24,8 +24,8 @@ describe('Validation check of class-node links creation.', () => {
     });
 
     it('Extend the class with a class with the same name.', () => {
-        const node1 = new Node({ type: ComponentType.CLASS, name: 'Class1' });
-        const node2 = new Node({ type: ComponentType.CLASS, name: 'Class1' });
+        const node1 = new NodeClass({ name: 'Class1' });
+        const node2 = new NodeClass({ name: 'Class1' });
 
         /**
          * current components
@@ -42,8 +42,8 @@ describe('Validation check of class-node links creation.', () => {
     });
 
     it('We extend a class with a class extensible without a name.', () => {
-        const node1 = new Node({ type: ComponentType.CLASS, name: '' });
-        const node2 = new Node({ type: ComponentType.CLASS, name: 'Class1' });
+        const node1 = new NodeClass({ name: '' });
+        const node2 = new NodeClass({ name: 'Class1' });
 
         /**
          * current components
@@ -60,8 +60,8 @@ describe('Validation check of class-node links creation.', () => {
     });
 
     it('Extend the class with a class, target without a name.', () => {
-        const node1 = new Node({ type: ComponentType.CLASS, name: 'Class1' });
-        const node2 = new Node({ type: ComponentType.CLASS, name: '' });
+        const node1 = new NodeClass({ name: 'Class1' });
+        const node2 = new NodeClass({ name: '' });
 
         /**
          * current components
@@ -78,8 +78,8 @@ describe('Validation check of class-node links creation.', () => {
     });
 
     it('re-extends class', () => {
-        const node1 = new Node({ type: ComponentType.CLASS, name: 'Class1' });
-        const node2 = new Node({ type: ComponentType.CLASS, name: 'Class2', extends: 'AnotherClass' });
+        const node1 = new NodeClass({ name: 'Class1' });
+        const node2 = new NodeClass({ name: 'Class2', extends: 'AnotherClass' });
 
         /**
          * current components
@@ -102,8 +102,8 @@ describe('Validation check of interface-node links creation.', () => {
     const linkValidator = new LinkValidator();
 
     it('Extend the interface with a interface with the same name.', () => {
-        const node1 = new Node({ type: ComponentType.INTERFACE, name: 'Interface1' });
-        const node2 = new Node({ type: ComponentType.INTERFACE, name: 'Interface1' });
+        const node1 = new NodeInterface({ name: 'Interface1' });
+        const node2 = new NodeInterface({ name: 'Interface1' });
 
         /**
          * current components
@@ -120,8 +120,8 @@ describe('Validation check of interface-node links creation.', () => {
     });
 
     it('We extend a interface with a interface extensible without a name.', () => {
-        const node1 = new Node({ type: ComponentType.INTERFACE, name: '' });
-        const node2 = new Node({ type: ComponentType.INTERFACE, name: 'Interface1' });
+        const node1 = new NodeInterface({ name: '' });
+        const node2 = new NodeInterface({ name: 'Interface1' });
 
         /**
          * current components
@@ -136,8 +136,8 @@ describe('Validation check of interface-node links creation.', () => {
     });
 
     it('Extend the interface with a interface, target without a name.', () => {
-        const node1 = new Node({ type: ComponentType.INTERFACE, name: 'Interface1' });
-        const node2 = new Node({ type: ComponentType.INTERFACE, name: '' });
+        const node1 = new NodeInterface({ name: 'Interface1' });
+        const node2 = new NodeInterface({ name: '' });
 
         /**
          * current components
@@ -152,8 +152,8 @@ describe('Validation check of interface-node links creation.', () => {
     });
 
     it('Expanding the interface with a interface.', () => {
-        const node1 = new Node({ type: ComponentType.INTERFACE, name: 'Interface1' });
-        const node2 = new Node({ type: ComponentType.INTERFACE, name: 'Interface2' });
+        const node1 = new NodeInterface({ name: 'Interface1' });
+        const node2 = new NodeInterface({ name: 'Interface2' });
 
         /**
          * current components
@@ -168,8 +168,8 @@ describe('Validation check of interface-node links creation.', () => {
     });
 
     it('re-extends interface', () => {
-        const node1 = new Node({ type: ComponentType.INTERFACE, name: 'Interface1' });
-        const node2 = new Node({ type: ComponentType.INTERFACE, name: 'Interface2', extends: 'AnotherInterface' });
+        const node1 = new NodeInterface({ name: 'Interface1' });
+        const node2 = new NodeInterface({ name: 'Interface2', extends: 'AnotherInterface' });
 
         /**
          * current components
