@@ -25,6 +25,6 @@ msgstr "Interface"
 msgid "COMPONENT_EXTENDS"
 msgstr "extends"
 
-#: src/components/ComponentDiagram/elements/Node/NodeWidget/Fields/Label/index.tsx:8
-msgid "FIELDS"
-msgstr "Fields"
+#: src/components/ComponentDiagram/elements/Node/NodeWidget/Properties/Label/index.tsx:9
+msgid "PROPERTIES"
+msgstr "Properties"

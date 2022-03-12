@@ -5,7 +5,7 @@ import NodeName from '../NodeWidget/Name';
 import NodeWidget from '../NodeWidget';
 import DiagramContext from '../../../Diagram/DiagramContext/DiagramContext';
 import ComponentType from '../../../../../models/ComponentType';
-import Fields from '../NodeWidget/Fields';
+import Fields from '../NodeWidget/Properties';
 
 export interface NodeWidgetProps {
     node: Node;

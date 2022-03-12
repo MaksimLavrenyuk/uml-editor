@@ -6,7 +6,7 @@ import classes from './Label.module.scss';
 function Label() {
     return (
         <Typography className={classes.label} variant="caption" display="block">
-            {t`FIELDS`}
+            {t`PROPERTIES`}
         </Typography>
     );
 }

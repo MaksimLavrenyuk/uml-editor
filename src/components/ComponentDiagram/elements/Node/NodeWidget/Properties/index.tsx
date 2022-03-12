@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react';
 import AddBtn from './AddBtn';
-import classes from './Fields.module.scss';
+import classes from './Properties.module.scss';
 import Label from './Label';
 
 type FieldsProps = {
@@ -11,7 +11,7 @@ type FieldsProps = {
 
 type HeaderProps = {
     children: ReactNode
-}
+};
 
 const Header = React.memo((props: HeaderProps) => {
     const { children } = props;
@@ -19,10 +19,10 @@ const Header = React.memo((props: HeaderProps) => {
         <div className={classes.header}>
             {children}
         </div>
-    )
+    );
 });
 
-function Fields(props: FieldsProps) {
+function Properties(props: FieldsProps) {
     const { onAdd, getFields, onRemove } = props;
     const fields = getFields();
 
@@ -46,4 +46,4 @@ function Fields(props: FieldsProps) {
     );
 }
 
-export default React.memo(Fields);
+export default React.memo(Properties);
