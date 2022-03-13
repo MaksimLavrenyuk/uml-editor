@@ -22,6 +22,7 @@ function NodeClassWidget(props: NodeWidgetProps) {
     const { node, engine, context } = props;
     const portTop = node.getPort(PortModelAlignment.TOP);
     const portBottom = node.getPort(PortModelAlignment.BOTTOM);
+    const portsIn = node.getInPorts();
 
     return (
         <NodeWidget
@@ -33,6 +34,8 @@ function NodeClassWidget(props: NodeWidgetProps) {
             header={<Name getName={node.getName} type={ComponentType.CLASS} changeName={node.changeName} />}
             content={(
                 <Properties
+                    context={context}
+                    getInPorts={node.getInPorts}
                     getProperties={node.getProperties}
                     onChangeName={node.changePropertyName}
                     onAdd={node.newProperty}

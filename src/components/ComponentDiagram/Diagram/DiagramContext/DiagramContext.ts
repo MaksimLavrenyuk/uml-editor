@@ -1,5 +1,6 @@
+import { DiagramEngine } from '@projectstorm/react-diagrams';
 import {
-    CreateLink, RemoveLinkHandler, SetPort, GetActiveLink, ChangeDiagramHandler,
+    CreateLink, RemoveLinkHandler, SetPort, GetActiveLink, EmitChangeEv,
 } from '../index';
 
 type DiagramContextProps = {
@@ -7,7 +8,8 @@ type DiagramContextProps = {
     removeLinkHandler: RemoveLinkHandler
     setPort: SetPort
     getActiveLink: GetActiveLink
-    changeHandler: ChangeDiagramHandler,
+    changeHandler: EmitChangeEv,
+    diagramEngine: DiagramEngine
 };
 
 class DiagramContext {
@@ -19,7 +21,9 @@ class DiagramContext {
 
     public readonly getActiveLink: GetActiveLink;
 
-    public readonly onChange: ChangeDiagramHandler;
+    public readonly onChange: EmitChangeEv;
+
+    public readonly diagramEngine: DiagramEngine;
 
     constructor(props: DiagramContextProps) {
         this.createLink = props.createLink;
@@ -27,6 +31,7 @@ class DiagramContext {
         this.setPort = props.setPort;
         this.getActiveLink = props.getActiveLink;
         this.onChange = props.changeHandler;
+        this.diagramEngine = props.diagramEngine;
     }
 }
 

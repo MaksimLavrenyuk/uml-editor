@@ -48,7 +48,7 @@ export type GetActiveLink = (
     () => ActiveLink
 );
 
-export type ChangeDiagramHandler = () => void;
+export type EmitChangeEv = () => void;
 
 type DiagramEvents = {
     change: ((components: ComponentI[]) => void)[]
@@ -85,7 +85,8 @@ export class Diagram implements DiagramStruct {
             setPort: this.setSourcePort,
             removeLinkHandler: this.removeLinkHandler,
             getActiveLink: this.getActiveLink,
-            changeHandler: this.changeDiagramHandler,
+            changeHandler: this.emitChangeEv,
+            diagramEngine: this.diagramEngine,
         });
         this.linkValidator = new LinkValidator();
         this.events = new EventEmitter<DiagramEvents>();
@@ -130,10 +131,10 @@ export class Diagram implements DiagramStruct {
         if (sourceNode instanceof NodeClass || sourceNode instanceof NodeInterface) {
             sourceNode.removeExtends();
         }
-        this.changeDiagramHandler();
+        this.emitChangeEv();
     };
 
-    private changeDiagramHandler: ChangeDiagramHandler = () => {
+    private emitChangeEv: EmitChangeEv = () => {
         this.events.emit('change', this.content());
     };
 
@@ -217,9 +218,11 @@ export class Diagram implements DiagramStruct {
             diagramEngine.getModel().addNode(node);
             this.diagramEngine.repaintCanvas();
 
+            this.emitChangeEv();
             return node.getID();
         }
 
+        this.emitChangeEv();
         return undefined;
     }
 

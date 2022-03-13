@@ -74,10 +74,13 @@ class NodeClass extends NodeBasic {
 
     @action.bound
     newProperty() {
-        this.properties.push({
+        const newProperty = {
             ...DEFAULT_PROPERTY,
             key: nanoid(),
-        });
+        };
+
+        this.addInPort(newProperty.key);
+        this.properties.push(newProperty);
     }
 
     @action.bound
