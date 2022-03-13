@@ -4,17 +4,29 @@ import Class from '../../models/components/Class';
 import isType from '../guards/isType';
 import Interface from '../../models/components/Interface';
 import { Formatter } from '../../models/Formatter';
+import { Property } from '../../models/components/Property';
 
 class FormatterDiagram implements Formatter {
     private static serializeExtends(extendName: string | undefined) {
         return extendName ? ` extends ${extendName} ` : ' ';
     }
 
+    private static serializeProperty(component: Property) {
+        return `    ${component.isAbstract ? 'abstract ' : ''}${component.modifier} ${component.isStatic ? 'static ' : ''}${component.name}${component.isOptional ? '?' : ''}: ${component.returnType};`;
+    }
+
     private static serializeClass(component: Class) {
         const extend = FormatterDiagram.serializeExtends(component.extends);
+        const properties: string[] = [];
+
+        component.members.forEach((member) => {
+            if (member instanceof Property) {
+                properties.push(FormatterDiagram.serializeProperty(member));
+            }
+        });
 
         return `
-            class ${component.name}${extend}{}
+            class ${component.name}${extend}{${properties.map((property) => `\n${property}\n`)}}
         `.trim();
     }
 

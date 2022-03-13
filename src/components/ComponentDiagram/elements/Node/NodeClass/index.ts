@@ -1,5 +1,6 @@
 import { PortModelAlignment } from '@projectstorm/react-diagrams';
 import { observable, action, makeObservable } from 'mobx';
+import { debounce } from 'lodash';
 import { nanoid } from 'nanoid';
 import { NodeBasic, NodeI } from '../NodeBasic';
 import ComponentType from '../../../../../models/ComponentType';
@@ -63,9 +64,13 @@ class NodeClass extends NodeBasic {
         makeObservable(this);
     }
 
+    debounceChangeEmit = debounce(() => {
+        this.context?.onChange();
+    }, 100);
+
     extend(node: NodeI) {
         this.extends = node.getName();
-        this.context?.onChange();
+        this.debounceChangeEmit();
     }
 
     removeExtends() {
@@ -81,6 +86,8 @@ class NodeClass extends NodeBasic {
 
         this.addInPort(newProperty.key);
         this.properties.push(newProperty);
+
+        this.debounceChangeEmit();
     }
 
     @action.bound
@@ -91,6 +98,8 @@ class NodeClass extends NodeBasic {
                 break;
             }
         }
+
+        this.debounceChangeEmit();
     }
 
     @action.bound
@@ -102,12 +111,25 @@ class NodeClass extends NodeBasic {
          */
         // eslint-disable-next-line no-param-reassign
         property.name = name;
+
+        this.debounceChangeEmit();
     }
 
     getProperties = () => this.properties;
 
+    private collectProperties() {
+        return this.properties.map((property) => (this.factory.createProperty({
+            name: property.name,
+            modifier: property.modifier,
+            returnType: property.returnType,
+            isAbstract: property.isAbstract,
+            isOptional: property.isOptional,
+            isStatic: property.isStatic,
+        })));
+    }
+
     content(): ComponentI | undefined {
-        return this.factory.createClass(this.name, this.extends);
+        return this.factory.createClass(this.name, this.extends, this.collectProperties());
     }
 }
 

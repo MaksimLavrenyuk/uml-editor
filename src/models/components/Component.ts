@@ -10,7 +10,7 @@ export abstract class Component implements ComponentI {
 
     public readonly name: string;
 
-    protected constructor(name: string) {
+    constructor(name: string) {
         this.name = name;
     }
 }
