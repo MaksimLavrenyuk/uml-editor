@@ -4,8 +4,8 @@ import NodeName from '../NodeWidget/Name';
 import NodeWidget from '../NodeWidget';
 import DiagramContext from '../../../Diagram/DiagramContext/DiagramContext';
 import ComponentType from '../../../../../models/ComponentType';
-import Fields from '../NodeWidget/Properties';
 import NodeInterface from './index';
+import Properties from './Properties';
 
 export interface NodeWidgetProps {
     node: NodeInterface;
@@ -31,7 +31,14 @@ function NodeInterfaceWidget(props: NodeWidgetProps) {
             portBottom={portBottom}
             diagramEngine={engine}
             header={<NodeName getName={node.getName} type={ComponentType.INTERFACE} changeName={node.changeName} />}
-            content={<Fields getFields={() => []} onAdd={() => undefined} onRemove={() => undefined} />}
+            content={(
+                <Properties
+                    getProperties={node.getProperties}
+                    onChangeName={node.changePropertyName}
+                    onAdd={node.newProperty}
+                    onRemoveProperty={node.removeProperty}
+                />
+            )}
         />
     );
 }

@@ -27,7 +27,7 @@ msgstr "extends"
 
 #: src/components/ComponentDiagram/elements/Node/NodeWidget/Properties/Label/index.tsx:9
 msgid "PROPERTIES"
-msgstr "Properties"
+msgstr "ClassProperties"
 
 #: src/locales/lang-constants.ts:7
 msgid "PROPERTY"

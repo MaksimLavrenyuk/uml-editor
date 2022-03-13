@@ -4,8 +4,8 @@ import Name from '../NodeWidget/Name';
 import NodeWidget from '../NodeWidget';
 import DiagramContext from '../../../Diagram/DiagramContext/DiagramContext';
 import ComponentType from '../../../../../models/ComponentType';
-import Fields from '../NodeWidget/Properties';
 import NodeClass from './index';
+import Properties from './Properties';
 
 export interface NodeWidgetProps {
     node: NodeClass;
@@ -31,7 +31,14 @@ function NodeClassWidget(props: NodeWidgetProps) {
             portBottom={portBottom}
             diagramEngine={engine}
             header={<Name getName={node.getName} type={ComponentType.CLASS} changeName={node.changeName} />}
-            content={<Fields getFields={() => []} onAdd={() => undefined} onRemove={() => undefined} />}
+            content={(
+                <Properties
+                    getProperties={node.getProperties}
+                    onChangeName={node.changePropertyName}
+                    onAdd={node.newProperty}
+                    onRemoveProperty={node.removeProperty}
+                />
+            )}
         />
     );
 }

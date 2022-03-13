@@ -198,12 +198,14 @@ export class Diagram implements DiagramStruct {
             node = new NodeClass({
                 name: initialNode.name || '',
                 extends: initialNode.extends,
+                context: this.diagramContext,
             });
             break;
         case ComponentType.INTERFACE:
             node = new NodeInterface({
                 name: initialNode.name || '',
                 extends: initialNode.extends,
+                context: this.diagramContext,
             });
             break;
         default:
