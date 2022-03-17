@@ -135,12 +135,15 @@ export class Diagram implements DiagramStruct {
     private connectNodeProperty: ConnectNodeProperty = (port: PortModel, targetNode:NodeI) => {
         const sourcePropertyKey = port.getName();
         const sourceNode = port.getNode();
-        let propertyName;
 
         if (sourceNode instanceof NodeClass) {
-            propertyName = sourceNode.getProperties().find((property) => property.key === sourcePropertyKey)?.name;
+            const property = sourceNode.getProperty(sourcePropertyKey);
 
-            console.log(propertyName);
+            if (property) {
+                property.changeReturnType(sourceNode.getName());
+
+                return true;
+            }
         }
 
         return false;

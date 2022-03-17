@@ -1,5 +1,7 @@
 import { action, makeObservable, observable } from 'mobx';
 import { nanoid } from 'nanoid';
+import EventEmitter from 'simple-typed-emitter';
+import { debounce } from 'lodash';
 import { Modifier } from '../../../../../../../models/Modifier';
 
 export type ClassPropertyData = {
@@ -11,7 +13,12 @@ export type ClassPropertyData = {
     isStatic: boolean
 };
 
+type ClassPropertyEventMap = {
+    change: (() => void)[]
+};
+
 interface IProperty {
+    readonly events: EventEmitter<ClassPropertyEventMap>;
     readonly key: string
     changeName(name: string): void
     name(): string
@@ -38,6 +45,8 @@ const DEFAULT_PROPERTY: ClassPropertyData = {
 
 class ClassProperty implements IProperty {
     readonly key: string;
+
+    readonly events = new EventEmitter<ClassPropertyEventMap>();
 
     @observable
     private propName: string;
@@ -69,19 +78,29 @@ class ClassProperty implements IProperty {
         makeObservable(this);
     }
 
+    private debounceChangeEmit = debounce(() => {
+        this.events.emit('change');
+    }, 100);
+
     @action
     changeModifier(modifier: Modifier): void {
         this.propModifier = modifier;
+
+        this.debounceChangeEmit();
     }
 
     @action
     changeName(name: string): void {
         this.propName = name;
+
+        this.debounceChangeEmit();
     }
 
     @action
     changeReturnType(type: string): void {
         this.propReturnType = type;
+
+        this.debounceChangeEmit();
     }
 
     isAbstract = () => this.propAbstract;
@@ -99,16 +118,22 @@ class ClassProperty implements IProperty {
     @action
     toggleAbstract(isAbstract: boolean): void {
         this.propAbstract = isAbstract;
+
+        this.debounceChangeEmit();
     }
 
     @action
     toggleOptional(isOptional: boolean): void {
         this.propOptional = isOptional;
+
+        this.debounceChangeEmit();
     }
 
     @action
     toggleStatic(isStatic: boolean): void {
         this.propStatic = isStatic;
+
+        this.debounceChangeEmit();
     }
 
     content(): ClassPropertyData {

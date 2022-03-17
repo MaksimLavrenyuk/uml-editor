@@ -41,7 +41,7 @@ class NodeClass extends NodeBasic {
         makeObservable(this);
     }
 
-    debounceChangeEmit = debounce(() => {
+    private debounceChangeEmit = debounce(() => {
         this.context?.onChange();
     }, 100);
 
@@ -57,6 +57,10 @@ class NodeClass extends NodeBasic {
     @action.bound
     newProperty() {
         const newProperty = new ClassProperty();
+
+        newProperty.events.registerListener('change', () => {
+            this.debounceChangeEmit();
+        });
 
         this.addInPort(newProperty.key);
         this.properties.push(newProperty);
@@ -77,6 +81,8 @@ class NodeClass extends NodeBasic {
     }
 
     getProperties = () => this.properties;
+
+    getProperty = (key: string) => this.properties.find((property) => property.key === key);
 
     private collectProperties() {
         return this.properties.map((property) => (this.factory.createProperty(property.content())));
