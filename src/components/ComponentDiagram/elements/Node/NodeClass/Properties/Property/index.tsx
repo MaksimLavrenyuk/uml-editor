@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react';
 import React, { KeyboardEvent, useCallback } from 'react';
 import { ContentEditableEvent } from 'react-contenteditable';
-import { ChangePropertyName, ClassProperty } from '../../index';
+import ClassProperty from './Property';
 import EditableDiv from '../../../../../../EditableDiv';
 import RemoveBtn from '../../../NodeWidget/PropertiesWrapper/RemoveBtn';
 import classes from './Property.module.scss';
@@ -11,7 +11,6 @@ import DiagramContext from '../../../../../Diagram/DiagramContext/DiagramContext
 
 type PropertyProps = {
     property: ClassProperty
-    onChangeName: ChangePropertyName
     onRemove(property: ClassProperty): void
     returnTypePort: PortIn
     context: DiagramContext
@@ -19,12 +18,12 @@ type PropertyProps = {
 
 function Property(props: PropertyProps) {
     const {
-        property, onChangeName, onRemove, returnTypePort, context,
+        property, onRemove, returnTypePort, context,
     } = props;
 
     const changeNameHandler = useCallback((event: ContentEditableEvent) => {
-        onChangeName(event.target.value, property);
-    }, [onChangeName, property]);
+        property.changeName(event.target.value);
+    }, [property]);
 
     const keyDownHandler = useCallback((event: KeyboardEvent<HTMLDivElement>) => {
         if (event.key === 'Delete' || event.key === 'Backspace') {
@@ -42,7 +41,7 @@ function Property(props: PropertyProps) {
             <EditableDiv
                 className={classes.propertyName}
                 onKeyDown={keyDownHandler}
-                html={property.name}
+                html={property.name()}
                 onChange={changeNameHandler}
             />
             <Port

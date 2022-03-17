@@ -140,13 +140,11 @@ export class Diagram implements DiagramStruct {
         if (sourceNode instanceof NodeClass) {
             propertyName = sourceNode.getProperties().find((property) => property.key === sourcePropertyKey)?.name;
 
-            sourceNode.
-
             console.log(propertyName);
         }
 
         return false;
-    }
+    };
 
     private removeNodePropertyLink() {
 

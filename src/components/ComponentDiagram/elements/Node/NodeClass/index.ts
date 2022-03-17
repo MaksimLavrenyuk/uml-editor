@@ -1,41 +1,18 @@
 import { PortModelAlignment } from '@projectstorm/react-diagrams';
 import { observable, action, makeObservable } from 'mobx';
 import { debounce } from 'lodash';
-import { nanoid } from 'nanoid';
 import { NodeBasic, NodeI } from '../NodeBasic';
 import ComponentType from '../../../../../models/ComponentType';
 import DiagramContext from '../../../Diagram/DiagramContext/DiagramContext';
 import { ComponentI } from '../../../../../models/components/Component';
 import { Port } from '../../Port/Port';
-import { Modifier } from '../../../../../models/Modifier';
+import ClassProperty from './Properties/Property/Property';
 
 type NodeClassProps = {
     name: string
     extends?: string
     context?: DiagramContext
 };
-
-export type ClassProperty = {
-    key: string
-    name: string,
-    modifier: Modifier,
-    returnType: string
-    isAbstract: boolean
-    isOptional: boolean
-    isStatic: boolean
-};
-
-const DEFAULT_PROPERTY: ClassProperty = {
-    key: '',
-    name: '',
-    modifier: 'public',
-    returnType: '',
-    isAbstract: false,
-    isOptional: false,
-    isStatic: false,
-};
-
-export type ChangePropertyName = (name: ClassProperty['name'], property: ClassProperty) => void;
 
 class NodeClass extends NodeBasic {
     private extends: string | undefined;
@@ -79,10 +56,7 @@ class NodeClass extends NodeBasic {
 
     @action.bound
     newProperty() {
-        const newProperty = {
-            ...DEFAULT_PROPERTY,
-            key: nanoid(),
-        };
+        const newProperty = new ClassProperty();
 
         this.addInPort(newProperty.key);
         this.properties.push(newProperty);
@@ -102,30 +76,10 @@ class NodeClass extends NodeBasic {
         this.debounceChangeEmit();
     }
 
-    @action.bound
-    changePropertyName(name: ClassProperty['name'], property: ClassProperty) {
-        /**
-         * The object is changed directly for the purpose of optimization.
-         * The set of properties is wrapped observable, so changing one of the objects
-         * will trigger a re-render of the corresponding component.
-         */
-        // eslint-disable-next-line no-param-reassign
-        property.name = name;
-
-        this.debounceChangeEmit();
-    }
-
     getProperties = () => this.properties;
 
     private collectProperties() {
-        return this.properties.map((property) => (this.factory.createProperty({
-            name: property.name,
-            modifier: property.modifier,
-            returnType: property.returnType,
-            isAbstract: property.isAbstract,
-            isOptional: property.isOptional,
-            isStatic: property.isStatic,
-        })));
+        return this.properties.map((property) => (this.factory.createProperty(property.content())));
     }
 
     content(): ComponentI | undefined {

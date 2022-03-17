@@ -1,7 +1,7 @@
 import React from 'react';
 import { observer } from 'mobx-react';
 import PropertiesWrapper from '../../NodeWidget/PropertiesWrapper';
-import { ChangePropertyName, ClassProperty } from '../index';
+import ClassProperty from './Property/Property';
 import Property from './Property';
 import { PortsIn } from '../../NodeBasic';
 import DiagramContext from '../../../../Diagram/DiagramContext/DiagramContext';
@@ -10,7 +10,6 @@ type PropertiesProps = {
     onAdd(): void
     onRemoveProperty(property: ClassProperty): void
     getProperties(): ClassProperty[]
-    onChangeName: ChangePropertyName
     getInPorts(): PortsIn
     context: DiagramContext
 };
@@ -19,7 +18,6 @@ function Properties(props: PropertiesProps) {
     const {
         onAdd,
         getProperties,
-        onChangeName,
         onRemoveProperty,
         getInPorts,
         context,
@@ -35,7 +33,6 @@ function Properties(props: PropertiesProps) {
                     returnTypePort={portsIn[property.key]}
                     key={property.key}
                     property={property}
-                    onChangeName={onChangeName}
                     onRemove={onRemoveProperty}
                 />
             ))}

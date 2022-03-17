@@ -36,7 +36,6 @@ function NodeClassWidget(props: NodeWidgetProps) {
                     context={context}
                     getInPorts={node.getInPorts}
                     getProperties={node.getProperties}
-                    onChangeName={node.changePropertyName}
                     onAdd={node.newProperty}
                     onRemoveProperty={node.removeProperty}
                 />
