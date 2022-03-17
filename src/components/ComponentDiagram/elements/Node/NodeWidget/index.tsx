@@ -26,12 +26,14 @@ function NodeWidget(props: NodeWidgetProps) {
     const {
         portBottom, selected, portTop, diagramEngine, header, context, content,
     } = props;
-    const { sourcePort } = context.getActiveLink();
+    const { sourcePort } = context.getActiveNodePort();
+    const propertyPort = context.getActivePropertyPort().sourcePort;
 
     const showBottomPort = () => {
         const links = portBottom?.getLinks();
+        const isPropertyBelongsToNode = Boolean(propertyPort?.getNode().getPortFromID(portBottom?.getID()));
 
-        return (sourcePort !== null && sourcePort !== portTop)
+        return ((sourcePort !== null && sourcePort !== portTop) || (propertyPort && !isPropertyBelongsToNode))
             || Boolean(links && Object.keys(links).length > 0);
     };
 

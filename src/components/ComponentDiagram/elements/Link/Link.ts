@@ -23,16 +23,16 @@ export default class Link extends DefaultLinkModel {
                     const source = event.entity.getSourcePort()?.getNode();
                     const target = event.entity.getTargetPort()?.getNode();
 
-                    props.context?.setPort(null);
+                    props.context?.setActiveNodePort(null);
 
                     if (isType<NodeI>(source, 'getName') && isType<NodeI>(target, 'getName')) {
-                        props.context?.removeLinkHandler(source, target);
+                        props.context?.removeLinkNodes(source, target);
                     }
                 }
             },
             sourcePortChanged: (event: BaseEvent) => {
                 if (isType<{ port: null | PortModel }>(event, 'port')) {
-                    props.context?.setPort(event.port);
+                    props.context?.setActiveNodePort(event.port);
                 }
             },
             targetPortChanged: (event: LinkEvent | BaseEvent) => {
@@ -42,7 +42,7 @@ export default class Link extends DefaultLinkModel {
                     let isValidLink;
 
                     if (isType<NodeI>(source, 'getName') && isType<NodeI>(target, 'getName')) {
-                        isValidLink = props.context?.createLink(source, target);
+                        isValidLink = props.context?.connectNodes(source, target);
 
                         if (!isValidLink) {
                             event.entity.remove();
@@ -60,7 +60,7 @@ export default class Link extends DefaultLinkModel {
                             target.setSelected(false);
                         }
 
-                        props.context?.setPort(null);
+                        props.context?.setActiveNodePort(null);
                     }
                 }
             },

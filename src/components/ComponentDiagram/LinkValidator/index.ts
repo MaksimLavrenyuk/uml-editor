@@ -6,7 +6,7 @@ import Interface from '../../../models/components/Interface';
 import { ComponentI } from '../../../models/components/Component';
 
 export interface ILinkValidator {
-    isValidLink(source: NodeI, target: NodeI, currentComponents: ComponentI[]): boolean
+    isValidConnectNodes(source: NodeI, target: NodeI, currentComponents: ComponentI[]): boolean
 }
 
 export default class LinkValidator implements ILinkValidator {
@@ -71,7 +71,7 @@ export default class LinkValidator implements ILinkValidator {
      * class test_2 extends test_1 {}
      * => true.
      */
-    isValidLink(fromExtends: NodeI, toExtends: NodeI) {
+    isValidConnectNodes(fromExtends: NodeI, toExtends: NodeI) {
         const resultSource = fromExtends.content();
         const resultTarget = toExtends.content();
         let resultStr = '';
@@ -100,5 +100,9 @@ export default class LinkValidator implements ILinkValidator {
         }
 
         return this.typeChecker.check(resultStr).length === 0;
+    }
+
+    isValidConnectNodeProperty() {
+
     }
 }

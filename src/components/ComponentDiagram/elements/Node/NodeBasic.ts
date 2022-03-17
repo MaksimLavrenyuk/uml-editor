@@ -59,6 +59,7 @@ export abstract class NodeBasic extends NodeModel implements NodeI {
         const p = new PortIn({
             label,
             alignment: PortModelAlignment.RIGHT,
+            context: this.context,
         });
 
         this.portsIn[label] = p;

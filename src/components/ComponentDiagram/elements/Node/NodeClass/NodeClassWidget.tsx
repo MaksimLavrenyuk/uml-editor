@@ -22,7 +22,6 @@ function NodeClassWidget(props: NodeWidgetProps) {
     const { node, engine, context } = props;
     const portTop = node.getPort(PortModelAlignment.TOP);
     const portBottom = node.getPort(PortModelAlignment.BOTTOM);
-    const portsIn = node.getInPorts();
 
     return (
         <NodeWidget

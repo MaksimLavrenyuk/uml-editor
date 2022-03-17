@@ -20,7 +20,7 @@ describe('Validation check of class-node links creation.', () => {
          * class Class1 {}
          * class Class2 extends Class1 {}
          */
-        expect(linkValidator.isValidLink(node1, node2)).toBeTruthy();
+        expect(linkValidator.isValidConnectNodes(node1, node2)).toBeTruthy();
     });
 
     it('Extend the class with a class with the same name.', () => {
@@ -38,7 +38,7 @@ describe('Validation check of class-node links creation.', () => {
          * class Class1 {}
          * class Class1 extends Class1 {}
          */
-        expect(linkValidator.isValidLink(node1, node2)).toBeFalsy();
+        expect(linkValidator.isValidConnectNodes(node1, node2)).toBeFalsy();
     });
 
     it('We extend a class with a class extensible without a name.', () => {
@@ -56,7 +56,7 @@ describe('Validation check of class-node links creation.', () => {
          * class  {}
          * class Class1 {}
          */
-        expect(linkValidator.isValidLink(node1, node2)).toBeFalsy();
+        expect(linkValidator.isValidConnectNodes(node1, node2)).toBeFalsy();
     });
 
     it('Extend the class with a class, target without a name.', () => {
@@ -74,7 +74,7 @@ describe('Validation check of class-node links creation.', () => {
          * class Class1 {}
          * class  extends Class1 {}
          */
-        expect(linkValidator.isValidLink(node1, node2)).toBeFalsy();
+        expect(linkValidator.isValidConnectNodes(node1, node2)).toBeFalsy();
     });
 
     it('re-extends class', () => {
@@ -94,7 +94,7 @@ describe('Validation check of class-node links creation.', () => {
          * class Class1 {}
          * class Class2 extends Class1 {} // Class2 has already extended anotherClass
          */
-        expect(linkValidator.isValidLink(node1, node2)).toBeFalsy();
+        expect(linkValidator.isValidConnectNodes(node1, node2)).toBeFalsy();
     });
 });
 
@@ -116,7 +116,7 @@ describe('Validation check of interface-node links creation.', () => {
          * interface Interface1 {}
          * interface Interface1 extends Interface1 {}
          */
-        expect(linkValidator.isValidLink(node1, node2)).toBeFalsy();
+        expect(linkValidator.isValidConnectNodes(node1, node2)).toBeFalsy();
     });
 
     it('We extend a interface with a interface extensible without a name.', () => {
@@ -132,7 +132,7 @@ describe('Validation check of interface-node links creation.', () => {
          * interface  {}
          * interface Interface1 {}
          */
-        expect(linkValidator.isValidLink(node1, node2)).toBeFalsy();
+        expect(linkValidator.isValidConnectNodes(node1, node2)).toBeFalsy();
     });
 
     it('Extend the interface with a interface, target without a name.', () => {
@@ -148,7 +148,7 @@ describe('Validation check of interface-node links creation.', () => {
          * interface Interface1 {}
          * interface {}
          */
-        expect(linkValidator.isValidLink(node1, node2)).toBeFalsy();
+        expect(linkValidator.isValidConnectNodes(node1, node2)).toBeFalsy();
     });
 
     it('Expanding the interface with a interface.', () => {
@@ -164,7 +164,7 @@ describe('Validation check of interface-node links creation.', () => {
          * interface Interface1 {}
          * interface Interface2 extends Interface1 {}
          */
-        expect(linkValidator.isValidLink(node1, node2)).toBeTruthy();
+        expect(linkValidator.isValidConnectNodes(node1, node2)).toBeTruthy();
     });
 
     it('re-extends interface', () => {
@@ -184,6 +184,6 @@ describe('Validation check of interface-node links creation.', () => {
          * interface Interface1 {}
          * interface Interface2 extends Interface1 {} // interface2 has already extended anotherInterface
          */
-        expect(linkValidator.isValidLink(node1, node2)).toBeFalsy();
+        expect(linkValidator.isValidConnectNodes(node1, node2)).toBeFalsy();
     });
 });

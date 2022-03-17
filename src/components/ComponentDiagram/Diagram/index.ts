@@ -23,29 +23,30 @@ import DiagramContext from './DiagramContext/DiagramContext';
 import NodeClass from '../elements/Node/NodeClass';
 import ComponentType from '../../../models/ComponentType';
 import NodeInterface from '../elements/Node/NodeInterface';
+import LinkInFactory from '../elements/LinkIn/LinkInFactory';
 
 type DiagramDeps = {
     i18n: I18n,
 };
 
-export type CreateLink = (
+export type ConnectNodes = (
     (sourceNode: NodeI, targetNode: NodeI) => boolean
 );
 
-export type RemoveLinkHandler = (
+export type RemoveLinkNodes = (
     (sourceNode: NodeI, targetNode: NodeI) => void
 );
 
-export type SetPort = (
+export type SetActivePort = (
     (port: PortModel | null) => void
 );
 
-export type ActiveLink = {
+export type ActivePort = {
     sourcePort: null | PortModel,
 };
 
-export type GetActiveLink = (
-    () => ActiveLink
+export type GetActivePort = (
+    () => ActivePort
 );
 
 export type EmitChangeEv = () => void;
@@ -53,6 +54,10 @@ export type EmitChangeEv = () => void;
 type DiagramEvents = {
     change: ((components: ComponentI[]) => void)[]
 };
+
+export type ConnectNodeProperty = (
+    (port: PortModel, targetNode:NodeI) => boolean
+);
 
 export class Diagram implements DiagramStruct {
     protected activeModel: DiagramModel | undefined;
@@ -66,7 +71,14 @@ export class Diagram implements DiagramStruct {
      * @private
      */
     @observable
-    private activeLink: ActiveLink = { sourcePort: null };
+    private activeNodePort: ActivePort = { sourcePort: null };
+
+    /**
+     * This is where the data about the currently connected ports of the nodes is stored.
+     * @private
+     */
+    @observable
+    private activePropertyPort: ActivePort = { sourcePort: null };
 
     private linkValidator: LinkValidator;
 
@@ -81,12 +93,15 @@ export class Diagram implements DiagramStruct {
         });
         this.i18n = deps.i18n;
         this.diagramContext = new DiagramContext({
-            createLink: this.createLink,
-            setPort: this.setSourcePort,
-            removeLinkHandler: this.removeLinkHandler,
-            getActiveLink: this.getActiveLink,
+            connectNodes: this.connectNodes,
+            setActiveNodePort: this.setActiveNodePort,
+            removeLinkNodes: this.removeLinkNodes,
+            getActiveNodePort: this.getActiveNodePort,
             changeHandler: this.emitChangeEv,
             diagramEngine: this.diagramEngine,
+            getActivePropertyPort: this.getActivePropertyPort,
+            setActivePropertyPort: this.setActivePropertyPort,
+            connectNodeProperty: this.connectNodeProperty,
         });
         this.linkValidator = new LinkValidator();
         this.events = new EventEmitter<DiagramEvents>();
@@ -99,11 +114,11 @@ export class Diagram implements DiagramStruct {
         makeObservable(this);
     }
 
-    private createLink: CreateLink = (
+    private connectNodes: ConnectNodes = (
         sourceNode,
         targetNode,
     ) => {
-        const isValid = this.linkValidator.isValidLink(sourceNode, targetNode);
+        const isValid = this.linkValidator.isValidConnectNodes(sourceNode, targetNode);
 
         if (isValid) {
             if (
@@ -117,14 +132,41 @@ export class Diagram implements DiagramStruct {
         return isValid;
     };
 
+    private connectNodeProperty: ConnectNodeProperty = (port: PortModel, targetNode:NodeI) => {
+        const sourcePropertyKey = port.getName();
+        const sourceNode = port.getNode();
+        let propertyName;
+
+        if (sourceNode instanceof NodeClass) {
+            propertyName = sourceNode.getProperties().find((property) => property.key === sourcePropertyKey)?.name;
+
+            sourceNode.
+
+            console.log(propertyName);
+        }
+
+        return false;
+    }
+
+    private removeNodePropertyLink() {
+
+    }
+
     @action
-    private setSourcePort: SetPort = (port) => {
-        this.activeLink.sourcePort = port;
+    private setActivePropertyPort: SetActivePort = (port) => {
+        this.activePropertyPort.sourcePort = port;
     };
 
-    private getActiveLink = () => this.activeLink;
+    private getActivePropertyPort: GetActivePort = () => this.activePropertyPort;
 
-    private removeLinkHandler: RemoveLinkHandler = (sourceNode: NodeI, targetNode: NodeI) => {
+    @action
+    private setActiveNodePort: SetActivePort = (port) => {
+        this.activeNodePort.sourcePort = port;
+    };
+
+    private getActiveNodePort = () => this.activeNodePort;
+
+    private removeLinkNodes: RemoveLinkNodes = (sourceNode: NodeI, targetNode: NodeI) => {
         /**
          * The Link is inheritance. When you delete a link, you need to null the inheritance.
          */
@@ -170,6 +212,7 @@ export class Diagram implements DiagramStruct {
             context: this.diagramContext,
         }));
         linkFactories.registerFactory(new LinkFactory({ context: this.diagramContext }));
+        linkFactories.registerFactory(new LinkInFactory({ context: this.diagramContext }));
     }
 
     private registerActions() {

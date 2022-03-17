@@ -1,37 +1,49 @@
 import { DiagramEngine } from '@projectstorm/react-diagrams';
 import {
-    CreateLink, RemoveLinkHandler, SetPort, GetActiveLink, EmitChangeEv,
+    ConnectNodes, RemoveLinkNodes, SetActivePort, GetActivePort, EmitChangeEv, ConnectNodeProperty,
 } from '../index';
 
 type DiagramContextProps = {
-    createLink: CreateLink
-    removeLinkHandler: RemoveLinkHandler
-    setPort: SetPort
-    getActiveLink: GetActiveLink
+    connectNodes: ConnectNodes
+    connectNodeProperty: ConnectNodeProperty
+    removeLinkNodes: RemoveLinkNodes
+    setActiveNodePort: SetActivePort
+    getActiveNodePort: GetActivePort
+    setActivePropertyPort: SetActivePort
+    getActivePropertyPort: GetActivePort
     changeHandler: EmitChangeEv,
     diagramEngine: DiagramEngine
 };
 
 class DiagramContext {
-    public readonly createLink: CreateLink;
+    public readonly connectNodes: ConnectNodes;
 
-    public readonly removeLinkHandler: RemoveLinkHandler;
+    public readonly removeLinkNodes: RemoveLinkNodes;
 
-    public readonly setPort: SetPort;
+    public readonly setActiveNodePort: SetActivePort;
 
-    public readonly getActiveLink: GetActiveLink;
+    public readonly getActiveNodePort: GetActivePort;
 
     public readonly onChange: EmitChangeEv;
 
     public readonly diagramEngine: DiagramEngine;
 
+    public readonly setActivePropertyPort: SetActivePort;
+
+    public readonly getActivePropertyPort: GetActivePort;
+
+    public readonly connectNodeProperty: ConnectNodeProperty;
+
     constructor(props: DiagramContextProps) {
-        this.createLink = props.createLink;
-        this.removeLinkHandler = props.removeLinkHandler;
-        this.setPort = props.setPort;
-        this.getActiveLink = props.getActiveLink;
+        this.connectNodes = props.connectNodes;
+        this.removeLinkNodes = props.removeLinkNodes;
+        this.setActiveNodePort = props.setActiveNodePort;
+        this.getActiveNodePort = props.getActiveNodePort;
         this.onChange = props.changeHandler;
         this.diagramEngine = props.diagramEngine;
+        this.setActivePropertyPort = props.setActivePropertyPort;
+        this.getActivePropertyPort = props.getActivePropertyPort;
+        this.connectNodeProperty = props.connectNodeProperty;
     }
 }
 
