@@ -18,16 +18,16 @@ export default class LinkIn extends DefaultLinkModel {
 
         this.registerListener({
             entityRemoved: (event: LinkEvent | BaseEvent) => {
-                // if (isType<LinkEvent>(event, 'entity')) {
-                //     const source = event.entity.getSourcePort()?.getNode();
-                //     const target = event.entity.getTargetPort()?.getNode();
-                //
-                //     props.context?.setActiveNodePort(null);
-                //
-                //     if (isType<NodeI>(source, 'getName') && isType<NodeI>(target, 'getName')) {
-                //         props.context?.removeLinkNodes(source, target);
-                //     }
-                // }
+                if (isType<LinkEvent>(event, 'entity')) {
+                    const sourcePort = event.entity.getSourcePort();
+                    const sourceNode = sourcePort.getNode();
+
+                    props.context?.setActiveNodePort(null);
+
+                    if (isType<NodeI>(sourceNode, 'getName')) {
+                        props.context?.removeNodePropertyLink(sourcePort, sourceNode);
+                    }
+                }
             },
             sourcePortChanged: (event: BaseEvent) => {
                 if (isType<{ port: null | PortModel }>(event, 'port')) {

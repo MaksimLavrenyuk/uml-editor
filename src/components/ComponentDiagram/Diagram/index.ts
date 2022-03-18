@@ -55,6 +55,10 @@ type DiagramEvents = {
     change: ((components: ComponentI[]) => void)[]
 };
 
+export type RemoveNodePropertyLink = (
+    (property: PortModel, sourceNode: NodeI) => void
+);
+
 export type ConnectNodeProperty = (
     (port: PortModel, targetNode:NodeI) => boolean
 );
@@ -102,6 +106,7 @@ export class Diagram implements DiagramStruct {
             getActivePropertyPort: this.getActivePropertyPort,
             setActivePropertyPort: this.setActivePropertyPort,
             connectNodeProperty: this.connectNodeProperty,
+            removeNodePropertyLink: this.removeNodePropertyLink,
         });
         this.linkValidator = new LinkValidator();
         this.events = new EventEmitter<DiagramEvents>();
@@ -140,7 +145,7 @@ export class Diagram implements DiagramStruct {
             const property = sourceNode.getProperty(sourcePropertyKey);
 
             if (property) {
-                property.changeReturnType(sourceNode.getName());
+                property.changeReturnType(targetNode.getName());
 
                 return true;
             }
@@ -149,9 +154,13 @@ export class Diagram implements DiagramStruct {
         return false;
     };
 
-    private removeNodePropertyLink() {
+    private removeNodePropertyLink: RemoveNodePropertyLink = (port: PortModel, sourceNode) => {
+        const sourcePropertyKey = port.getName();
 
-    }
+        if (sourceNode instanceof NodeClass) {
+            sourceNode.getProperty(sourcePropertyKey)?.changeReturnType('');
+        }
+    };
 
     @action
     private setActivePropertyPort: SetActivePort = (port) => {

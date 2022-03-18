@@ -1,6 +1,12 @@
 import { DiagramEngine } from '@projectstorm/react-diagrams';
 import {
-    ConnectNodes, RemoveLinkNodes, SetActivePort, GetActivePort, EmitChangeEv, ConnectNodeProperty,
+    ConnectNodes,
+    RemoveLinkNodes,
+    SetActivePort,
+    GetActivePort,
+    EmitChangeEv,
+    ConnectNodeProperty,
+    RemoveNodePropertyLink,
 } from '../index';
 
 type DiagramContextProps = {
@@ -13,6 +19,7 @@ type DiagramContextProps = {
     getActivePropertyPort: GetActivePort
     changeHandler: EmitChangeEv,
     diagramEngine: DiagramEngine
+    removeNodePropertyLink: RemoveNodePropertyLink
 };
 
 class DiagramContext {
@@ -34,6 +41,8 @@ class DiagramContext {
 
     public readonly connectNodeProperty: ConnectNodeProperty;
 
+    public readonly removeNodePropertyLink: RemoveNodePropertyLink;
+
     constructor(props: DiagramContextProps) {
         this.connectNodes = props.connectNodes;
         this.removeLinkNodes = props.removeLinkNodes;
@@ -44,6 +53,7 @@ class DiagramContext {
         this.setActivePropertyPort = props.setActivePropertyPort;
         this.getActivePropertyPort = props.getActivePropertyPort;
         this.connectNodeProperty = props.connectNodeProperty;
+        this.removeNodePropertyLink = props.removeNodePropertyLink;
     }
 }
 
