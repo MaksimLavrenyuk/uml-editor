@@ -1,6 +1,8 @@
 import LinkValidator from '../index';
 import NodeClass from '../../elements/Node/NodeClass';
 import NodeInterface from '../../elements/Node/NodeInterface';
+import { Property } from '../../../../models/components/Property';
+import Class from '../../../../models/components/Class';
 
 describe('Validation check of class-node links creation.', () => {
     const linkValidator = new LinkValidator();
@@ -185,5 +187,34 @@ describe('Validation check of interface-node links creation.', () => {
          * interface Interface2 extends Interface1 {} // interface2 has already extended anotherInterface
          */
         expect(linkValidator.isValidConnectNodes(node1, node2)).toBeFalsy();
+    });
+});
+
+describe('Validation of links of class properties with nodes.', () => {
+    const linkValidator = new LinkValidator();
+
+    test('Specifying the type of a class property - another class.', () => {
+        const property = new Property('property');
+
+        expect(
+            linkValidator.isValidConnectNodeProperty(property.name, new Class('Class1'), new Class('Class2')),
+        ).toBeTruthy();
+    });
+
+    test('Specifying the type of a class property - another class.', () => {
+        const property = new Property('property');
+
+        expect(
+            linkValidator.isValidConnectNodeProperty(property.name, new Class('Class1'), new Class('Class2')),
+        ).toBeTruthy();
+    });
+
+    test('pecifying the type of a class property is the same class.', () => {
+        const property = new Property('property');
+        const class1 = new Class('Class1');
+
+        expect(
+            linkValidator.isValidConnectNodeProperty(property.name, class1, class1),
+        ).toBeTruthy();
     });
 });

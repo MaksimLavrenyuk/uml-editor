@@ -39,10 +39,15 @@ class FormatterDiagram implements Formatter {
     }
 
     private static serializeCollection(components: ComponentI[]) {
+        const processedEntities: string[] = [];
         let result = '';
 
         components.forEach((component) => {
-            result += `${FormatterDiagram.serializeComponent(component)}\n`;
+            if (!processedEntities.includes(component.name)) {
+                result += `${FormatterDiagram.serializeComponent(component)}\n`;
+
+                processedEntities.push(component.name);
+            }
         });
 
         return result;

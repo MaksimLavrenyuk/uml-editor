@@ -3,6 +3,8 @@ import { nanoid } from 'nanoid';
 import EventEmitter from 'simple-typed-emitter';
 import { debounce } from 'lodash';
 import { Modifier } from '../../../../../../../models/Modifier';
+import ComponentFactory from '../../../../../../../models/factories/ComponentFactory';
+import { Property as PropertyModel } from '../../../../../../../models/components/Property';
 
 export type ClassPropertyData = {
     name: string,
@@ -66,6 +68,8 @@ class ClassProperty implements IProperty {
     @observable
     private propStatic: boolean;
 
+    private factory: ComponentFactory;
+
     constructor(config?: ClassPropertyData) {
         this.key = nanoid();
         this.propName = config?.name || DEFAULT_PROPERTY.name;
@@ -74,6 +78,7 @@ class ClassProperty implements IProperty {
         this.propAbstract = config?.isAbstract !== undefined ? config.isAbstract : DEFAULT_PROPERTY.isAbstract;
         this.propOptional = config?.isOptional !== undefined ? config.isOptional : DEFAULT_PROPERTY.isOptional;
         this.propStatic = config?.isStatic !== undefined ? config.isStatic : DEFAULT_PROPERTY.isStatic;
+        this.factory = new ComponentFactory();
 
         makeObservable(this);
     }
@@ -136,15 +141,15 @@ class ClassProperty implements IProperty {
         this.debounceChangeEmit();
     }
 
-    content(): ClassPropertyData {
-        return {
+    content(): PropertyModel {
+        return this.factory.createProperty({
             name: this.propName,
             modifier: this.propModifier,
             returnType: this.propReturnType,
             isAbstract: this.propAbstract,
             isOptional: this.propOptional,
             isStatic: this.propStatic,
-        };
+        });
     }
 }
 

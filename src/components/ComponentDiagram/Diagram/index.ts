@@ -140,18 +140,29 @@ export class Diagram implements DiagramStruct {
     private connectNodeProperty: ConnectNodeProperty = (port: PortModel, targetNode:NodeI) => {
         const sourcePropertyKey = port.getName();
         const sourceNode = port.getNode();
+        let isValidLink = false;
 
         if (sourceNode instanceof NodeClass) {
+            const sourceComponent = sourceNode.content();
+            const targetComponent = targetNode.content();
             const property = sourceNode.getProperty(sourcePropertyKey);
 
-            if (property) {
-                property.changeReturnType(targetNode.getName());
+            if (property && sourceComponent && targetComponent) {
+                isValidLink = this.linkValidator.isValidConnectNodeProperty(
+                    property.content().name,
+                    sourceComponent,
+                    targetComponent,
+                );
 
-                return true;
+                if (isValidLink) {
+                    property.changeReturnType(targetNode.getName());
+
+                    return isValidLink;
+                }
             }
         }
 
-        return false;
+        return isValidLink;
     };
 
     private removeNodePropertyLink: RemoveNodePropertyLink = (port: PortModel, sourceNode) => {

@@ -1,9 +1,12 @@
+import { PortModel } from '@projectstorm/react-diagrams';
 import { NodeI } from '../elements/Node/NodeBasic';
 import TypeChecker from '../../../utils/TypeChecker';
 import FormatterDiagram from '../../../utils/Formatter';
 import Class from '../../../models/components/Class';
 import Interface from '../../../models/components/Interface';
 import { ComponentI } from '../../../models/components/Component';
+import NodeClass from '../elements/Node/NodeClass';
+import { Property } from '../../../models/components/Property';
 
 export interface ILinkValidator {
     isValidConnectNodes(source: NodeI, target: NodeI, currentComponents: ComponentI[]): boolean
@@ -102,7 +105,21 @@ export default class LinkValidator implements ILinkValidator {
         return this.typeChecker.check(resultStr).length === 0;
     }
 
-    isValidConnectNodeProperty() {
+    isValidConnectNodeProperty(propertyName: string, sourceNode: ComponentI, targetNode:ComponentI) {
+        let resultStr = '';
 
+        if (sourceNode instanceof Class) {
+            const existingProperty = sourceNode.members.find((prop) => prop.name === propertyName);
+
+            if (existingProperty && existingProperty instanceof Property) {
+                existingProperty.returnType = targetNode.name;
+
+                resultStr = this.formatter.serialize([sourceNode, targetNode]);
+
+                return this.typeChecker.check(resultStr).length === 0;
+            }
+        }
+
+        return false;
     }
 }
