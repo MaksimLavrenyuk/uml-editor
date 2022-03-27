@@ -8,60 +8,37 @@ import { I18n } from '@lingui/core';
 import { Point } from '@projectstorm/geometry';
 import { observable, makeObservable, action } from 'mobx';
 import EventEmitter from 'simple-typed-emitter';
-import { NodeClassFactory } from '../elements/Node/NodeClass/NodeClassFactory';
+import NodeClassFactory from '../elements/Nodes/NodeClass/NodeClassFactory';
 import DiagramStruct, { DiagramInitialNode } from '../../../models/Diagram';
-import { NodeI } from '../elements/Node/NodeBasic';
-import NodeInterfaceFactory from '../elements/Node/NodeInterface/NodeInterfaceFactory';
+import NodeBasic, { INode } from '../elements/Nodes/NodeBasic';
+import NodeInterfaceFactory from '../elements/Nodes/NodeInterface/NodeInterfaceFactory';
 import { ComponentI } from '../../../models/components/Component';
 import isType from '../../../utils/guards/isType';
 import Class from '../../../models/components/Class';
+import Interface from '../../../models/components/Interface';
 import LinkValidator from '../LinkValidator';
 import ZoomAction from '../actions/ZoomAction';
-import LinkFactory from '../elements/Link/LinkFactory';
 import DeleteItemsAction from '../actions/DeleteItemsAction';
-import DiagramContext from './DiagramContext/DiagramContext';
-import NodeClass from '../elements/Node/NodeClass';
+import NodeClass from '../elements/Nodes/NodeClass';
+import NodeInterface from '../elements/Nodes/NodeInterface';
 import ComponentType from '../../../models/ComponentType';
-import NodeInterface from '../elements/Node/NodeInterface';
-import LinkInFactory from '../elements/LinkIn/LinkInFactory';
+import LinkExtendsFactory from '../elements/Links/LinkExtends/LinkExtendsFactory';
+import { LinkTargetPortChanged, RemoveLink } from '../elements/Links/LinkBasic';
+import LinkAssociationFactory from '../elements/Links/LinkAssociation/LinkAssociationFactory';
+import { COMPONENTS_NAMES } from '../../../locales/lang-constants';
+import PropertyBasic from '../elements/Properties/Property';
 
 type DiagramDeps = {
     i18n: I18n,
 };
 
-export type ConnectNodes = (
-    (sourceNode: NodeI, targetNode: NodeI) => boolean
-);
-
-export type RemoveLinkNodes = (
-    (sourceNode: NodeI, targetNode: NodeI) => void
-);
-
-export type SetActivePort = (
-    (port: PortModel | null) => void
-);
-
 export type ActivePort = {
     sourcePort: null | PortModel,
 };
 
-export type GetActivePort = (
-    () => ActivePort
-);
-
-export type EmitChangeEv = () => void;
-
 type DiagramEvents = {
     change: ((components: ComponentI[]) => void)[]
 };
-
-export type RemoveNodePropertyLink = (
-    (property: PortModel, sourceNode: NodeI) => void
-);
-
-export type ConnectNodeProperty = (
-    (port: PortModel, targetNode:NodeI) => boolean
-);
 
 export class Diagram implements DiagramStruct {
     protected activeModel: DiagramModel | undefined;
@@ -86,8 +63,6 @@ export class Diagram implements DiagramStruct {
 
     private linkValidator: LinkValidator;
 
-    private readonly diagramContext: DiagramContext;
-
     public readonly events: EventEmitter<DiagramEvents>;
 
     constructor(components: ComponentI[], deps: DiagramDeps) {
@@ -96,18 +71,6 @@ export class Diagram implements DiagramStruct {
             registerDefaultDeleteItemsAction: false,
         });
         this.i18n = deps.i18n;
-        this.diagramContext = new DiagramContext({
-            connectNodes: this.connectNodes,
-            setActiveNodePort: this.setActiveNodePort,
-            removeLinkNodes: this.removeLinkNodes,
-            getActiveNodePort: this.getActiveNodePort,
-            changeHandler: this.emitChangeEv,
-            diagramEngine: this.diagramEngine,
-            getActivePropertyPort: this.getActivePropertyPort,
-            setActivePropertyPort: this.setActivePropertyPort,
-            connectNodeProperty: this.connectNodeProperty,
-            removeNodePropertyLink: this.removeNodePropertyLink,
-        });
         this.linkValidator = new LinkValidator();
         this.events = new EventEmitter<DiagramEvents>();
         this.disableLooseLink();
@@ -119,43 +82,49 @@ export class Diagram implements DiagramStruct {
         makeObservable(this);
     }
 
-    private connectNodes: ConnectNodes = (
-        sourceNode,
-        targetNode,
+    private connectNodes = (
+        sourceNode: INode,
+        targetNode: INode,
     ) => {
-        const isValid = this.linkValidator.isValidConnectNodes(sourceNode, targetNode);
+        const isClassFromComponent = sourceNode instanceof NodeClass;
+        const isInterfaceFromComponent = sourceNode instanceof NodeInterface;
+        const isClassToComponent = targetNode instanceof NodeClass;
+        const isInterfaceToComponent = targetNode instanceof NodeInterface;
+        const from = sourceNode.content();
+        const to = targetNode.content();
+        const isValid = this.linkValidator.isValidConnectComponents(from, to);
 
         if (isValid) {
             if (
-                (sourceNode instanceof NodeClass || sourceNode instanceof NodeInterface)
-                && (targetNode instanceof NodeClass || targetNode instanceof NodeInterface)
+                (isClassFromComponent || isInterfaceFromComponent)
+                && (isClassToComponent || isInterfaceToComponent)
             ) {
-                sourceNode.extend(targetNode);
+                sourceNode.extend(targetNode.content());
+                this.emitChangeEvent();
+
+                return isValid;
             }
         }
 
         return isValid;
     };
 
-    private connectNodeProperty: ConnectNodeProperty = (port: PortModel, targetNode:NodeI) => {
-        const sourcePropertyKey = port.getName();
-        const sourceNode = port.getNode();
+    private connectPropertyToNode(property: PropertyBasic, sourceNode: INode, targetNode: INode) {
         let isValidLink = false;
 
         if (sourceNode instanceof NodeClass) {
             const sourceComponent = sourceNode.content();
             const targetComponent = targetNode.content();
-            const property = sourceNode.getProperty(sourcePropertyKey);
 
             if (property && sourceComponent && targetComponent) {
                 isValidLink = this.linkValidator.isValidConnectNodeProperty(
-                    property.content().name,
+                    property.content(),
                     sourceComponent,
                     targetComponent,
                 );
 
                 if (isValidLink) {
-                    property.changeReturnType(targetNode.getName());
+                    property.changeReturnType(targetComponent.name);
 
                     return isValidLink;
                 }
@@ -163,41 +132,34 @@ export class Diagram implements DiagramStruct {
         }
 
         return isValidLink;
-    };
-
-    private removeNodePropertyLink: RemoveNodePropertyLink = (port: PortModel, sourceNode) => {
-        const sourcePropertyKey = port.getName();
-
-        if (sourceNode instanceof NodeClass) {
-            sourceNode.getProperty(sourcePropertyKey)?.changeReturnType('');
-        }
-    };
+    }
 
     @action
-    private setActivePropertyPort: SetActivePort = (port) => {
+    private setActivePropertyPort = (port: PortModel) => {
         this.activePropertyPort.sourcePort = port;
     };
 
-    private getActivePropertyPort: GetActivePort = () => this.activePropertyPort;
+    private getActivePropertyPort = () => this.activePropertyPort;
 
     @action
-    private setActiveNodePort: SetActivePort = (port) => {
+    private setActiveNodePort = (port: PortModel | null) => {
         this.activeNodePort.sourcePort = port;
     };
 
     private getActiveNodePort = () => this.activeNodePort;
 
-    private removeLinkNodes: RemoveLinkNodes = (sourceNode: NodeI, targetNode: NodeI) => {
+    private removeLinkNodes = (sourceNode: INode, targetNode: INode) => {
         /**
          * The Link is inheritance. When you delete a link, you need to null the inheritance.
          */
         if (sourceNode instanceof NodeClass || sourceNode instanceof NodeInterface) {
             sourceNode.removeExtends();
         }
-        this.emitChangeEv();
+
+        this.emitChangeEvent();
     };
 
-    private emitChangeEv: EmitChangeEv = () => {
+    private emitChangeEvent = () => {
         this.events.emit('change', this.content());
     };
 
@@ -227,13 +189,31 @@ export class Diagram implements DiagramStruct {
         const linkFactories = this.diagramEngine.getLinkFactories();
 
         nodeFactories.registerFactory(new NodeClassFactory({
-            context: this.diagramContext,
+            diagramEngine: this.diagramEngine,
+            linkProps: {
+                onRemoveLink: this.removeLinkHandler,
+                onLinkSourcePortChanged: this.changeLinkExtendsSourcePort,
+                onLinkTargetPortChanged: this.linkCreationHandler,
+            },
         }));
         nodeFactories.registerFactory(new NodeInterfaceFactory({
-            context: this.diagramContext,
+            diagramEngine: this.diagramEngine,
+            linkProps: {
+                onRemoveLink: this.removeLinkHandler,
+                onLinkSourcePortChanged: this.changeLinkExtendsSourcePort,
+                onLinkTargetPortChanged: this.linkCreationHandler,
+            },
         }));
-        linkFactories.registerFactory(new LinkFactory({ context: this.diagramContext }));
-        linkFactories.registerFactory(new LinkInFactory({ context: this.diagramContext }));
+        linkFactories.registerFactory(new LinkExtendsFactory({
+            onRemoveLink: this.removeLinkHandler,
+            onLinkSourcePortChanged: this.changeLinkExtendsSourcePort,
+            onLinkTargetPortChanged: this.linkCreationHandler,
+        }));
+        linkFactories.registerFactory(new LinkAssociationFactory({
+            onRemoveLink: this.removeLinkHandler,
+            onLinkSourcePortChanged: this.changeLinkExtendsSourcePort,
+            onLinkTargetPortChanged: this.linkCreationHandler,
+        }));
     }
 
     private registerActions() {
@@ -249,6 +229,83 @@ export class Diagram implements DiagramStruct {
         return this.diagramEngine;
     }
 
+    private removeLinkHandler: RemoveLink = (link) => {
+        const sourcePort = link.getSourcePort();
+        const targetPort = link.getTargetPort();
+        const sourceNode = sourcePort?.getNode();
+        const targetNode = targetPort?.getNode();
+
+        if (
+            (sourceNode instanceof NodeClass || sourceNode instanceof NodeInterface)
+            && (targetNode instanceof NodeClass || targetNode instanceof NodeInterface)
+        ) {
+            const sourceProperty = sourceNode.getPropertyByPort(sourcePort);
+
+            if (sourceProperty) {
+                sourceProperty.changeReturnType(undefined);
+            } else {
+                const targetProperty = targetNode.getPropertyByPort(targetPort);
+
+                if (targetProperty) {
+                    targetProperty.changeReturnType(undefined);
+                } else {
+                    this.removeLinkNodes(sourceNode, targetNode);
+                }
+            }
+        }
+    };
+
+    private changeLinkExtendsSourcePort = (port: PortModel | null) => {
+        this.setActiveNodePort(port);
+    };
+
+    private linkCreationHandler: LinkTargetPortChanged = (link) => {
+        const sourcePort = link.getSourcePort();
+        const targetPort = link.getTargetPort();
+        const sourceNode = sourcePort.getNode();
+        const targetNode = targetPort.getNode();
+        let isValidLink;
+
+        if (
+            (sourceNode instanceof NodeClass || sourceNode instanceof NodeInterface)
+            && (targetNode instanceof NodeClass || targetNode instanceof NodeInterface)
+        ) {
+            const sourceProperty = sourceNode.getPropertyByPort(sourcePort);
+
+            if (sourceProperty) {
+                isValidLink = this.connectPropertyToNode(sourceProperty, sourceNode, targetNode);
+            } else {
+                const targetProperty = targetNode.getPropertyByPort(targetPort);
+
+                if (targetProperty) {
+                    isValidLink = this.connectPropertyToNode(targetProperty, targetNode, sourceNode);
+                } else {
+                    isValidLink = this.connectNodes(sourceNode, targetNode);
+                }
+            }
+        }
+
+        if (!isValidLink) {
+            link.remove();
+        } else {
+            /**
+             * After successfully connecting the nodes, set the source node as not selected.
+             * This prevents an error:
+             * - drag and drop node
+             * - node in the focus state
+             * - link a node to another node
+             * - the link and the node become selected
+             * - Pressing the "Delete" button, deletes along with the created link also the node.
+             */
+            sourceNode.setSelected(false);
+            targetNode.setSelected(false);
+        }
+
+        this.setActiveNodePort(null);
+
+        return isValidLink;
+    };
+
     /**
      * Add a new diagram node.
      *
@@ -256,21 +313,27 @@ export class Diagram implements DiagramStruct {
      */
     addNode(initialNode: DiagramInitialNode) {
         const { diagramEngine } = this;
-        let node: NodeModel | null = null;
+        let node: NodeBasic | null = null;
 
         switch (initialNode.type) {
         case ComponentType.CLASS:
             node = new NodeClass({
-                name: initialNode.name || '',
-                extends: initialNode.extends,
-                context: this.diagramContext,
+                component: new Class(initialNode.name || COMPONENTS_NAMES.CLASS),
+                linkProps: {
+                    onRemoveLink: this.removeLinkHandler,
+                    onLinkSourcePortChanged: this.changeLinkExtendsSourcePort,
+                    onLinkTargetPortChanged: this.linkCreationHandler,
+                },
             });
             break;
         case ComponentType.INTERFACE:
             node = new NodeInterface({
-                name: initialNode.name || '',
-                extends: initialNode.extends,
-                context: this.diagramContext,
+                component: new Interface(initialNode.name || COMPONENTS_NAMES.INTERFACE),
+                linkProps: {
+                    onRemoveLink: this.removeLinkHandler,
+                    onLinkSourcePortChanged: this.changeLinkExtendsSourcePort,
+                    onLinkTargetPortChanged: this.linkCreationHandler,
+                },
             });
             break;
         default:
@@ -282,11 +345,12 @@ export class Diagram implements DiagramStruct {
             diagramEngine.getModel().addNode(node);
             this.diagramEngine.repaintCanvas();
 
-            this.emitChangeEv();
-            return node.getID();
+            node.events.registerListener('change', this.emitChangeEvent);
+            this.emitChangeEvent();
+            // return node.getID();
         }
 
-        this.emitChangeEv();
+        this.emitChangeEvent();
         return undefined;
     }
 
@@ -316,7 +380,7 @@ export class Diagram implements DiagramStruct {
         const content: ComponentI[] = [];
 
         this.activeModel?.getNodes()?.forEach((node: NodeModel) => {
-            if (isType<NodeI>(node, 'name')) {
+            if (isType<INode>(node, 'name')) {
                 const nodeContent = node.content();
 
                 if (nodeContent) content.push(nodeContent);

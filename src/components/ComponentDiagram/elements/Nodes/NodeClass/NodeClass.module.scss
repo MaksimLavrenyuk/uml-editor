@@ -1,0 +1,20 @@
+.name {
+  margin-top: 4px;
+}
+
+.port {
+  position: absolute;
+}
+
+.portTop, .portBottom {
+  left: 50%;
+  transform: translate3d(-50%, 0, 0);
+}
+
+.portTop {
+  top: -8px;
+}
+
+.portBottom {
+  bottom: -8px;
+}

@@ -1,15 +1,14 @@
 import LinkValidator from '../index';
-import NodeClass from '../../elements/Node/NodeClass';
-import NodeInterface from '../../elements/Node/NodeInterface';
 import { Property } from '../../../../models/components/Property';
 import Class from '../../../../models/components/Class';
+import Interface from '../../../../models/components/Interface';
 
 describe('Validation check of class-node links creation.', () => {
     const linkValidator = new LinkValidator();
 
     it('Expanding the class with a class.', () => {
-        const node1 = new NodeClass({ name: 'Class1' });
-        const node2 = new NodeClass({ name: 'Class2' });
+        const class1 = new Class('Class1');
+        const class2 = new Class('Class2');
 
         /**
          * current components
@@ -19,15 +18,15 @@ describe('Validation check of class-node links creation.', () => {
          *
          * result components
 
-         * class Class1 {}
-         * class Class2 extends Class1 {}
+         * class Class1 extends Class2 {}
+         * class Class2 {}
          */
-        expect(linkValidator.isValidConnectNodes(node1, node2)).toBeTruthy();
+        expect(linkValidator.isValidConnectComponents(class1, class2)).toBeTruthy();
     });
 
     it('Extend the class with a class with the same name.', () => {
-        const node1 = new NodeClass({ name: 'Class1' });
-        const node2 = new NodeClass({ name: 'Class1' });
+        const class1 = new Class('Class1');
+        const class2 = new Class('Class1');
 
         /**
          * current components
@@ -40,12 +39,12 @@ describe('Validation check of class-node links creation.', () => {
          * class Class1 {}
          * class Class1 extends Class1 {}
          */
-        expect(linkValidator.isValidConnectNodes(node1, node2)).toBeFalsy();
+        expect(linkValidator.isValidConnectComponents(class1, class2)).toBeFalsy();
     });
 
     it('We extend a class with a class extensible without a name.', () => {
-        const node1 = new NodeClass({ name: '' });
-        const node2 = new NodeClass({ name: 'Class1' });
+        const class1 = new Class('');
+        const class2 = new Class('Class1');
 
         /**
          * current components
@@ -55,15 +54,15 @@ describe('Validation check of class-node links creation.', () => {
          *
          * result components
          *
-         * class  {}
+         * class  extends Class1 {}
          * class Class1 {}
          */
-        expect(linkValidator.isValidConnectNodes(node1, node2)).toBeFalsy();
+        expect(linkValidator.isValidConnectComponents(class1, class2)).toBeFalsy();
     });
 
     it('Extend the class with a class, target without a name.', () => {
-        const node1 = new NodeClass({ name: 'Class1' });
-        const node2 = new NodeClass({ name: '' });
+        const class1 = new Class('Class1');
+        const class2 = new Class('');
 
         /**
          * current components
@@ -73,30 +72,31 @@ describe('Validation check of class-node links creation.', () => {
          *
          * result components
          *
-         * class Class1 {}
-         * class  extends Class1 {}
+         * class Class1 extends {}
+         * class  {}
          */
-        expect(linkValidator.isValidConnectNodes(node1, node2)).toBeFalsy();
+        expect(linkValidator.isValidConnectComponents(class1, class2)).toBeFalsy();
     });
 
     it('re-extends class', () => {
-        const node1 = new NodeClass({ name: 'Class1' });
-        const node2 = new NodeClass({ name: 'Class2', extends: 'AnotherClass' });
+        const class1 = new Class('Class1');
+        const class2 = new Class('Class2');
+        class1.extends = 'AnotherClass';
 
         /**
          * current components
          *
          * class AnotherClass {}
-         * class Class1 {}
-         * class Class2 extends AnotherClass {}
+         * class Class1 extends AnotherClass {}
+         * class Class2 {}
          *
          * result components
          *
          * class AnotherClass {}
-         * class Class1 {}
-         * class Class2 extends Class1 {} // Class2 has already extended anotherClass
+         * class Class1 extends AnotherClass {}  Class1 has already extended anotherClass
+         * class Class2 {}
          */
-        expect(linkValidator.isValidConnectNodes(node1, node2)).toBeFalsy();
+        expect(linkValidator.isValidConnectComponents(class1, class2)).toBeFalsy();
     });
 });
 
@@ -104,8 +104,8 @@ describe('Validation check of interface-node links creation.', () => {
     const linkValidator = new LinkValidator();
 
     it('Extend the interface with a interface with the same name.', () => {
-        const node1 = new NodeInterface({ name: 'Interface1' });
-        const node2 = new NodeInterface({ name: 'Interface1' });
+        const interface1 = new Interface('Interface1');
+        const interface2 = new Interface('Interface1');
 
         /**
          * current components
@@ -118,12 +118,12 @@ describe('Validation check of interface-node links creation.', () => {
          * interface Interface1 {}
          * interface Interface1 extends Interface1 {}
          */
-        expect(linkValidator.isValidConnectNodes(node1, node2)).toBeFalsy();
+        expect(linkValidator.isValidConnectComponents(interface1, interface2)).toBeFalsy();
     });
 
     it('We extend a interface with a interface extensible without a name.', () => {
-        const node1 = new NodeInterface({ name: '' });
-        const node2 = new NodeInterface({ name: 'Interface1' });
+        const interface1 = new Interface('');
+        const interface2 = new Interface('Interface1');
 
         /**
          * current components
@@ -134,12 +134,12 @@ describe('Validation check of interface-node links creation.', () => {
          * interface  {}
          * interface Interface1 {}
          */
-        expect(linkValidator.isValidConnectNodes(node1, node2)).toBeFalsy();
+        expect(linkValidator.isValidConnectComponents(interface1, interface2)).toBeFalsy();
     });
 
     it('Extend the interface with a interface, target without a name.', () => {
-        const node1 = new NodeInterface({ name: 'Interface1' });
-        const node2 = new NodeInterface({ name: '' });
+        const interface1 = new Interface('Interface1');
+        const interface2 = new Interface('');
 
         /**
          * current components
@@ -150,12 +150,12 @@ describe('Validation check of interface-node links creation.', () => {
          * interface Interface1 {}
          * interface {}
          */
-        expect(linkValidator.isValidConnectNodes(node1, node2)).toBeFalsy();
+        expect(linkValidator.isValidConnectComponents(interface1, interface2)).toBeFalsy();
     });
 
     it('Expanding the interface with a interface.', () => {
-        const node1 = new NodeInterface({ name: 'Interface1' });
-        const node2 = new NodeInterface({ name: 'Interface2' });
+        const interface1 = new Interface('Interface1');
+        const interface2 = new Interface('Interface2');
 
         /**
          * current components
@@ -166,13 +166,13 @@ describe('Validation check of interface-node links creation.', () => {
          * interface Interface1 {}
          * interface Interface2 extends Interface1 {}
          */
-        expect(linkValidator.isValidConnectNodes(node1, node2)).toBeTruthy();
+        expect(linkValidator.isValidConnectComponents(interface1, interface2)).toBeTruthy();
     });
 
     it('re-extends interface', () => {
-        const node1 = new NodeInterface({ name: 'Interface1' });
-        const node2 = new NodeInterface({ name: 'Interface2', extends: 'AnotherInterface' });
-
+        const interface1 = new Interface('Interface1');
+        const interface2 = new Interface('Interface2');
+        interface2.extends = 'AnotherInterface';
         /**
          * current components
          *
@@ -186,7 +186,7 @@ describe('Validation check of interface-node links creation.', () => {
          * interface Interface1 {}
          * interface Interface2 extends Interface1 {} // interface2 has already extended anotherInterface
          */
-        expect(linkValidator.isValidConnectNodes(node1, node2)).toBeFalsy();
+        expect(linkValidator.isValidConnectComponents(interface1, interface2)).toBeFalsy();
     });
 });
 

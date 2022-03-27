@@ -1,15 +1,14 @@
-import { PortModel } from '@projectstorm/react-diagrams';
-import { NodeI } from '../elements/Node/NodeBasic';
+import { INode } from '../elements/Nodes/NodeBasic';
 import TypeChecker from '../../../utils/TypeChecker';
 import FormatterDiagram from '../../../utils/Formatter';
 import Class from '../../../models/components/Class';
 import Interface from '../../../models/components/Interface';
 import { ComponentI } from '../../../models/components/Component';
-import NodeClass from '../elements/Node/NodeClass';
 import { Property } from '../../../models/components/Property';
+import PropertyBasic from '../elements/Properties/Property';
 
 export interface ILinkValidator {
-    isValidConnectNodes(source: NodeI, target: NodeI, currentComponents: ComponentI[]): boolean
+    isValidConnectComponents(fromComponent: ComponentI, toComponent: ComponentI): boolean
 }
 
 export default class LinkValidator implements ILinkValidator {
@@ -28,7 +27,7 @@ export default class LinkValidator implements ILinkValidator {
      * @param toExtends
      * @param components
      */
-    updateComponents(fromExtends: NodeI, toExtends: NodeI, components: ComponentI[]) {
+    updateComponents(fromExtends: INode, toExtends: INode, components: ComponentI[]) {
         const fromContent = fromExtends.content();
         const targetContent = toExtends.content();
 
@@ -74,47 +73,43 @@ export default class LinkValidator implements ILinkValidator {
      * class test_2 extends test_1 {}
      * => true.
      */
-    isValidConnectNodes(fromExtends: NodeI, toExtends: NodeI) {
-        const resultSource = fromExtends.content();
-        const resultTarget = toExtends.content();
+    isValidConnectComponents(fromComponent: ComponentI, toComponent: ComponentI) {
+        const isClassFromComponent = fromComponent instanceof Class;
+        const isInterfaceFromComponent = fromComponent instanceof Interface;
+        const isClassToComponent = toComponent instanceof Class;
+        const isInterfaceToComponent = toComponent instanceof Interface;
         let resultStr = '';
 
-        if (resultSource instanceof Class) {
-            if (resultTarget instanceof Class) {
-                if (resultTarget.extends) return false;
+        if (isClassFromComponent || isInterfaceFromComponent) {
+            if (fromComponent.extends) return false;
 
-                resultTarget.extends = resultSource.name;
+            if (isClassToComponent || isInterfaceToComponent) {
+                // eslint-disable-next-line no-param-reassign
+                fromComponent.extends = toComponent.name;
             }
         }
 
-        if (resultSource instanceof Interface) {
-            if (resultTarget instanceof Interface) {
-                if (resultTarget.extends) return false;
-
-                resultTarget.extends = resultSource.name;
-            }
+        if (fromComponent) {
+            resultStr += this.formatter.serialize(toComponent);
         }
 
-        if (resultSource) {
-            resultStr += this.formatter.serialize(resultSource);
-        }
-        if (resultTarget) {
-            resultStr += this.formatter.serialize(resultTarget);
+        if (fromComponent) {
+            resultStr += this.formatter.serialize(fromComponent);
         }
 
         return this.typeChecker.check(resultStr).length === 0;
     }
 
-    isValidConnectNodeProperty(propertyName: string, sourceNode: ComponentI, targetNode:ComponentI) {
+    isValidConnectNodeProperty(property: Property, fromComponent: ComponentI, toComponent:ComponentI) {
         let resultStr = '';
 
-        if (sourceNode instanceof Class) {
-            const existingProperty = sourceNode.members.find((prop) => prop.name === propertyName);
+        if (fromComponent instanceof Class) {
+            const existingProperty = fromComponent.members.find((prop) => prop.name === property.name);
 
             if (existingProperty && existingProperty instanceof Property) {
-                existingProperty.returnType = targetNode.name;
+                existingProperty.returnType = toComponent.name;
 
-                resultStr = this.formatter.serialize([sourceNode, targetNode]);
+                resultStr = this.formatter.serialize([toComponent, fromComponent]);
 
                 return this.typeChecker.check(resultStr).length === 0;
             }
