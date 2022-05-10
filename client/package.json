@@ -53,11 +53,11 @@
     "typescript": "^4.5.2"
   },
   "scripts": {
-    "start": "yarn install --check-files && react-scripts start ",
-    "build": "react-scripts build",
+    "start": "yarn install --check-files && ../node_modules/.bin/react-scripts start ",
+    "build": "../node_modules/.bin/react-scripts build",
     "test": "CI=true react-scripts test --colors --coverage",
-    "extract-locale": "lingui extract --clean",
-    "compile-locale": "lingui compile"
+    "extract-locale": "../node_modules/.bin/lingui extract --clean",
+    "compile-locale": "../node_modules/.bin/lingui compile"
   },
   "eslintConfig": {
     "extends": [
