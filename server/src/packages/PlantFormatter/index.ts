@@ -1,4 +1,4 @@
-import { File } from "plantuml-parser";
+import { File } from 'plantuml-parser';
 
 type PlantObj = {
   plantString: string;
@@ -7,18 +7,20 @@ type PlantObj = {
 
 interface PlantFormatterI {
   toFile(obj: PlantObj): void;
-  toPlant(file: File): PlantObj;
+  toPlant(file: File[]): PlantObj;
 }
 
 class Formatter implements PlantFormatterI {
-  toFile(obj: PlantObj) {}
+    toFile(obj: PlantObj) {
 
-  toPlant(file: File): PlantObj {
-    return {
-      plantString: "dd",
-      fileName: "sss",
-    };
-  }
+    }
+
+    toPlant(file: File[]): PlantObj {
+        return {
+            plantString: 'dd',
+            fileName: 'sss',
+        };
+    }
 }
 
 export default Formatter;
